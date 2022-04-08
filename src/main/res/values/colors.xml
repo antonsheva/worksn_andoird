@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="msg_color_consumer">#81D6EA</color>
+    <color name="msg_color_bcgrnd">#D0EFF6</color>
+    <color name="no_action_button">#36853D</color>
+    <color name="action_button">#4BC856</color>
+    <color name="press_button">#94EA9C</color>
+    <color name="stt_1">#DEFBE0</color>
+    <color name="stt_2">#DFF1ED</color>
+    <color name="main_background">#D0EFF6</color>
+    <color name="reply_msg">#D3D7D8</color>
+    <color name="msg_content">#445C5A</color>
+    <color name="warning_yellow">#F8EF49</color>
+
+    <color name="ads_visible_hidden_for_time">#E4D7BE</color>
+    <color name="ads_visible_hidden_manual">#FACD8A</color>
+    <color name="ads_visible_hidden_remove">#EFB37F</color>
+    <color name="text_heading">#656565</color>
+    <color name="text_content">#858585</color>
+    <color name="progress_bar">#EFB339</color>
+    <color name="progress_bar_bcgrnd">#B6B6B6</color>
+</resources>

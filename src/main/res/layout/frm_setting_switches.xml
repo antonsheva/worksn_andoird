@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="25dp"
+    android:paddingEnd="10dp"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchShowStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Показвать статус"
+
+        android:textColor="#656565"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+    <include layout="@layout/underline"/>
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchConfirmDeliverMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Сообщать о получении сообщения"
+
+        android:textColor="#656565"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+    <include layout="@layout/underline"/>
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchConfirmViewedMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Сообщать о просмотре сообщения"
+        android:textColor="#656565"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+    <include layout="@layout/underline"/>
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchSendPrintText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Сообщать о наборе текста"
+        android:textColor="#656565"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+</LinearLayout>

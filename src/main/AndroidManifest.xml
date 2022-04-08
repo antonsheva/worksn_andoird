@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.worksn"
+    android:versionName="1.0"
+    android:versionCode="1"
+    android:installLocation="internalOnly">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name='android.permission.WAKE_LOCK' />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:ignore="CoarseFineLocation" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />
+    <permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" android:protectionLevel="signature"/>
+    <application
+        android:name=".activity.MyApp"
+        android:requestLegacyExternalStorage="true"
+        android:icon="@mipmap/logo_foreground"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/logo_foreground"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Worksn"
+        android:allowBackup="true">
+        <activity android:name=".activity.CrashActivity"
+            android:label="крах приложения"
+            android:theme="@style/Theme.Worksn.NoActionBar" />
+
+        <activity
+            android:name=".activity.RegistrationActivity"
+            android:label="Регистрация"
+            android:theme="@style/Theme.Worksn.NoActionBar" />
+        <activity
+            android:name=".activity.UpdateUserDataActivity"
+            android:label="Обновление профиля"
+            android:theme="@style/Theme.Worksn.NoActionBar" />
+        <activity
+            android:name=".activity.UpdateAnonymUserDataActivity"
+            android:label="Обновление анонимного профиля"
+            android:theme="@style/Theme.Worksn.NoActionBar" />
+        <activity
+            android:name=".activity.RecoveryPasswordActivity"
+            android:label="Восстановление пароля"
+            android:theme="@style/Theme.Worksn.NoActionBar" />
+        <activity
+            android:name=".activity.ChangePassword"
+            android:label="Смена пароля"
+            android:theme="@style/Theme.Worksn.NoActionBar" />
+        <activity
+            android:name=".activity.ActivityUserPage"
+            android:label="Страница пользователя"
+            android:theme="@style/Theme.Worksn.NoActionBar" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:label="Всякая всячина"
+            android:theme="@style/Theme.Worksn.NoActionBar" />
+
+        <service
+            android:name=".websocket.WsService"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver android:name="com.worksn.activity.ActivityBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver android:name="com.worksn.websocket.WsService$AlarmReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver android:name="com.worksn.websocket.WsBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver android:name="com.worksn.websocket.WsAlarmReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver android:name=".activity.NotifyBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver android:name="com.worksn.activity.BootCompletedReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".activity.FileChooser" />
+        <activity android:name=".activity.MakePhoto" />
+        <activity
+            android:name=".activity.QuickReply"
+            android:noHistory="true" />
+        <activity
+            android:name=".activity.NotifyConfirmViewed"
+            android:noHistory="true" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

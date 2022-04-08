@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frmAdsParam"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="@color/main_background"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/adsParamCategoryField"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="1dp"
+        android:background="@color/main_background"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btAdsParamCategory"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="3dp"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:background="@drawable/no_active_btn"
+            android:text="Все категории"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/adsParamUserField"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:padding="1dp"
+        android:layout_weight="1"
+        android:background="@color/msg_color_bcgrnd"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btAdsParamUser"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="3dp"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:background="@drawable/no_active_btn"
+            android:text="Все пользователи"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/adsParamAddField"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="1dp"
+        android:background="@color/msg_color_bcgrnd"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btAdsParamAdd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="3dp"
+            android:padding="2dp"
+            android:textColor="@color/white"
+            android:background="@drawable/no_active_btn"
+            android:textSize="12sp"
+            android:text="Добавить"/>
+    </LinearLayout>
+
+</LinearLayout>

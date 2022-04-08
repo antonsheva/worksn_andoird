@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/subMenu"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:padding="1dp"
+    android:layout_marginTop="-200dp"
+    android:background="@drawable/sub_menu"
+    android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/btRmv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="  Удалить  "
+                android:textSize="22sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btRecovery"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Восстановить"
+                android:textSize="22sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btHidden"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="   Скрыть   "
+                android:textSize="22sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btShow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="  Показать  "
+                android:textSize="22sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btEdit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="  Изменить  "
+                android:textSize="22sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btCopy"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Копировать"
+                android:textSize="22sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btReply"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+
+            android:orientation="vertical"
+            android:padding="3dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Ответить"
+                android:textSize="22sp" />
+        </LinearLayout>
+</LinearLayout>

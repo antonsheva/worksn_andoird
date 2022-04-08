@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="userMenu">
+        <item name="android:padding">12dp</item>
+        <item name="android:alpha">0.7</item>
+    </style>
+    <style name="userPageStars">
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="timeSpinner">
+        <item name="android:background">#0000</item>
+    </style>
+    <style name="subMenuBorder">
+        <item name="paddingStart">30dp</item>
+        <item name="paddingEnd">30dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/spinnerList"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="30sp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="@color/main_background">
+
+</CheckedTextView >

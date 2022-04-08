@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            tools:ignore="SpeakableTextPresentCheck">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:id="@+id/regFormTopPanel"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                        <ImageView
+                            android:id="@+id/regFormImg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:src="@drawable/no_avatar"
+                            android:contentDescription="@string/avatar"/>
+                        <ImageView
+                            android:id="@+id/regFormTmpImg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            tools:ignore="ContentDescription"
+                            android:src="@drawable/no_avatar"
+                            android:visibility="gone"/>
+                        <LinearLayout
+                            android:id="@+id/regFormImgSource"
+                            android:background="@drawable/send_img_background"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:padding="10dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+                            <ImageView
+                                android:id="@+id/regFormCamera"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:src="@drawable/camera"
+                                android:layout_gravity="start"
+                                tools:ignore="ContentDescription" />
+                            <ImageView
+                                android:id="@+id/regFormGallery"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:src="@drawable/gallery"
+                                android:layout_gravity="end"
+                                tools:ignore="ContentDescription" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+                <EditText
+                    android:id="@+id/regFormLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/login"
+                    android:autofillHints="" />
+                <EditText
+                    android:id="@+id/regFormPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Пароль"
+                    android:visibility="gone"
+                    android:autofillHints="" />
+                <EditText
+                    android:id="@+id/regFormRepeatPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Еще раз пароль"
+                    android:visibility="gone"
+                    android:autofillHints="" />
+                <EditText
+                    android:id="@+id/regFormName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Имя"
+                    android:autofillHints="" />
+                <EditText
+                    android:id="@+id/regFormSName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Фамилия"
+                    android:autofillHints="" />
+                <EditText
+                    android:id="@+id/regFormEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:autofillHints="emailAddress"
+                    android:hint="@string/email_for_recovery_access"/>
+                <EditText
+                    android:id="@+id/regFormAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:inputType="textMultiLine"
+                    android:gravity="top"
+                    android:hint="@string/talkAboutYourSelf"
+                    android:autofillHints="" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btSend"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/no_active_btn"
+                    android:text="@string/saveDataChenge"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|end">
+            <TextView
+                android:id="@+id/regFormChangePass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+                android:text="@string/change_password"
+                android:visibility="gone"/>
+        </LinearLayout>
+        <include layout="@layout/info_content"/>
+
+    </LinearLayout>
+    <include layout="@layout/panel_progress"/>
+</FrameLayout>

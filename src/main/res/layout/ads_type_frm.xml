@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frmAdsType"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="@color/main_background"
+    android:orientation="horizontal">
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btAdsTypeWorker"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:layout_margin="5dp"
+        android:textColor="@color/white"
+        android:background="@drawable/no_active_btn"
+        android:text="@string/imEmployer"/>
+    <ImageView
+        android:id="@+id/btMyLocation"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/my_location"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btAdsTypeEmployer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:layout_margin="5dp"
+        android:textColor="@color/white"
+        android:background="@drawable/no_active_btn"
+        android:text="@string/imWorker"/>
+</LinearLayout>

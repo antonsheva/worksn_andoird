@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">worksn</string>
+    <string name="channel_name_main">notify_channel_main</string>
+    <string name="channel_name_foreground">notify_channel_foreground</string>
+    <string name="channel_main_description">main notify  channel</string>
+    <string name="channel_foreground_description">foreground notify channel</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="noNameUser">Кто-то</string>
+    <string name="errorSendMsg">Не удалось отправить сообщение :-(</string>
+    <string name="errorSendFile">Не удалось отправить файл :-(</string>
+    <string name="speaker">Собеседник</string>
+    <string name="someThrowable">Что-то пошло не так</string>
+    <string name="notifyReply">Ответить</string>
+    <string name="notifyReplyHint">Текст сообщения</string>
+    <string name="notifySetAsViewed">Прочитано</string>
+    <string name="paste">Вставить</string>
+    <string name="ownersOfVisibleAds">Владельцы видимых объявлений</string>
+    <string name="banUsers">Заблокированные пользователи</string>
+    <string name="chooseUsers">Отмеченные пользователи</string>
+    <string name="emptyAdsList">В этом районе нет объявлений с данными критериями :-(</string>
+    <string name="ads">Объявления</string>
+    <string name="add">Добавить</string>
+    <string name="cancel">Отмена</string>
+    <string name="addAds">Добавить объявление</string>
+    <string name="discuses">Переписки</string>
+    <string name="categories">Категории</string>
+    <string name="lifetime">Продолжительность показа объявления</string>
+    <string name="needAuthForSenMsg">Авторизуйтесь для отправки сообщений</string>
+    <string name="needAuthForUserReview">Авторизуйтесь, чтобы оставить отзыв</string>
+    <string name="needAuthForAddAds">Авторизуйтесь, чтобы добавить объявление</string>
+    <string name="search">найти</string>
+    <string name="imEmployer">Я Заказчик</string>
+    <string name="imWorker">Я Работник</string>
+    <string name="change_password">Сменить пароль</string>
+    <string name="avatar">avatar</string>
+    <string name="login">Логин</string>
+    <string name="email_for_recovery_access">Email (для восстановления)</string>
+    <string name="save_data">Сохранить данные</string>
+    <string name="saveDataChenge">Сохранить изменения</string>
+    <string name="talkAboutYourSelf">Здесь Вы можете рассказать о себе</string>
+    <string name="qSaveChange">Сохранить изменения?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="waitUploadImg">Дождитесь загрузки изображения</string>
+    <string name="privacy">Политика конфиденциальности</string>
+
+
+    <string-array name="hourList">
+        <item>00</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+    </string-array>
+    <string-array name="minList">
+        <item>00</item>
+        <item>05</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/msgChainSenderStatus"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/empty_100_100"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="5dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:gravity="end">
+                <LinearLayout
+                    android:id="@+id/msgChainSenderLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/msgChainSenderImg"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:src="@drawable/exit"
+                        android:visibility="gone"
+                        android:layout_gravity="end"
+
+                        tools:ignore="ContentDescription" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/msgChainSenderContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="20dp"
+                            android:textSize="14sp"
+                            android:textColor="#445C5A"
+                            android:autoLink="web"
+                            android:textColorLink="@color/purple_500"
+                            android:layout_gravity="end"/>
+                        <TextView
+                            android:id="@+id/msgChainSenderTm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="30dp"
+                            android:textSize="10sp"
+                            android:layout_gravity="end"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="3">
+
+                <LinearLayout
+                    android:id="@+id/msgChainReceiverLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/msgChainReceiverImg"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:src="@drawable/rupor"
+                        android:visibility="gone"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/msgChainReceiverContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:textSize="14sp"
+                            android:textColor="#272D4E"
+                            android:autoLink="web"
+                            android:textColorLink="@color/purple_500"
+                            android:layout_gravity="start"
+                            />
+                        <TextView
+                            android:id="@+id/msgChainReceiverTm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:textSize="10sp"
+                            android:layout_gravity="end"
+                            />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </LinearLayout>
+        </LinearLayout>
+
+
+</FrameLayout>
