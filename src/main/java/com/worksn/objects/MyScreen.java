@@ -10,11 +10,11 @@ public class MyScreen {
     public static int sizeDpY;
 
 
-    public static int active_mode;
-    public static int screen_mode;
+    public static int activeMode;
+    public static int screenMode;
 
-    public static int prev_active;
-    public static int prev_mode  ;
+    public static int prevActive;
+    public static int prevMode;
     public static void init(Activity activity){
         Display display = activity.getWindowManager().getDefaultDisplay();
         android.graphics.Point size = new android.graphics.Point();
@@ -26,10 +26,10 @@ public class MyScreen {
 
 
 
-         active_mode = C_.ACTIVE_SCREEN_MSG_GROUP;
-         screen_mode = C_.SCREEN_MODE_MAIN;
+         activeMode = C_.ACTIVE_SCREEN_MSG_GROUP;
+         screenMode = C_.SCREEN_MODE_MAIN;
 
-         prev_active = -1;
-         prev_mode   = -1;
+         prevActive = -1;
+         prevMode = -1;
     }
 }

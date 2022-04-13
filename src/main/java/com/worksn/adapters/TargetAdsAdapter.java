@@ -11,16 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.worksn.static_class.Funcs;
 import com.yandex.mapkit.geometry.Point;
-
 import com.worksn.R;
 import com.worksn.classes.SubMenu;
 import com.worksn.objects.Ads;
@@ -77,19 +72,19 @@ public class TargetAdsAdapter extends RecyclerView.Adapter<TargetAdsAdapter.AdsV
         if(ads.getDescription()!=null) {
             len = ads.getDescription().length();
             outDescription = (len>120) ? ads.getDescription().substring(0,116)+"..." : ads.getDescription();
-        }else outDescription = "Что-то очень полезное";
+        }else outDescription = context.getString(R.string.someUseful);
         if(ads.getCreateDate() != null) {
             outTime = ads.getCreateDate();
         } else outTime = "--:--";
-        String outCategory   ="Услуга";
-        String outLogin      = (ads.getUserLogin() != null) ? ads.getUserLogin()       : "Кто-то";
+        String outCategory   = context.getString(R.string.service);
+        String outLogin      = (ads.getUserLogin() != null) ? ads.getUserLogin()       : context.getString(R.string.login);
         String outCost       = " ";
 
         if(ads.getCost() != null) {
             if (ads.getCost()>0){
                 if (ads.getCost() > 999999){
                     float tmp = ads.getCost().floatValue()/1000000f;
-                    outCost = (String.format("%.2f", tmp)).concat("млн.р.");
+                    outCost = (String.format("%.2f", tmp)).concat(context.getString(R.string.mlnR));
                 }else {
                     outCost = ads.getCost().toString()+"р.";
                 }
@@ -108,23 +103,20 @@ public class TargetAdsAdapter extends RecyclerView.Adapter<TargetAdsAdapter.AdsV
                 break;
             case C_.ADS_VISIBLE_HIDDEN_FOR_TIME:
                 holder.frmAdsCard.setBackgroundColor(context.getResources().getColor(R.color.ads_visible_hidden_for_time, null));
-                outDescription = "Сообщение скрыто по времени";
+                outDescription = context.getString(R.string.msgHiddenForTime);
                 break;
             case C_.ADS_VISIBLE_HIDDEN_MANUAL:
                 holder.frmAdsCard.setBackgroundColor(context.getResources().getColor(R.color.ads_visible_hidden_manual, null));
-                outDescription = "Сообщение скрыто";
+                outDescription = context.getString(R.string.msgHidden);
                 break;
             case C_.ADS_VISIBLE_HIDDEN_REMOVE:
                 holder.frmAdsCard.setBackgroundColor(context.getResources().getColor(R.color.ads_visible_hidden_remove, null));
-                outDescription = "Сообщение удалено";
+                outDescription = context.getString(R.string.msgWasRemove);
                 break;
 
             default:
                 throw new IllegalStateException("Unexpected value: " + ads.getVisibleMode());
         }
-
-
-
 
         holder.frmAdsCardCategory.setText(outCategory);
         holder.frmAdsCardCost.setText(outCost);
@@ -132,10 +124,8 @@ public class TargetAdsAdapter extends RecyclerView.Adapter<TargetAdsAdapter.AdsV
         holder.frmAdsCardDescription.setText(outDescription);
 
         if (ads.getImgIcon() != null){
-            Log.i("MyImg", "adsImg -> "+ads.getImgIcon());
             String[] imgList = ads.getImgIcon().split(",", 2);
             if (imgList[0].length()>1){
-                Log.i("MyImg", "imgList[0] -> "+imgList[0]);
                 holder.frmAdsCardImgFrame.setVisibility(View.VISIBLE);
                 Funcs.loadImg(context, holder.frmAdsCardImg, C_.URL_BASE+imgList[0],3, null);
             }
@@ -149,7 +139,6 @@ public class TargetAdsAdapter extends RecyclerView.Adapter<TargetAdsAdapter.AdsV
         user.setOnline(ads.isUserOnline());
         FrameUserProfile vUser = new FrameUserProfile(context, holder.frmAdsCardProfile, user, (user1, result) -> {
             UiClick.i().showUserPage(context, user1.getId());
-            Log.i("MyUser", "id -> "+ user1);
         });
     }
     private void clearViewHolder(AdsVwHldr holder){
@@ -175,48 +164,34 @@ public class TargetAdsAdapter extends RecyclerView.Adapter<TargetAdsAdapter.AdsV
         public AdsVwHldr(@NonNull View itemView) {
             super(itemView);
             initViewElements();
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(G_.noClick){G_.noClick = false; return;}
-                    int pos = getAdapterPosition();
-                    Ads ads = adsList.get(pos);
-                    Log.i("MyTargetAds", "adsId -> "+ads.getId());
-                    try{
-                        cb.cb(C_.CODE_SHOW_TARGET_ADS, ads, null);
-                    }catch (Exception e){
-                        Log.e("MyEx", e.fillInStackTrace().toString());
-                    }
+            itemView.setOnClickListener(v -> {
+                if(G_.noClick){G_.noClick = false; return;}
+                int pos = getAdapterPosition();
+                Ads ads = adsList.get(pos);
+                try{
+                    cb.cb(C_.CODE_SHOW_TARGET_ADS, ads, null);
+                }catch (Exception e){
+                    Log.e("MyEx", e.fillInStackTrace().toString());
                 }
             });
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    G_.noClick = true;
-                    int pos = getAdapterPosition();
-//                    SubMenu.i().setPos(pos);
-                    Ads ads = adsList.get(pos);
-                    Point pt = new Point(ads.getCoordX(), ads.getCoordY());
-                    MyMap.i().cleanMapObjectCollections(C_.MAP_PM_PURPLE);
-                    MyMap.i().cleanMapObjectCollections(C_.MAP_PM_RED);
-                    MyMap.i().setCameraPosition(pt);
+            itemView.setOnLongClickListener(v -> {
+                G_.noClick = true;
+                int pos = getAdapterPosition();
+                Ads ads = adsList.get(pos);
+                Point pt = new Point(ads.getCoordX(), ads.getCoordY());
+                MyMap.i().cleanMapObjectCollections(C_.MAP_PM_PURPLE);
+                MyMap.i().cleanMapObjectCollections(C_.MAP_PM_RED);
+                MyMap.i().setCameraPosition(pt);
 
-                    MyMap.i().addPm(context,  C_.MAP_PM_PURPLE,pt , null);
-                    if(Usr.i().getUser() == null)return false;
-                    if(!ads.getUserId().equals(Usr.i().getUser().getId()))return false;
+                MyMap.i().addPm(context,  C_.MAP_PM_PURPLE,pt , null);
+                if(Usr.i().getUser() == null)return false;
+                if(!ads.getUserId().equals(Usr.i().getUser().getId()))return false;
 
-                    int x = (int)motionEvent.getX();
-                    int y = (int)motionEvent.getY();
-                    ads.setViewPosition(pos);
-//                    ArrayList<Integer>data2 = new ArrayList<>();
-//                    data2.add(0,x);
-//                    data2.add(1,y);
-//                    data2.add(2,pos);
-                    SubMenu.i().show((Activity)context, ads, C_.SUBMENU_OBJECT_TYPE_ADS, x, y);
-//                    SubMenu.i().setTargetObjectType(C_.SUBMENU_OBJECT_TYPE_ADS);
-//                    cb.cb(C_.CODE_SHOW_SUB_MENU, ads, data2);
-                    return false;
-                }
+                int x = (int)motionEvent.getX();
+                int y = (int)motionEvent.getY();
+                ads.setViewPosition(pos);
+                SubMenu.i().show((Activity)context, ads, C_.SUBMENU_OBJECT_TYPE_ADS, x, y);
+                return false;
             });
             itemView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -227,19 +202,16 @@ public class TargetAdsAdapter extends RecyclerView.Adapter<TargetAdsAdapter.AdsV
             });
         }
         private void initViewElements() {
-            frmAdsCardImgFrame    = (LinearLayout) itemView.findViewById(R.id.frmAdsCardImgFrame);
-            frmAdsCardImg         = (ImageView) itemView.findViewById(R.id.frmAdsCardImg);
-            frmAdsCard            = (LinearLayout) itemView.findViewById(R.id.frmAdsCard);
-            frmAdsCardCategory    = (TextView)     itemView.findViewById(R.id.frmAdsCardCategory);
-            frmAdsCardCost        = (TextView)     itemView.findViewById(R.id.frmAdsCardCost);
-            frmAdsCardTime        = (TextView)     itemView.findViewById(R.id.frmAdsCardTime);
-            frmAdsCardDescription = (TextView)     itemView.findViewById(R.id.frmAdsCardDescription);
-            frmAdsCardProfile     = (LinearLayout) itemView.findViewById(R.id.frmAdsCardProfile);
+            frmAdsCardImgFrame    = itemView.findViewById(R.id.frmAdsCardImgFrame);
+            frmAdsCardImg         = itemView.findViewById(R.id.frmAdsCardImg);
+            frmAdsCard            = itemView.findViewById(R.id.frmAdsCard);
+            frmAdsCardCategory    = itemView.findViewById(R.id.frmAdsCardCategory);
+            frmAdsCardCost        = itemView.findViewById(R.id.frmAdsCardCost);
+            frmAdsCardTime        = itemView.findViewById(R.id.frmAdsCardTime);
+            frmAdsCardDescription = itemView.findViewById(R.id.frmAdsCardDescription);
+            frmAdsCardProfile     = itemView.findViewById(R.id.frmAdsCardProfile);
         }
     }
-
-
-
 
     public interface Cb{
         void cb(int eCode, Object data1, Object data2);

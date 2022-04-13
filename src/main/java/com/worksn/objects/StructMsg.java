@@ -17,58 +17,44 @@ public class StructMsg {
         this.sender_login = sender_login;
     }
 
-    public void setSender_rating(Float sender_rating) {
-        this.sender_rating = sender_rating;
+    public void setSenderImg(String senderImg) {
+        this.senderImg = senderImg;
     }
 
-    public void setSenderAvatar(String senderAvatar) {
-        this.senderAvatar = senderAvatar;
+    public void setConsumerId(Integer consumerId) {
+        this.consumerId = consumerId;
     }
 
-    public void setConsumer_id(Integer consumer_id) {
-        this.consumer_id = consumer_id;
+    public Integer getSpeakerId() {
+        return speakerId;
     }
 
-    public void setConsumer_login(String consumer_login) {
-        this.consumer_login = consumer_login;
+    public void setSpeakerId(Integer speakerId) {
+        this.speakerId = speakerId;
     }
 
-    public void setConsumer_rating(Float consumer_rating) {this.consumer_rating = consumer_rating;}
-
-    public void setConsumerAvatar(String consumerAvatar) {
-        this.consumerAvatar = consumerAvatar;
+    public String getSpeakerLogin() {
+        return speakerLogin;
     }
 
-    public Integer getSpeaker_id() {
-        return speaker_id;
+    public void setSpeakerLogin(String speakerLogin) {
+        this.speakerLogin = speakerLogin;
     }
 
-    public void setSpeaker_id(Integer speaker_id) {
-        this.speaker_id = speaker_id;
+    public Float getSpeakerRating() {
+        return speakerRating;
     }
 
-    public String getSpeaker_login() {
-        return speaker_login;
+    public void setSpeakerRating(Float speakerRating) {
+        this.speakerRating = speakerRating;
     }
 
-    public void setSpeaker_login(String speaker_login) {
-        this.speaker_login = speaker_login;
+    public String getSpeakerImg() {
+        return speakerImg;
     }
 
-    public Float getSpeaker_rating() {
-        return speaker_rating;
-    }
-
-    public void setSpeaker_rating(Float speaker_rating) {
-        this.speaker_rating = speaker_rating;
-    }
-
-    public String getSpeaker_img() {
-        return speaker_img;
-    }
-
-    public void setSpeaker_img(String speaker_img) {
-        this.speaker_img = speaker_img;
+    public void setSpeakerImg(String speakerImg) {
+        this.speakerImg = speakerImg;
     }
 
     public Boolean getSpeakerOnline() {
@@ -96,10 +82,6 @@ public class StructMsg {
         this.view = view;
     }
 
-    public void setDeliver(Integer deliver) {
-        this.deliver = deliver;
-    }
-
     public void setDiscus_id(Long discus_id) {
         this.discus_id = discus_id;
     }
@@ -110,18 +92,6 @@ public class StructMsg {
 
     public void setAds_description(String ads_description) {
         this.ads_description = ads_description;
-    }
-
-    public void setAds_type(Integer ads_type) {
-        this.ads_type = ads_type;
-    }
-
-    public void setRmv_1(Integer rmv_1) {
-        this.rmv_1 = rmv_1;
-    }
-
-    public void setRmv_2(Integer rmv_2) {
-        this.rmv_2 = rmv_2;
     }
 
     public Long getId() {
@@ -136,28 +106,12 @@ public class StructMsg {
         return sender_login;
     }
 
-    public Float getSender_rating() {
-        return sender_rating;
+    public String getSenderImg() {
+        return senderImg;
     }
 
-    public String getSenderAvatar() {
-        return senderAvatar;
-    }
-
-    public Integer getConsumer_id() {
-        return consumer_id;
-    }
-
-    public String getConsumer_login() {
-        return consumer_login;
-    }
-
-    public Float getConsumer_rating() {
-        return consumer_rating;
-    }
-
-    public String getConsumerAvatar() {
-        return consumerAvatar;
+    public Integer getConsumerId() {
+        return consumerId;
     }
 
     public String getContent() {
@@ -176,10 +130,6 @@ public class StructMsg {
         return view;
     }
 
-    public Integer getDeliver() {
-        return deliver;
-    }
-
     public Long getDiscus_id() {
         return discus_id;
     }
@@ -190,18 +140,6 @@ public class StructMsg {
 
     public String getAds_description() {
         return ads_description;
-    }
-
-    public Integer getAds_type() {
-        return ads_type;
-    }
-
-    public Integer getRmv_1() {
-        return rmv_1;
-    }
-
-    public Integer getRmv_2() {
-        return rmv_2;
     }
 
     public String getImgIcon() {
@@ -313,93 +251,75 @@ public class StructMsg {
     private String imgGallery     = null;
     private String imgIconGallery = null;
 
-    @SerializedName("create_id")
+
+
+    @SerializedName(C_.STR_CREATE_ID)
     @Expose
     private String createId = null;
 
-    @SerializedName("id")
+    @SerializedName(C_.STR_ID)
     @Expose
     private Long id = null;
 
-    @SerializedName("ads_category")
+    @SerializedName(C_.STR_ADS_CATEGORY)
     @Expose
     private Integer adsCategory = null;
 
-    @SerializedName("sender_id")
+    @SerializedName(C_.STR_SENDER_ID)
     @Expose
     private Integer sender_id = null;
 
-    @SerializedName("sender_login")
+    @SerializedName(C_.STR_SENDER_LOGIN)
     @Expose
     private String sender_login = null;
 
-    @SerializedName("sender_rating")
+    @SerializedName(C_.STR_SENDER_IMG)
     @Expose
-    private Float sender_rating = null;
+    private String senderImg = null;
 
-    @SerializedName("sender_avatar")
+    @SerializedName(C_.STR_CONSUMER_ID)
     @Expose
-    private String senderAvatar = null;
+    private Integer consumerId = null;
 
-    @SerializedName("consumer_id")
+    @SerializedName(C_.STR_SPEAKER_ID)
     @Expose
-    private Integer consumer_id = null;
+    private Integer speakerId = null;
 
-    @SerializedName("consumer_login")
+    @SerializedName(C_.STR_SPEAKER_LOGIN)
     @Expose
-    private String consumer_login = null;
+    private String speakerLogin = null;
 
-    @SerializedName("consumer_rating")
+    @SerializedName(C_.STR_SPEAKER_RATING)
     @Expose
-    private Float consumer_rating = null;
+    private Float speakerRating = null;
 
-    @SerializedName("consumer_img")
+    @SerializedName(C_.STR_SPEAKER_IMG)
     @Expose
-    private String consumerAvatar = null;
+    private String speakerImg = null;
 
-    @SerializedName("speaker_id")
-    @Expose
-    private Integer speaker_id = null;
-
-    @SerializedName("speaker_login")
-    @Expose
-    private String speaker_login = null;
-
-    @SerializedName("speaker_rating")
-    @Expose
-    private Float speaker_rating = null;
-
-    @SerializedName("speaker_img")
-    @Expose
-    private String speaker_img = null;
-
-    @SerializedName("speaker_online")
+    @SerializedName(C_.STR_SPEAKER_ONLINE)
     @Expose
     Boolean speakerOnline = null;
 
-    @SerializedName("content")
+    @SerializedName(C_.STR_CONTENT)
     @Expose
     private String content = null;
 
-    @SerializedName("img")
+    @SerializedName(C_.STR_IMG)
     @Expose
     private String  img = null;
 
-    @SerializedName("img_icon")
+    @SerializedName(C_.STR_IMG_ICON)
     @Expose
     private String imgIcon = null;
 
-    @SerializedName("cost")
+    @SerializedName(C_.STR_COST)
     @Expose
     private Integer cost = null;
 
-    @SerializedName("view")
+    @SerializedName(C_.STR_VIEW)
     @Expose
     private Integer view = null;
-
-    @SerializedName("deliver")
-    @Expose
-    private Integer deliver = null;
 
     @SerializedName("create_date")
     @Expose
@@ -417,41 +337,27 @@ public class StructMsg {
     @Expose
     private String ads_description = null;
 
-    @SerializedName("ads_type")
-    @Expose
-    private Integer ads_type = null;
-
-    @SerializedName("rmv_1")
-    @Expose
-    private Integer rmv_1 = null;
-
-    @SerializedName("rmv_2")
-    @Expose
-    private Integer rmv_2 = null;
-
     @SerializedName("sys_notify")
     @Expose
     private Integer sysNotify = null;
 
-
-
-    @SerializedName(C_.VAR_REPLY_MSG_ID)
+    @SerializedName(C_.STR_REPLY_MSG_ID)
     @Expose
     private Long replyMsgId = null;
 
-    @SerializedName(C_.VAR_REPLY_CONTENT)
+    @SerializedName(C_.STR_REPLY_CONTENT)
     @Expose
     private String replyContent = null;
 
-    @SerializedName(C_.VAR_REPLY_SENDER_ID)
+    @SerializedName(C_.STR_REPLY_SENDER_ID)
     @Expose
     private Integer replySenderId = null;
 
-    @SerializedName(C_.VAR_REPLY_SENDER_LOGIN)
+    @SerializedName(C_.STR_REPLY_SENDER_LOGIN)
     @Expose
     private String replySenderLogin = null;
 
-    @SerializedName(C_.VAR_REPLY_IMG)
+    @SerializedName(C_.STR_REPLY_IMG)
     @Expose
     private String replyImg = null;
 }

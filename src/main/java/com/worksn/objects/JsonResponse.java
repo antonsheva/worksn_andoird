@@ -5,30 +5,30 @@ import com.google.gson.annotations.SerializedName;
 
 public class JsonResponse {
 
-    @SerializedName("error")
+    @SerializedName(C_.STR_ERROR)
     @Expose
     private Integer error;
 
 
-    @SerializedName("response")
+    @SerializedName(C_.STR_RESPONSE)
     @Expose
     private String response;
 
 
-    @SerializedName("result")
+    @SerializedName(C_.STR_RESULT)
     @Expose
     private Integer result;
 
-    @SerializedName("data")
+    @SerializedName(C_.STR_DATA)
     @Expose
     private String data;
 
-    @SerializedName("context")
+    @SerializedName(C_.STR_CONTEXT)
     @Expose
     private MyContext context;
 
 
-    @SerializedName("act")
+    @SerializedName(C_.STR_ACT)
     @Expose
     String act = null;
 

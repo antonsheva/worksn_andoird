@@ -5,7 +5,6 @@ import static android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
 import static android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -26,13 +25,10 @@ import com.worksn.R;
 import com.worksn.classes.CreateInfoContent;
 import com.worksn.classes.Kbrd;
 import com.worksn.classes.MyFile;
-import com.worksn.classes.MyHref;
+import com.worksn.objects.PostSubData;
 import com.worksn.singleton.AppMode;
 import com.worksn.singleton.PUWindow;
-import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.C_;
-import com.worksn.objects.MyContext;
-import com.worksn.objects.PostDataRegistration;
 import com.worksn.objects.TmpImg;
 import com.worksn.objects.User;
 import com.worksn.singleton.Usr;
@@ -55,11 +51,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     LinearLayout regFormImgSource;
     ImageView    regFormCamera;
     ImageView    regFormGallery;
-
     androidx.appcompat.widget.AppCompatButton btSend;
 
     MyFile myFile = null;
-    Activity activity = this;
+
 
     @Override
     public void onBackPressed() {
@@ -88,19 +83,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     }
     private void initViewElements(){
-        regFormLogin          = (EditText) findViewById(R.id.regFormLogin);
-        regFormPassword       = (EditText) findViewById(R.id.regFormPassword);
-        regFormRepeatPassword = (EditText) findViewById(R.id.regFormRepeatPassword);
-        regFormName           = (EditText) findViewById(R.id.regFormName);
-        regFormSName          = (EditText) findViewById(R.id.regFormSName);
-        regFormEmail          = (EditText) findViewById(R.id.regFormEmail);
-        regFormAbout          = (EditText) findViewById(R.id.regFormAbout);
+        regFormLogin          = findViewById(R.id.regFormLogin);
+        regFormPassword       = findViewById(R.id.regFormPassword);
+        regFormRepeatPassword = findViewById(R.id.regFormRepeatPassword);
+        regFormName           = findViewById(R.id.regFormName);
+        regFormSName          = findViewById(R.id.regFormSName);
+        regFormEmail          = findViewById(R.id.regFormEmail);
+        regFormAbout          = findViewById(R.id.regFormAbout);
 
-        regFormTopPanel       = (FrameLayout)  findViewById(R.id.regFormTopPanel);
-        regFormImgSource      = (LinearLayout) findViewById(R.id.regFormImgSource);
-        regFormImg            = (ImageView)    findViewById(R.id.regFormImg);
-        regFormCamera         = (ImageView)    findViewById(R.id.regFormCamera);
-        regFormGallery        = (ImageView)    findViewById(R.id.regFormGallery);
+        regFormTopPanel       = findViewById(R.id.regFormTopPanel);
+        regFormImgSource      = findViewById(R.id.regFormImgSource);
+        regFormImg            = findViewById(R.id.regFormImg);
+        regFormCamera         = findViewById(R.id.regFormCamera);
+        regFormGallery        = findViewById(R.id.regFormGallery);
 
         btSend                = (androidx.appcompat.widget.AppCompatButton)findViewById(R.id.btSend);
 
@@ -133,9 +128,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if (regFormAbout.length()>1){
                     tmp = regFormAbout.getText().toString();
                     a = tmp.substring(tmp.length()-2);
-
-
-
                     if (flg[0]){
                         int pos = regFormAbout.length();
                         regFormAbout.setInputType(TYPE_CLASS_TEXT | TYPE_TEXT_FLAG_MULTI_LINE);
@@ -167,8 +159,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             case R.id.btSend                : saveData();                break;
             case R.id.regFormCamera         : makePhoto();               break;
             case R.id.regFormGallery        : chooseFile();              break;
-//            case R.id.privacyPageHref       : new FolowLink(activity); break;
-
         }
     }
 
@@ -210,46 +200,40 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
         if (login.equals("")){
-            PUWindow.i().show("Введите логин");
+            PUWindow.i().show(R.string.enterLogin);
             return;
         }
         if (password.equals("")) {
-            PUWindow.i().show("Введите пароль");
+            PUWindow.i().show(R.string.enterPassword);
             return;
         }
         if (repeatPassword.equals("")) {
-            PUWindow.i().show("Повторите пароль");
+            PUWindow.i().show(R.string.repeatPassword);
             return;
         }
         if (!password.equals(repeatPassword)){
-            PUWindow.i().show("Не совпадают пароли");
+            PUWindow.i().show(R.string.passwordsAreNotEqual);
             return;
         }
 
-        PostDataRegistration userData = new PostDataRegistration();
+        PostSubData userData = new PostSubData();
         userData.setLogin(login);
         userData.setPassword(password);
         userData.setName(name);
-        userData.setsName(sName);
+        userData.setS_name(sName);
         userData.setEmail(email);
         userData.setAboutUser(about);
         sendData(userData);
     }
-    private void sendData(PostDataRegistration userData){
+    private void sendData(PostSubData userData){
         Context context = this;
-        Post.sendRequest(this,C_.ACT_REG_NEW_USER, userData, new NetCallback() {
-            @Override
-            public void callback(MyContext data, Integer result, String stringData) {
-                PUWindow.i().show(stringData);
-                if (result == 1) {
-                    Usr.i().loginUser(context, userData.getLogin(), userData.getPassword(), new Usr.CB() {
-                        @Override
-                        public void callback(int code, Object data) {
-                            Usr.i().setUser((User)data);
-                            finish();
-                        }
-                    });
-                }
+        Post.sendRequest(this,C_.ACT_REG_NEW_USER, userData, (data, result, stringData) -> {
+            PUWindow.i().show(stringData);
+            if (result == 1) {
+                Usr.i().loginUser(context, userData.getLogin(), userData.getPassword(), (code, data1) -> {
+                    Usr.i().setUser((User) data1);
+                    finish();
+                });
             }
         });
     }

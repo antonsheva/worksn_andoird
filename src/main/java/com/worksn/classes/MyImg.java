@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.worksn.R;
-import com.worksn.interfaces.ComCallback;
-import com.worksn.objects.C_;
-import com.worksn.objects.G_;
 import com.worksn.objects.MyScreen;
 import com.worksn.objects.TmpImg;
 import com.worksn.singleton.MyAds;
@@ -45,38 +42,36 @@ import com.worksn.view.Render;
     ImageView    regFormTmpImg;
     CB cb;
 
+    static int sShiftLoadImg;
+
     public MyImg(Activity activity){
         this.activity = activity;
         initViewElements();
     }
     public void addImgIconToView(String img, FrameLayout imgWindow, int height, int width){
-        Log.i("MyImg", img);
         LayoutInflater inflater = (activity.getLayoutInflater());
         View v = inflater.inflate(R.layout.layout_img_icon, (ViewGroup)imgWindow, false);
         ImageView tmpImg = v.findViewById(R.id.shellImg);
         FrameLayout.LayoutParams lpV = (FrameLayout.LayoutParams)v.getLayoutParams();
         lpV.height = Funcs.dpToPx(activity, height);
         lpV.width  = Funcs.dpToPx(activity, width);
-        lpV.leftMargin = G_.shiftLoadImg *2;
+        lpV.leftMargin = sShiftLoadImg *2;
         v.setLayoutParams(lpV);
         Funcs.loadImg(activity, tmpImg, img, 5, null);
         imgWindow.addView(v);
-        G_.shiftLoadImg += 5;
-        if(G_.shiftLoadImg > 20)G_.shiftLoadImg = 3;
+        sShiftLoadImg += 5;
+        if(sShiftLoadImg > 20)sShiftLoadImg = 3;
     }
     public void addImgIconsToView(List<String> imgs, FrameLayout v, int height, int width){
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                v.removeAllViews();
-                for (String img : imgs) {
-                    addImgIconToView(img, v, height, width);
-                }
+        activity.runOnUiThread(() -> {
+            v.removeAllViews();
+            for (String img : imgs) {
+                addImgIconToView(img, v, height, width);
             }
         });
     }
     public void addImgToGroup(String img, String imgIcon){
-         addAdsLoadImgsIcon = (FrameLayout)activity.findViewById(R.id.addAdsLoadImgsIcon);
+         addAdsLoadImgsIcon = activity.findViewById(R.id.addAdsLoadImgsIcon);
          MyAds.i().addImg(img, imgIcon);
          addImgIconToView(imgIcon, addAdsLoadImgsIcon, 40, 40);
      }
@@ -99,12 +94,7 @@ import com.worksn.view.Render;
             removeSn.setOnClickListener(this);
             Funcs.loadImg(activity, tmpImg, img, 5, null);
             loadImgsScroll.addView(v);
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    setWebView(img);
-                }
-            });
+            v.setOnClickListener(view -> setWebView(img));
         }
         return idList;
     }
@@ -112,26 +102,22 @@ import com.worksn.view.Render;
         loadImgsScroll.removeAllViews();
     }
     private void initViewElements(){
-        btHideLoadImgs = (ImageView)   activity.findViewById(R.id.btHideLoadImgs);
-        frmLoadImgs    = (FrameLayout) activity.findViewById(R.id.frmLoadImgs);
-        loadImgsScroll = (LinearLayout)activity.findViewById(R.id.loadImgsScroll);
-        ekran          = (LinearLayout)activity.findViewById(R.id.ekran);
-
-        imageView     = (LinearLayout) activity.findViewById(R.id.frmBigImg);
-        bigImg        = (ImageView)    activity.findViewById(R.id.bigImg);
-        bigImgRmvSn   = (ImageView)    activity.findViewById(R.id.bigImgRmvSn);
-        regFormImg    = (ImageView)    activity.findViewById(R.id.regFormImg);
-        regFormTmpImg = (ImageView)    activity.findViewById(R.id.regFormTmpImg);
+        btHideLoadImgs = activity.findViewById(R.id.btHideLoadImgs);
+        frmLoadImgs    = activity.findViewById(R.id.frmLoadImgs);
+        loadImgsScroll = activity.findViewById(R.id.loadImgsScroll);
+        ekran          = activity.findViewById(R.id.ekran);
+        imageView      = activity.findViewById(R.id.frmBigImg);
+        bigImg         = activity.findViewById(R.id.bigImg);
+        bigImgRmvSn    = activity.findViewById(R.id.bigImgRmvSn);
+        regFormImg     = activity.findViewById(R.id.regFormImg);
+        regFormTmpImg  = activity.findViewById(R.id.regFormTmpImg);
 
 
         if (btHideLoadImgs == null)return;
-        btHideLoadImgs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                G_.shiftLoadImg = 0;
-                loadImgsScroll.removeAllViews();
-                new Render(activity).hideBigImagesList();
-            }
+        btHideLoadImgs.setOnClickListener(v -> {
+            sShiftLoadImg = 0;
+            loadImgsScroll.removeAllViews();
+            new Render(activity).hideBigImagesList();
         });
     }
     @Override
@@ -146,9 +132,9 @@ import com.worksn.view.Render;
         this.cb = cb;
     }
     public void setWebView(String img){
-         FrameLayout webView = (FrameLayout) activity.findViewById(R.id.webView);
-         WebView webViewImg  = (WebView) activity.findViewById(R.id.webViewImg);
-         ImageView webViewRmvSn = (ImageView) activity.findViewById(R.id.webViewImgRmvSn);
+         FrameLayout webView    = activity.findViewById(R.id.webView);
+         WebView webViewImg     = activity.findViewById(R.id.webViewImg);
+         ImageView webViewRmvSn = activity.findViewById(R.id.webViewImgRmvSn);
          if (img == null){
              webViewImg.loadUrl("about:blank");
              webView.setVisibility(View.GONE);
@@ -163,12 +149,9 @@ import com.worksn.view.Render;
              webViewImg.loadUrl(img);
 
              if(webViewRmvSn == null)return;
-             webViewRmvSn.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View view) {
-                     webViewImg.loadUrl("about:blank");
-                     webView.setVisibility(View.GONE);
-                 }
+             webViewRmvSn.setOnClickListener(view -> {
+                 webViewImg.loadUrl("about:blank");
+                 webView.setVisibility(View.GONE);
              });
          }
     }
@@ -186,62 +169,44 @@ import com.worksn.view.Render;
         }
 
         if (bigImgRmvSn == null)return;
-        bigImgRmvSn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("MyPost", "removeTmpFile 2");
-                bigImg.setImageResource(0);
-                imageView.setVisibility(View.GONE);
-                if (TmpImg.sendImgIsRun){
-                    Log.i("MyPost", "removeTmpFile 3");
-                    NetworkService.i(activity).cancelRequest();
-                    new FrameProgressbar(activity).hide();
-                    TmpImg.clear();
-                }else {
-                    Log.i("MyPost", "removeTmpFile 4");
-                    if (TmpImg.imgSend != null) new MyFile(activity).removeTmpFile(null);
-                }
+        bigImgRmvSn.setOnClickListener(view -> {
+            bigImg.setImageResource(0);
+            imageView.setVisibility(View.GONE);
+            if (TmpImg.sendImgIsRun){
+                NetworkService.i(activity).cancelRequest();
+                new FrameProgressbar(activity).hide();
+                TmpImg.clear();
+            }else {
+                if (TmpImg.imgSend != null) new MyFile(activity).removeTmpFile(null);
             }
         });
     }
     public void setTmpAvatar(File img){
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                boolean createTmpFileError = true;
-                if (img != null){
-                    if(img.exists()){
-                        Log.i("MyImg", "tmpImg -> "+img.getAbsolutePath());
-                        Bitmap myBitmap = BitmapFactory.decodeFile(img.getAbsolutePath());
-                        regFormTmpImg.setImageBitmap(myBitmap);
-                        createTmpFileError = false;
-                    }
+        activity.runOnUiThread(() -> {
+            boolean createTmpFileError = true;
+            if (img != null){
+                if(img.exists()){
+                    Bitmap myBitmap = BitmapFactory.decodeFile(img.getAbsolutePath());
+                    regFormTmpImg.setImageBitmap(myBitmap);
+                    createTmpFileError = false;
                 }
-                if (createTmpFileError)regFormTmpImg.setImageResource(R.drawable.no_avatar);
-                regFormTmpImg.setVisibility(View.VISIBLE);
-                regFormImg.setVisibility(View.GONE);
             }
+            if (createTmpFileError)regFormTmpImg.setImageResource(R.drawable.no_avatar);
+            regFormTmpImg.setVisibility(View.VISIBLE);
+            regFormImg.setVisibility(View.GONE);
         });
     }
     public void setNewAvatar(String imgSrc){
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.i("MyImg", "newImg -> "+imgSrc);
-                regFormImg.setVisibility(View.VISIBLE);
-//                regFormTmpImg.setVisibility(View.GONE);
-                Funcs.loadImg(activity, regFormImg, imgSrc, 5, null);
-            }
+        activity.runOnUiThread(() -> {
+            regFormImg.setVisibility(View.VISIBLE);
+            Funcs.loadImg(activity, regFormImg, imgSrc, 5, null);
         });
     }
     public void hideRegFormTmpImg(){
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                regFormTmpImg.setImageResource(R.drawable.no_avatar);
-                regFormImg.setVisibility(View.VISIBLE);
-                regFormTmpImg.setVisibility(View.GONE);
-            }
+        activity.runOnUiThread(() -> {
+            regFormTmpImg.setImageResource(R.drawable.no_avatar);
+            regFormImg.setVisibility(View.VISIBLE);
+            regFormTmpImg.setVisibility(View.GONE);
         });
     }
     public interface CB {

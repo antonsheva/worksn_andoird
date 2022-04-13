@@ -41,7 +41,6 @@ public class MsgGroupAdapter extends RecyclerView.Adapter<MsgGroupAdapter.MsgVwH
     @NonNull
     @Override
     public MsgVwHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.i("MyVh", "vhCnt -> "+((Integer)vhCnt));
         vhCnt++;
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -64,12 +63,11 @@ public class MsgGroupAdapter extends RecyclerView.Adapter<MsgGroupAdapter.MsgVwH
         String outContent;
         String outCategory;
         String outCost;
-        String outLogin =  msg.getSpeaker_login();
+        String outLogin =  msg.getSpeakerLogin();
         int len;
 
-        if (outLogin == null)outLogin = "Кто-то";
+        if (outLogin == null)outLogin = context.getString(R.string.login);;
         if(outTime == null) outTime = "--:--";
-
 
         if (msg.getContent() != null){
             len = msg.getContent().length();
@@ -80,13 +78,13 @@ public class MsgGroupAdapter extends RecyclerView.Adapter<MsgGroupAdapter.MsgVwH
         if(msg.getAds_description()!=null) {
             len = msg.getAds_description().length();
             outDescription = (len>50) ?  msg.getAds_description().substring(0,46)+"..." : msg.getAds_description();
-        }else outDescription = "Что-то очень полезное";
+        }else outDescription = context.getString(R.string.someUseful);
 
-        outCategory = "Услуга";
-        if (msg.getSpeaker_id() != null){
-            if (msg.getSpeaker_id() == 1)outCategory = "Переписка с администратором";
+        outCategory = context.getString(R.string.category);
+        if (msg.getSpeakerId() != null){
+            if (msg.getSpeakerId() == 1)outCategory = context.getString(R.string.discusWithAdmin);
             else if (msg.getAdsCategory() == C_.ADS_CATEGORY_FOR_DIRECT_DISCUS){
-                outCategory = "Переписка с "+outLogin;
+                outCategory = context.getString(R.string.discusWith_)+outLogin;
             }else {
                 try{
                     outCategory =  G_.catList.get(msg.getAdsCategory()).getName();
@@ -99,7 +97,7 @@ public class MsgGroupAdapter extends RecyclerView.Adapter<MsgGroupAdapter.MsgVwH
             if (msg.getCost()>0){
                 if (msg.getCost() > 999999){
                     float tmp = msg.getCost().floatValue()/1000000;
-                    outCost = (String.format("%.2f", tmp)).concat("млн.р.");
+                    outCost = (String.format("%.2f", tmp)).concat(context.getString(R.string.mlnR));
                 }else {
                     outCost = msg.getCost().toString()+"р.";
                 }
@@ -125,8 +123,8 @@ public class MsgGroupAdapter extends RecyclerView.Adapter<MsgGroupAdapter.MsgVwH
         if (msg.getImgIcon() != null)
             Funcs.loadImg(context, holder.msgImg, C_.URL_BASE+msg.getImgIcon(), 5, null);
 
-        Funcs.loadImgNecessarily(context, holder.msgAvatar, C_.URL_BASE+msg.getSpeaker_img(), 20);
-        holder.msgAvatar.setOnClickListener(v -> UiClick.i().showUserPage(context, msg.getSpeaker_id()));
+        Funcs.loadImgNecessarily(context, holder.msgAvatar, C_.URL_BASE+msg.getSpeakerImg(), 20);
+        holder.msgAvatar.setOnClickListener(v -> UiClick.i().showUserPage(context, msg.getSpeakerId()));
     }
 
     class MsgVwHolder extends RecyclerView.ViewHolder {
@@ -146,12 +144,10 @@ public class MsgGroupAdapter extends RecyclerView.Adapter<MsgGroupAdapter.MsgVwH
         public MsgVwHolder(@NonNull View itemView) {
             super(itemView);
             initViewElements();
-
             itemView.setOnClickListener(v -> {
                 if(G_.noClick){G_.noClick = false; return;}
                 int pos = getAdapterPosition();
                 StructMsg msg = msgList.get(pos);
-                Log.i("MyAdapter", "pos -> "+pos);
                 cb.cb(C_.CODE_SHOW_DISCUS, msg, null);
             });
 

@@ -2,10 +2,7 @@ package com.worksn.classes;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.icu.text.UFormat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,7 +36,7 @@ public class AdsCard{
 
 
     FrameLayout frmAdsCard;
-    ImageView adsCardProfileAvatar;
+    ImageView adsCardProfileImg;
     LinearLayout adsCardProfileStars;
     ScrollView adsCardDescription;
     FrameLayout  adsCardLoadImg;
@@ -53,7 +50,6 @@ public class AdsCard{
     TextView category;
     TextView descriptionText;
 
-
     FrameLayout  frmLoadImgs   ;
     LinearLayout loadImgsScroll;
 
@@ -63,7 +59,7 @@ public class AdsCard{
     ArrayList<String> loadImgs = new ArrayList<>();
     ArrayList<String> loadImgsIcon = new ArrayList<>();
 
-    String avatar;
+    String userImgIcon;
     Float rating = 0f;
     static Integer userId;
     public AdsCard(Activity activity) {
@@ -71,7 +67,6 @@ public class AdsCard{
         initViewElements();
     }
     public void init(Ads d, boolean descriptionClickable, boolean descriptionState, CB cb){
-
         this.cb = cb;
         if (d.getUserId() == null) d.setUserId(0);
         userId = d.getUserId();
@@ -96,12 +91,7 @@ public class AdsCard{
         showAdsDescription();
         if (Usr.i().getUser()==null)return;
         if(d.getUserId().equals(Usr.i().getUser().getId())){
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adsCardProfileOnline.setVisibility(View.VISIBLE);
-                }
-            });
+            activity.runOnUiThread(() -> adsCardProfileOnline.setVisibility(View.VISIBLE));
         }else {
             Usr.i().requestUsersStatus(activity, false);
         }
@@ -109,14 +99,11 @@ public class AdsCard{
     public void setStatus(List<Integer> idList){
          try{
             boolean status = idList.contains(MsgManager.i().getMsgContext().getSpeaker().getId());
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (status){
-                        adsCardProfileOnline.setVisibility(View.VISIBLE);
-                    } else {
-                        adsCardProfileOnline.setVisibility(View.GONE);
-                    }
+            activity.runOnUiThread(() -> {
+                if (status){
+                    adsCardProfileOnline.setVisibility(View.VISIBLE);
+                } else {
+                    adsCardProfileOnline.setVisibility(View.GONE);
                 }
             });
         }catch (NullPointerException e){
@@ -124,20 +111,17 @@ public class AdsCard{
         }
     }
     private void showImgsIcon(boolean show){
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (show) {
-                    adsCardLoadImg.setVisibility(View.VISIBLE);
-                    try {
-                        new MyImg(activity).addImgIconsToView(loadImgsIcon, adsCardLoadImg, 45, 45);
-                    } catch (Exception e){
-                        adsCardLoadImg.setVisibility(View.GONE);
-                    };
-                }else {
-                    adsCardLoadImg.removeAllViews();
+        activity.runOnUiThread(() -> {
+            if (show) {
+                adsCardLoadImg.setVisibility(View.VISIBLE);
+                try {
+                    new MyImg(activity).addImgIconsToView(loadImgsIcon, adsCardLoadImg, 45, 45);
+                } catch (Exception e){
                     adsCardLoadImg.setVisibility(View.GONE);
-                }
+                };
+            }else {
+                adsCardLoadImg.removeAllViews();
+                adsCardLoadImg.setVisibility(View.GONE);
             }
         });
     }
@@ -145,25 +129,25 @@ public class AdsCard{
         rating = 0.0f;
         //  --- avatar --------------------------------------------------------------------
         if(d.getUserImgIcon() != null){
-            avatar = C_.URL_BASE +d.getUserImgIcon();
+            userImgIcon = C_.URL_BASE +d.getUserImgIcon();
             try{
-                Funcs.loadImg(activity, adsCardProfileAvatar, avatar, 10, null);
+                Funcs.loadImg(activity, adsCardProfileImg, userImgIcon, 10, null);
             }catch (Exception ignored){};
         }else{
-            adsCardProfileAvatar.setImageResource(R.drawable.no_avatar);
+            adsCardProfileImg.setImageResource(R.drawable.no_avatar);
         }
 
 //  --- login  ---------------------------------------------------------------
         if(d.getUserLogin() != null) {
             adsCardLogin.setText(d.getUserLogin());
         } else {
-            adsCardLogin.setText("Гость");
+            adsCardLogin.setText(activity.getString(R.string.login));
         }
 
         if(d.getDescription() != null){
             descriptionText.setText(d.getDescription());
         }else {
-            descriptionText.setText("Какое-то объявление");
+            descriptionText.setText(activity.getString(R.string.someUseful));
         }
 
         if(d.getCreateDate() != null) {
@@ -172,7 +156,7 @@ public class AdsCard{
             time.setText("--:--");
         }
 
-        category.setText("Переписка с администратором");
+        category.setText(activity.getString(R.string.discusWithAdmin));
     }
     private void initAdsData(Ads d) {
 
@@ -187,7 +171,6 @@ public class AdsCard{
             for (int i = 0; i< imgs.length; i++) {
                 imgs[i] = C_.URL_BASE+imgs[i];
                 imgsIcon[i] = C_.URL_BASE+imgsIcon[i];
-                Log.i("MyImg", "img -> "+imgs[i]+ " imgIcon -> "+imgsIcon[i]);
             }
             Collections.addAll(loadImgs, imgs);
             Collections.addAll(loadImgsIcon, imgsIcon);
@@ -198,19 +181,19 @@ public class AdsCard{
 
 //  --- avatar --------------------------------------------------------------------
         if(d.getUserImgIcon() != null){
-            avatar = C_.URL_BASE +d.getUserImgIcon();
+            userImgIcon = C_.URL_BASE +d.getUserImgIcon();
             try{
-                Funcs.loadImgNecessarily(activity, adsCardProfileAvatar, avatar, 10);
+                Funcs.loadImgNecessarily(activity, adsCardProfileImg, userImgIcon, 10);
             }catch (Exception ignored){};
         }else{
-            adsCardProfileAvatar.setImageResource(R.drawable.no_avatar);
+            adsCardProfileImg.setImageResource(R.drawable.no_avatar);
         }
 
 //  --- login  ---------------------------------------------------------------
         if(d.getUserLogin() != null) {
             adsCardLogin.setText(d.getUserLogin());
         } else {
-            adsCardLogin.setText("Гость");
+            adsCardLogin.setText(activity.getString(R.string.login));
         }
 
 
@@ -218,7 +201,7 @@ public class AdsCard{
         if(d.getDescription() != null){
             descriptionText.setText(d.getDescription());
         }else {
-            descriptionText.setText("Какое-то объявление");
+            descriptionText.setText(activity.getString(R.string.someUseful));
         }
 
 //  --- create date   ---------------------------------------------------------------
@@ -264,7 +247,6 @@ public class AdsCard{
         adsCardDescription.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.i("MyScroll", "onScrollChange");
                 G_.noClick = true;
             }
         });
@@ -275,7 +257,6 @@ public class AdsCard{
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Drawable background;
-                Log.i("MyTouch",  event.toString());
                 switch (event.getAction()){
                     case MotionEvent.ACTION_DOWN:{
                         Log.i("MyTouch", "ACTION_DOWN");
@@ -306,33 +287,26 @@ public class AdsCard{
         }
     }
     private void initViewElements(){
-        btHideCard = (ImageView)   activity.findViewById(R.id.btHideDiscus);
-        btHideLoadImgs       = (ImageView)   activity.findViewById(R.id.btHideLoadImgs);
-        frmAdsCard           = (FrameLayout) activity.findViewById(R.id.frmAdsCard);
-        adsCardDescription   = (ScrollView)  activity.findViewById(R.id.adsCardDescription);
-        adsCardProfileAvatar = (ImageView)   activity.findViewById(R.id.adsCardProfileAvatar);
-        adsCardProfileStars  = (LinearLayout)activity.findViewById(R.id.adsCardProfileStars);
-        adsCardLogin         = (TextView)    activity.findViewById(R.id.adsCardLogin);
-        adsCardLoadImg       = (FrameLayout) activity.findViewById(R.id.adsCardLoadImg);
-        adsCardProfileOnline = (ImageView)   activity.findViewById(R.id.adsCardProfileOnline);
+        btHideCard           = activity.findViewById(R.id.btHideDiscus);
+        btHideLoadImgs       = activity.findViewById(R.id.btHideLoadImgs);
+        frmAdsCard           = activity.findViewById(R.id.frmAdsCard);
+        adsCardDescription   = activity.findViewById(R.id.adsCardDescription);
+        adsCardProfileImg    = activity.findViewById(R.id.adsCardProfileAvatar);
+        adsCardProfileStars  = activity.findViewById(R.id.adsCardProfileStars);
+        adsCardLogin         = activity.findViewById(R.id.adsCardLogin);
+        adsCardLoadImg       = activity.findViewById(R.id.adsCardLoadImg);
+        adsCardProfileOnline = activity.findViewById(R.id.adsCardProfileOnline);
 
-        cost            = (TextView) activity.findViewById(R.id.adsCardCost);
-        category        = (TextView) activity.findViewById(R.id.adsCardCategory);
-        time            = (TextView) activity.findViewById(R.id.adsCardTime);
-        descriptionText = (TextView) activity.findViewById(R.id.adsCardDescriptionText);
+        cost                 = activity.findViewById(R.id.adsCardCost);
+        category             = activity.findViewById(R.id.adsCardCategory);
+        time                 = activity.findViewById(R.id.adsCardTime);
+        descriptionText      = activity.findViewById(R.id.adsCardDescriptionText);
+        frmLoadImgs          = activity.findViewById(R.id.frmLoadImgs);
+        loadImgsScroll       = activity.findViewById(R.id.loadImgsScroll);
 
-        frmLoadImgs    = (FrameLayout) activity.findViewById(R.id.frmLoadImgs);
-        loadImgsScroll = (LinearLayout)activity.findViewById(R.id.loadImgsScroll);
-
-        adsCardProfileAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("MyAdsCard", "setOnClickListener : "+C_.VAR_USER_ID+" -> "+userId);
-                UiClick.i().showUserPage(activity, userId);
-            }
-        });
+        adsCardProfileImg.setOnClickListener(v -> UiClick.i().showUserPage(activity, userId));
     }
     public interface CB{
-        public void callback();
+         void callback();
     }
 }

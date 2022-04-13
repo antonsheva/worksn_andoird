@@ -10,7 +10,7 @@ import java.util.TimerTask;
 import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.C_;
 import com.worksn.objects.MyContext;
-import com.worksn.objects.StorageConst;
+import com.worksn.objects.MyStorageConst;
 import com.worksn.singleton.MyStorage;
 import com.worksn.static_class.Post;
 
@@ -70,7 +70,7 @@ public class WsTimer {
         checkNewMsg.schedule(new TimerTask() {
             @Override
             public void run() {
-                boolean newMsgSign = MyStorage.i().getBoolen(StorageConst.NEW_MSG_SIGN);
+                boolean newMsgSign = MyStorage.i().getBoolen(MyStorageConst.NEW_MSG_SIGN);
                 if (!newMsgSign)
                     Ws.sendCheckNewMsg();
             }

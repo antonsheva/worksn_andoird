@@ -46,9 +46,9 @@ public class WsReceiveData {
     @SerializedName("sender_login")
     @Expose
     private String senderLogin;
-    @SerializedName("sender_avatar")
+    @SerializedName(C_.STR_SENDER_IMG)
     @Expose
-    private String senderAvatar;
+    private String senderImg;
     @SerializedName("status_msg")
     @Expose
     private Integer statusMsg = 0;
@@ -83,7 +83,7 @@ public class WsReceiveData {
     @Expose
     private String createId;
 
-    @SerializedName(C_.VAR_NEW_TOKEN)
+    @SerializedName(C_.STR_NEW_TOKEN)
     @Expose
     private String newToken = null;
 
@@ -95,23 +95,23 @@ public class WsReceiveData {
         this.newToken = newToken;
     }
 
-    @SerializedName(C_.VAR_REPLY_MSG_ID)
+    @SerializedName(C_.STR_REPLY_MSG_ID)
     @Expose
     private Long replyMsgId = null;
 
-    @SerializedName(C_.VAR_REPLY_CONTENT)
+    @SerializedName(C_.STR_REPLY_CONTENT)
     @Expose
     private String replyContent = null;
 
-    @SerializedName(C_.VAR_REPLY_SENDER_ID)
+    @SerializedName(C_.STR_REPLY_SENDER_ID)
     @Expose
     private Integer replySenderId = null;
 
-    @SerializedName(C_.VAR_REPLY_SENDER_LOGIN)
+    @SerializedName(C_.STR_REPLY_SENDER_LOGIN)
     @Expose
     private String replySenderLogin = null;
 
-    @SerializedName(C_.VAR_REPLY_IMG)
+    @SerializedName(C_.STR_REPLY_IMG)
     @Expose
     private String replyImg = null;
 
@@ -198,11 +198,11 @@ public class WsReceiveData {
     public void setSenderLogin(String senderLogin) {
         this.senderLogin = senderLogin;
     }
-    public String getSenderAvatar() {
-        return senderAvatar;
+    public String getSenderImg() {
+        return senderImg;
     }
-    public void setSenderAvatar(String senderAvatar) {
-        this.senderAvatar = senderAvatar;
+    public void setSenderImg(String senderImg) {
+        this.senderImg = senderImg;
     }
     public Integer getUserId() {
         return userId;

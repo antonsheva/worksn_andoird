@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -37,16 +36,14 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
     private final List<StructMsg> msgList;
 
     public  final int vhId;
-    private Cb cb;
+    private final Cb cb;
     private static int lastPosition = 0;
-    private SpannableString spannable;
 
     public MsgChainAdapter(List<StructMsg> msgList, int vhId, Cb callback){
         lastPosition = 0;
         cb = callback;
         this.vhId    = vhId;
         this.msgList = msgList;
-//        LinkifyCompat.addLinks(spannable, Linkify.WEB_URLS);
     }
     @NonNull
     @Override
@@ -81,7 +78,6 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD hh:mm:ss");
             msg.setCreateDate(dateFormat.toString());
         }
-
         clearMsgFrame(holder);
         clearReplyMsgFrame(holder);
 
@@ -150,7 +146,6 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
         }else {
             if (imgIconGallery != null){
                 holder.msg_chain_sndr_img.setVisibility(View.VISIBLE);
-//                holder.msg_chain_sndr_img.setImageURI(Uri.fromFile(new File(imgIconGallery)));
                 holder.msg_chain_sndr_img.setImageDrawable(TmpImg.bitMapIconSend);
                 TmpImg.bitMapIconSend = null;
             }
@@ -284,18 +279,14 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
             msgChainSenderReplySpeaker = (TextView) itemView.findViewById(R.id.msgChainSenderReplySpeaker);
             msgChainSenderReplyContent = (TextView) itemView.findViewById(R.id.msgChainSenderReplyContent);
 
-
-
             msgChainSenderReplyLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = -1;
-                    Log.i("MyReply", "replyMsgId -> "+replyMsgId);
                     if (replyMsgId != 0){
                         for (StructMsg msg : msgList){
                             if (msg.getId().equals(replyMsgId)){
                                 position = msgList.indexOf(msg);
-                                Log.i("MyReply", "replyMsgId -> "+position);
                                 break;
                             }
                         }
@@ -311,12 +302,10 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
                 @Override
                 public void onClick(View v) {
                     int position = -1;
-                    Log.i("MyReply", "replyMsgId -> "+replyMsgId);
                     if (replyMsgId != 0){
                         for (StructMsg msg : msgList){
                             if (msg.getId().equals(replyMsgId)){
                                 position = msgList.indexOf(msg);
-                                Log.i("MyReply", "replyMsgId -> "+position);
                                 break;
                             }
                         }
@@ -332,14 +321,11 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
 
         @Override
         public void onClick(View v) {
-            Log.i("MyEvent", "onClick");
             if(G_.noClick){G_.noClick = false; return;}
-            Log.i("MyEvent", "onClick 1");
             int id = v.getId();
             int pos = getAdapterPosition();
             StructMsg msg = msgList.get(pos);
             if((id==R.id.msgChainReceiverImg)||(id==R.id.msgChainSenderImg)){
-                Log.i("MyEvent", "imgClick");
                 cb.cb(C_.CODE_SHOW_IMG, msg, null);
             }
 
@@ -354,18 +340,7 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
             int y = (int)motionEvent.getY();
             msg.setViewPosition(pos);
 
-            List<Integer> data2 = new ArrayList<>();
-            data2.add(0,x);
-            data2.add(1,y);
-            data2.add(2,pos);
-//            SubMenu.i().setTargetObjectType(C_.SUBMENU_OBJECT_TYPE_MSG);
             SubMenu.i().show((Activity)context,msg, C_.SUBMENU_OBJECT_TYPE_MSG,x,y);
-
-
-
-//            cb.cb(C_.CODE_SHOW_SUB_MENU, msg, data2);
-
-
             return false;
         }
 

@@ -5,16 +5,16 @@ import com.google.gson.annotations.SerializedName;
 import com.yandex.mapkit.map.VisibleRegion;
 
 public class MapAreaCoords {
-    @SerializedName("min_x")
+    @SerializedName(C_.STR_MIN_X)
     @Expose
     private Double minX;
-    @SerializedName("min_y")
+    @SerializedName(C_.STR_MIN_Y)
     @Expose
     private Double minY;
-    @SerializedName("max_x")
+    @SerializedName(C_.STR_MAX_X)
     @Expose
     private Double maxX;
-    @SerializedName("max_y")
+    @SerializedName(C_.STR_MAX_Y)
     @Expose
     private Double maxY;
 

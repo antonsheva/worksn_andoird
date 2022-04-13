@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import com.worksn.objects.C_;
 import com.worksn.singleton.MyStorage;
-import com.worksn.singleton.Usr;
 
 public class WsSendData {
     public WsSendData(String act){
@@ -30,7 +29,7 @@ public class WsSendData {
 
 
 
-    @SerializedName(C_.VAR_SHOW_STATUS)
+    @SerializedName(C_.STR_SHOW_STATUS)
     @Expose
     private Integer showStatus = null;
 

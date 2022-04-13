@@ -1,7 +1,6 @@
 package com.worksn.websocket;
 
 
-import android.content.Context;
 import android.util.ArrayMap;
 import android.util.Log;
 
@@ -11,17 +10,10 @@ import com.worksn.websocket.init_ssl.RequestData;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import com.worksn.objects.C_;
 import com.worksn.objects.G_;
-import com.worksn.objects.PostSubData;
 import com.worksn.objects.SaveImgData;
 import com.worksn.objects.StructMsg;
 import okhttp3.CacheControl;
@@ -34,8 +26,6 @@ import okio.ByteString;
 import com.worksn.objects.User;
 import com.worksn.singleton.MyStorage;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Post;
-import com.worksn.websocket.init_ssl.RequestData;
 
 public class Ws {
     private static int badConnectionQt = 0;
@@ -132,7 +122,7 @@ public class Ws {
         Log.i("MyWsReceive", "  data -> "+msg);
         WsReceiveData wsData = new WsReceiveData();
         wsData = new Gson().fromJson(msg,wsData.getClass());
-        G_.date_time = wsData.getDate_time();
+        G_.dateTime = wsData.getDate_time();
         switch (wsData.getType()){
             case C_.ACT_AUTH_USER           : rcvAuthUser(wsData);                 break;
             case C_.ACT_ONLINE_LIST         : rcvOnlineList(wsData);         break;
@@ -197,7 +187,7 @@ public class Ws {
         WsSendData d = new WsSendData(C_.ACT_PRINT_MSG_PROCESS);
         StructMsg msg = new StructMsg();
         msg.setDiscus_id(discusId);
-        msg.setConsumer_id(consumerId);
+        msg.setConsumerId(consumerId);
         d.setData_group(msg);
         send(d);
     }
@@ -211,7 +201,7 @@ public class Ws {
     }
     public static void sendAuthUserData() {
         if (user != null){
-            int showStatus = MyStorage.i().getBoolen(C_.VAR_SWITCH_SHOW_STATUS) ? 1 : 0;
+            int showStatus = MyStorage.i().getBoolen(C_.STR_SWITCH_SHOW_STATUS) ? 1 : 0;
             WsSendData d = new WsSendData(C_.ACT_AUTH_USER);
             d.setUser_login(user.getLogin());
             d.setShowStatus(showStatus);
@@ -283,12 +273,12 @@ public class Ws {
             msg.setId(data.getId());
             msg.setSender_id(data.getSenderId());
             msg.setSender_login(data.getSenderLogin());
-            msg.setConsumer_id(data.getConsumerId());
+            msg.setConsumerId(data.getConsumerId());
             msg.setAds_id(data.getAdsId());
             msg.setDiscus_id(data.getDiscusId());
             msg.setImg(data.getImg());
             msg.setImgIcon(data.getImgIcon());
-            msg.setSenderAvatar(data.getSenderAvatar());
+            msg.setSenderImg(data.getSenderImg());
 
             msg.setReplyMsgId       (data.getReplyMsgId());
             msg.setReplySenderId    (data.getReplySenderId());

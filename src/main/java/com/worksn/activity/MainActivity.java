@@ -35,17 +35,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-
 import com.worksn.R;
-
-
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -62,13 +54,11 @@ import com.worksn.classes.WsServiceControl;
 import com.worksn.objects.AssocData;
 import com.worksn.objects.SaveImgData;
 import com.worksn.objects.StructTxtData;
-import com.worksn.objects.StorageConst;
-import com.worksn.objects.T_;
+import com.worksn.objects.MyStorageConst;
 import com.worksn.objects.TmpImg;
 import com.worksn.singleton.MainActivityTimers;
 import com.worksn.singleton.MyStorage;
 import com.worksn.singleton.PUWindow;
-import com.worksn.classes.PrefStorageApp;
 import com.worksn.classes.PrefStorageCookie;
 import com.worksn.classes.SubMenu;
 import com.worksn.interfaces.AdapterListener;
@@ -244,8 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ekran: {return;}
             case R.id.ekranTop: {return;}
             case R.id.authFormEnter:btLoginUser();break;
-            case R.id.authFormAnonym:
-                btAnonymousLogin();break;
+            case R.id.authFormAnonym:btAnonymousLogin();break;
             case R.id.authFormRegistration: showRegistrationForm(); break;
             case R.id.authFormRecovery:showRecoveryForm(); break;
             case R.id.uMenuProfile: showUpdateUserForm();break;
@@ -260,8 +249,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btAdsParamCategory:selectCategoryAds();break;
             case R.id.btAdsParamUser:btShowTargetUsers();break;
             case R.id.btAdsParamAdd:btAddAdsClick();break;
-            case R.id.addAdsCancel:
-                btCancelAddAds();break;
+            case R.id.addAdsCancel:btCancelAddAds();break;
             case R.id.btAddAdsTime:selectAdsLifetime();break;
             case R.id.btAddAdsGallery:chooseFile(C_.IMG_FOR_ADS);break;
             case R.id.btAddAdsPhoto:makePhoto(C_.IMG_FOR_ADS);break;
@@ -270,9 +258,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.sendMsgButton:btSendMsg();break;
             case R.id.sendMsgGallery:chooseFile(C_.IMG_FOR_MSG);break;
             case R.id.sendCamera:makePhoto(C_.IMG_FOR_MSG);break;
-
             case R.id.btSetting:UiClick.i().showSettingPage(this);break;
-
         }
         rmvSubMenu();
     }
@@ -282,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         new Kbrd().hide(this);
         TmpImg.clear();
-        if (MyScreen.prev_mode == -1){
+        if (MyScreen.prevMode == -1){
             new FrameProgressbar(this).hide();
             super.onBackPressed();
         }
@@ -328,10 +314,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         new MyNotify ().removeNotify(this);
-//        checkOnQuickResponse();
         AppMode.i().setPage(C_.APP_PAGE_MAIN);
         sLockUi = true;
-        MyStorage.i().putData(StorageConst.MAIN_ACTIVITY_IS_ACTIVE, true);
+        MyStorage.i().putData(MyStorageConst.MAIN_ACTIVITY_IS_ACTIVE, true);
         Log.i("MyAppState", "------------------- onStart ---------------------");
         MyMap.i().mapView.onStart();
         MapKitFactory.getInstance().onStart();
@@ -344,7 +329,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     initAuthorizedUserMode();
                 else{
                     new Render(this).header();
-//                    stopWsService();
                     new WsServiceControl(this).stop();
                 }
             });
@@ -358,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
-        MyStorage.i().putData(StorageConst.MAIN_ACTIVITY_IS_ACTIVE, false);
+        MyStorage.i().putData(MyStorageConst.MAIN_ACTIVITY_IS_ACTIVE, false);
         Log.i("MyAppState", "-------------onStop-------");
         MyMap.i().mapView.onStop();
         MapKitFactory.getInstance().onStop();
@@ -373,7 +357,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-//        ActivityBroadcastReceiver.i().clear(this);
         Log.i("MyAppState", "-------------onPause-------");
     }
     @Override
@@ -390,29 +373,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case C_.APP_MODE_DISCUS_WITH_USER  : getDiscusWithUser(Usr.i().targetUserId);       break;
         }
     }
-    private void checkOnQuickResponse(){
-        if (G_.isQuickResponse){
-            G_.isQuickResponse = false;
-
-            Intent startMain = new Intent(Intent.ACTION_MAIN);
-            startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startMain);
-        }
-    }
     private void checkDiscusId() {
         long mDiscusId = 0;
-        mDiscusId = MyStorage.i().getLong(C_.VAR_NOTIFY_DISCUS_ID);
+        mDiscusId = MyStorage.i().getLong(C_.STR_NOTIFY_DISCUS_ID);
         if (mDiscusId == 0)mDiscusId = G_.notifyDiscusId;
         if (mDiscusId != 0)
             getMsgChain(mDiscusId);
 
-        MyStorage.i().putData(C_.VAR_NOTIFY_DISCUS_ID, 0L);
+        MyStorage.i().putData(C_.STR_NOTIFY_DISCUS_ID, 0L);
         G_.notifyDiscusId = 0;
         Log.i("MyStart", "discusId -> " + mDiscusId);
     }
     private void clearTempAppData(){
-//        AppMode.i().setMode(C_.APP_MODE_MAIN);
         if ((TmpImg.imgSend != null)||(TmpImg.img != null))
             new MyFile(activity).removeTmpFile(null);
         TmpImg.img = null;
@@ -434,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         btAdsParamAdd.setText(R.string.add);
-        if (MyScreen.active_mode == C_.ACTIVE_SCREEN_USERS)return;
+        if (MyScreen.activeMode == C_.ACTIVE_SCREEN_USERS)return;
         if(result > 0){
             frmActiveTitle.setText(R.string.ads);
             new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
@@ -454,15 +426,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wakeLock =
                 ((PowerManager) getSystemService(Context.POWER_SERVICE))
                         .newWakeLock(1, tag); wakeLock.acquire();
-
-
-
     }
     private void initAuthorizedUserMode() {
-        Log.i("MyStartApp", "-----------------");
-        if (Usr.i().auth())
-            Log.i("MyStartApp", "user login -> "+Usr.i().getUser().getLogin());
-
         Usr.i().checkNewNotify(this);
         new WsServiceControl(this).start();
         checkDiscusId();
@@ -474,7 +439,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (MyStorage.i().getString("ask_pwr_permission").equals("no")) return;
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         boolean res = powerManager.isIgnoringBatteryOptimizations("com.worksn");
-        Log.i("MyPwr", "res -> " + res);
         if (!res) {
             Intent intent = new Intent();
             intent.setAction(ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
@@ -596,8 +560,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activeEmpty = (LinearLayout) findViewById(R.id.activeEmpty);
         frmActiveTitle = (TextView) findViewById(R.id.frmActiveTitle);
 
-
-
 //--- add ads ------------------------------
         addAdsCost = (EditText) findViewById(R.id.addAdsCost);
         addAdsDescription = (EditText) findViewById(R.id.addAdsDescription);
@@ -624,9 +586,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         minListStart .setOnItemSelectedListener(this);
         minListStop  .setOnItemSelectedListener(this);
 
-        ArrayAdapter adapterHours = ArrayAdapter.createFromResource(activity,R.array.hourList,R.layout.time_spinner);
-        ArrayAdapter adapterMinutes = ArrayAdapter.createFromResource(activity,R.array.minList,R.layout.time_spinner);
-        adapterHours.setDropDownViewResource(R.layout.spinner_list);
+        ArrayAdapter adapterHours   = ArrayAdapter.createFromResource(activity,R.array.hourList,R.layout.time_spinner);
+        ArrayAdapter adapterMinutes = ArrayAdapter.createFromResource(activity,R.array.minList, R.layout.time_spinner);
+        adapterHours.setDropDownViewResource  (R.layout.spinner_list);
         adapterMinutes.setDropDownViewResource(R.layout.spinner_list);
         hourListStart.setAdapter(adapterHours);
         hourListStop.setAdapter(adapterHours);
@@ -651,17 +613,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sendMsgButton   = (LinearLayout) findViewById(R.id.sendMsgButton);
         sendCamera      = (LinearLayout) findViewById(R.id.sendCamera);
 
-
-
         sendMsgButton.setOnClickListener(this);
         sendMsgGallery.setOnClickListener(this);
         sendCamera.setOnClickListener(this);
 
 
-
-//--- frame reply to message -------------------
-
         initTxtListener();
+
     }
     private void initTxtListener(){
         final boolean[] flg = {false};
@@ -677,10 +635,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (addAdsDescription.length()>1){
                     tmp = addAdsDescription.getText().toString();
                     a = tmp.substring(tmp.length()-2);
-
-                    Log.i("MyKey",  " a1 -> "+a);
-
-
                     if (flg[0]){
                         int pos = addAdsDescription.length();
                         addAdsDescription.setInputType(TYPE_CLASS_TEXT | TYPE_TEXT_FLAG_MULTI_LINE);
@@ -714,7 +668,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (sendMsgTxt.length()>2){
                     tmp = sendMsgTxt.getText().toString();
                     a = tmp.substring(tmp.length()-2);
-                    Log.i("MyKey", "a -> "+a+"; a1 -> "+a);
                     if (flg[0]){
                         int pos = sendMsgTxt.length();
                         sendMsgTxt.setInputType(TYPE_CLASS_TEXT | TYPE_TEXT_FLAG_MULTI_LINE | TYPE_TEXT_FLAG_AUTO_COMPLETE);
@@ -733,7 +686,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     c = charSequence.charAt(i);
                 }catch (Exception ignored){}
                 byte  b = (byte) c;
-                Log.i("MyKey", "char -> "+b);
 
                 if (b == 10) {
                     btSendMsg();
@@ -751,36 +703,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void initPreferenceStorage() {
         PrefStorageCookie.init(getApplicationContext());
-        PrefStorageApp.init(getApplicationContext());
+//        PrefStorageApp.init(getApplicationContext());
         G_.cookie = PrefStorageCookie.getAllProperty();
 
         if (MyStorage.i().getString("ask_pwr_permission") == null)
             MyStorage.i().putData("ask_pwr_permission", "yes");
     }
 
-//    @SuppressWarnings("unchecked")
     private void initMap() {
-//        MyMap.i().initMap(this, (code, o) -> {
-//            switch (code) {
-//                case C_.CODE_MAP_INIT:
-//                    showAllAds();
-//                    break;
-//                case C_.CODE_MAP_MOVE:
-//                    if(MyScreen.screen_mode == C_.SCREEN_MODE_ADD_ADS)return;
-//                    showVisibilityAds();
-//                    break;
-//                case C_.CODE_MAP_ADS_DETAILS:
-//                    if (o instanceof List){
-//                        showTargetAds((List<Ads>) o, true);
-//
-//                    }
-//                    break;
-//                case C_.CODE_MAP_CLICK:
-//                    setTapPoint((Point) o);
-//                    break;
-//            }
-//        });
-
         MyMap.i().initMap(this, new MyMap.CB() {
             @Override
             public void callback(int code, Object o) {
@@ -789,13 +719,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         showAllAds();
                         break;
                     case C_.CODE_MAP_MOVE:
-                        if(MyScreen.screen_mode == C_.SCREEN_MODE_ADD_ADS)return;
+                        if(MyScreen.screenMode == C_.SCREEN_MODE_ADD_ADS)return;
                         showVisibilityAds();
                         break;
 
                 }
             }
-
             @Override
             public void setPointReturn(Point point) {
                 setTapPoint(point);
@@ -812,10 +741,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new KeyboardVisibilityEventListener() {
                     @Override
                     public void onVisibilityChanged(boolean isOpen) {
-
-//                        if (isOpen) Render.setSizeFrameLayout(activity, frmBigImg, 200, 200);
-//                        else        Render.setSizeFrameLayout(activity, frmBigImg, -1, (int)(MyScreen.sizeDpX*0.7));
-                        if ((MyScreen.screen_mode == C_.SCREEN_MODE_ADD_ADS) && (MyScreen.active_mode == C_.ACTIVE_SCREEN_ADD)) {
+                        if ((MyScreen.screenMode == C_.SCREEN_MODE_ADD_ADS) && (MyScreen.activeMode == C_.ACTIVE_SCREEN_ADD)) {
                             if (isOpen) {
                                 frmMap.setVisibility(View.GONE);
                                 frmAdsType.setVisibility(View.GONE);
@@ -842,7 +768,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         rcVwMsgGroup.removeMsgGroup((StructMsg) object);
                         break;
                     case C_.SUBMENU_CODE_REPLY_TO_MSG:
-                        sendMsgTxt.setHint("Ваш ответ");
+                        sendMsgTxt.setHint(activity.getString(R.string.yourResponse));
                         new FrameReplyToMsg(activity).show((StructMsg) object);
                         break;
                     case C_.SUBMENU_CODE_ADS_REMOVE:
@@ -886,17 +812,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rcVwTargetAds= new RcVwTargetAds(this, adapterListener);
     }
     private void initSettingData(){
-        if (!MyStorage.i().getBoolen(C_.VAR_SHOW_STATUS_CHANGE)){
-            MyStorage.i().putData(C_.VAR_SWITCH_SHOW_STATUS, true);
+        if (!MyStorage.i().getBoolen(C_.STR_SHOW_STATUS_CHANGE)){
+            MyStorage.i().putData(C_.STR_SWITCH_SHOW_STATUS, true);
         }
-        if (!MyStorage.i().getBoolen(C_.VAR_CONFIRM_DELIVER_CHANGE)){
-            MyStorage.i().putData(C_.VAR_SWITCH_CONFIRM_DELIVER, true);
+        if (!MyStorage.i().getBoolen(C_.STR_CONFIRM_DELIVER_CHANGE)){
+            MyStorage.i().putData(C_.STR_SWITCH_CONFIRM_DELIVER, true);
         }
-        if (!MyStorage.i().getBoolen(C_.VAR_CONFIRM_VIEWED_CHANGE)){
-            MyStorage.i().putData(C_.VAR_SWITCH_CONFIRM_VIEWED, true);
+        if (!MyStorage.i().getBoolen(C_.STR_CONFIRM_VIEWED_CHANGE)){
+            MyStorage.i().putData(C_.STR_SWITCH_CONFIRM_VIEWED, true);
         }
-        if (!MyStorage.i().getBoolen(C_.VAR_SEND_PRINT_TEXT_CHANGE)){
-            MyStorage.i().putData(C_.VAR_SWITCH_SEND_PRINT_TEXT, true);
+        if (!MyStorage.i().getBoolen(C_.STR_SEND_PRINT_TEXT_CHANGE)){
+            MyStorage.i().putData(C_.STR_SWITCH_SEND_PRINT_TEXT, true);
         }
     }
 
@@ -931,7 +857,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String name = data.getName();
             String className = data.getVal().getClass().getSimpleName();
             long val = 0;
-            Log.i("MyType", className);
             if (className.equals("Double")){
                 double d = (Double)data.getVal();
                 val = (long)d;
@@ -944,7 +869,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new SelectButton(this, v, name, val, new SelectButton.CB() {
                 @Override
                 public void callback(String name, Object val) {
-                    Log.i("MySel", "val -> "+val);
                     MyAds.i().lifetime = (Long) val;
                     btAddAdsTime.setText(name);
                     showAddAdsPanel();
@@ -954,40 +878,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     private void saveEnvironmentContentToStorage(ArrayList<StructTxtData> dataList){
-        String fieldsList = "";
+        StringBuilder fieldsList = new StringBuilder();
         for (StructTxtData data : dataList){
-            fieldsList += data.getName()+"___";
+            fieldsList.append(data.getName()).append("___");
             MyStorage.i().putData(data.getName(), data.getDescription());
         }
-
         if (fieldsList.length() < 10)return;
-        fieldsList = fieldsList.substring(0, fieldsList.length()-3);
-        Log.i("MyEnv", fieldsList);
-        MyStorage.i().putData(T_.ENVIRONMENT_CONTENT_LIST, fieldsList);
-    }
-    private void initLogger(){
-        try {
-            Process process = Runtime.getRuntime().exec("logcat -d");
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-
-            StringBuilder log = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                log.append(line);
-            }
-            PostSubData subData = new PostSubData();
-            subData.setContent(log.toString());
-            Post.sendRequest(this,"send_log_activity", subData, (data, result, stringData)->{
-                if (result == 1){
-                    Log.d("MyLog", "Log was send to server");
-                }
-            });
-//            TextView tv = (TextView) findViewById(R.id.textView1);
-//            tv.setText(log.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        fieldsList = new StringBuilder(fieldsList.substring(0, fieldsList.length() - 3));
+        MyStorage.i().putData(MyStorageConst.ENVIRONMENT_CONTENT_LIST, fieldsList.toString());
     }
 
 //---- LOCATION FUNCS ------------------------------------------------------------------------------
@@ -996,8 +894,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MyLocation.i().initLocationManager(this, 60, new MyLocation.CB() {
             @Override
             public void callback(Location location) {
-                Log.i("MyLocation", location.getLatitude()+" : "+location.getLongitude()+" ");
-                if(!MyLocation.locationWasChange && (MyScreen.active_mode != C_.ACTIVE_SCREEN_MSG_CHAIN))
+                if(!MyLocation.locationWasChange && (MyScreen.activeMode != C_.ACTIVE_SCREEN_MSG_CHAIN))
                     if (AppMode.i().getMode() != C_.APP_MODE_ADD_ADS)showMyLocation(location);
 
             }
@@ -1007,7 +904,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //---- SEND FILE -----------------------------------------------------------------------------------
     private void chooseFile(Integer action){
         if (TmpImg.sendImgIsRun){
-            PUWindow.i().show("Дождитесь загрузки предыдущего файла");
+            PUWindow.i().show(R.string.whiteLoadPrevFile);
             return;
         }
         new MyImg(this).setWebView(null);
@@ -1015,7 +912,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void makePhoto(Integer action){
         if (TmpImg.sendImgIsRun){
-            PUWindow.i().show("Дождитесь загрузки предыдущего файла");
+            PUWindow.i().show(R.string.whiteLoadPrevFile);
             return;
         }
         new MyImg(this).setWebView(null);
@@ -1025,7 +922,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == C_.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            int imgDestination = data.getIntExtra("respType", 0);
+            int imgDestination = data.getIntExtra(C_.STR_RESP_TYPE, 0);
             boolean showBtCancel = (imgDestination == C_.IMG_FOR_ADS);
             TmpImg.wasSendImg = true;
             if (imgDestination == C_.IMG_FOR_MSG){
@@ -1036,7 +933,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             myFile.uploadFile(this, TmpImg.img, TmpImg.createId, showBtCancel, new ComCallback() {
                 @Override
                 public Object callback(Object object, Integer result) {
-                    Log.i("MyFile1", "<- ----------MyFile1--------- -> ");
                     if (result == RESULT_OK){
                         MyContext response = (MyContext)object;
                         SaveImgData saveImgData = response.getSaveImgData();
@@ -1046,12 +942,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             if (!TmpImg.wasSendPostImg){
                                 TmpImg.imgSend     = response.getTmpImg();
                                 TmpImg.imgIconSend = response.getTmpImgIcon();
-                                Log.i("MyFile1", "tmp_img -> "     + TmpImg.imgSend);
-                                Log.i("MyFile1", "tmp_img_icon -> "+ TmpImg.imgIconSend);
                                 if (imgDestination == C_.IMG_FOR_ADS)
                                     new MyImg(activity).addImgToGroup(C_.URL_BASE+ TmpImg.imgSend, C_.URL_BASE+ TmpImg.imgIconSend);
                             }else {
-                                Log.i("MyFile1", "wasSendPostImg ");
                                 TmpImg.imgSend        = null;
                                 TmpImg.imgIconSend    = null;
                                 TmpImg.wasSendPostImg = false;
@@ -1063,8 +956,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
         }else{
-            Log.i("MyFile","Error ");
-            PUWindow.i().show("Не удалось загрузить файл");
+            PUWindow.i().show(R.string.errorSendFile);
         }
     }
 
@@ -1103,22 +995,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void btSetMyLocation(){
         showMyLocation(MyLocation.i().getImHere());
-//        Location location = MyLocation.i().getImHere();
-//        Point point = new Point(location.getLatitude(), location.getLongitude());
-//        MyMap.i().setCameraPosition(location);
-//        MyMap.i().setTapPm(this, point);
-//
-//
-//        MyMap.i().setCameraPosition(location);
-//        MyAds.i().cllct.setAdsType(C_.ADS_TYPE_ANY);
-//        clearAdsParamBtColor();
-//        getAdsCollection(new CbGetAdsCllct() {
-//            @Override
-//            public void callback(Object data, int result) {
-//                if(result > 0)new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
-//                else          new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
-//            }
-//        });
     }
     private void btSelectCategory(int result){
         clearSearchField();
@@ -1148,7 +1024,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new PUWindow().show(R.string.needAuthForAddAds);
             return;
         }
-        if (MyScreen.screen_mode == C_.SCREEN_MODE_ADD_ADS) {
+        if (MyScreen.screenMode == C_.SCREEN_MODE_ADD_ADS) {
             addAds();
         } else {
             showAddAdsPanel();
@@ -1173,16 +1049,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
     private void btLoginUser(){
-        String act = "login";
         String login    = authFormLogin.getText().toString();
         String password = authFormPassword.getText().toString();
-        if((login.equals(""))&&(password.equals(""))){PUWindow.i().show( "Введите логин и пароль");return;}
+        if((login.equals(""))&&(password.equals(""))){PUWindow.i().show( R.string.enterLoginAndPassword);return;}
         new Kbrd().hide(this);
 
         Usr.i().loginUser(this, login, password, new Usr.CB() {
             @Override
             public void callback(int code, Object data) {
-                Log.i("MyLogin", "user_login -> "+Usr.i().getUser().getLogin());
                 new Render(activity).header();
                 initAuthorizedUserMode();
             }
@@ -1216,6 +1090,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Post.sendRequest(this,C_.ACT_GET_DISCUS_FOR_ADS, subData, (data, result, stringData) -> {
             if (result != -1)
                 showDiscus(data, result);
+
         });
     }
 
@@ -1230,14 +1105,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (result == 0){
                 PUWindow.i().show(stringData);
                 if(msgGrpType == C_.MSG_TYPE_NEW){
-                    MyStorage.i().putData("new_msg_sign", false);
+                    MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, false);
                     MyView.setBell(activity);
                 }
             }
             if (result > 0){
                 showMsgGroup(msgs);
                 if(msgGrpType == C_.MSG_TYPE_NEW){
-                    MyStorage.i().putData("new_msg_sign", true);
+                    MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, true);
                     MyView.setBell(activity);
                 }
             }
@@ -1270,7 +1145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             else
                                 return;
 
-                            String txt = "Переписки с "+msgs.get(0).getSpeaker_login();
+                            String txt = activity.getString(R.string.discusWith_)+msgs.get(0).getSpeakerLogin();
                             frmActiveTitle.setText(txt);
                             showMsgGroup(msgs);
                         }
@@ -1289,10 +1164,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     MyMap.i().addPmGroup(activity, MyAds.i().targetAdsList);
                     if (AppMode.i().getMode() != C_.APP_MODE_ADD_ADS)
                         showAdsList(MyAds.i().targetAdsList, null);
+
                 }
                 checkReturnToAddAdsPanel(result);
                 if ((cb != null)&&(result != -1))
                     cb.callback(o, result);
+
             }
         });
     }
@@ -1320,13 +1197,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getAdsCollection(null);
             new Kbrd().hide(this);
         } else {
-            PUWindow.i().show("Введите текст для поиска");
+            PUWindow.i().show(R.string.enterSearchTxt);
         }
     }
     private void checkNewMsg(){
         PostSubData subData = new PostSubData();
-        Post.sendRequest(this,"check_new_msg", subData, (MyContext data, Integer result, String stringData) -> {
-            MyStorage.i().putData(StorageConst.NEW_MSG_SIGN, result == 1);
+        Post.sendRequest(this,C_.ACT_CHECK_NEW_MSG, subData, (MyContext data, Integer result, String stringData) -> {
+            MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, result == 1);
             MyView.setBell(activity);
         });
     }
@@ -1353,11 +1230,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
     private void receiveNewAuthData(){
-        Log.i("MyNewMsg", "Вход с другого устройства");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                PUWindow.i().show("Вход с другого устройства");
+                PUWindow.i().show(R.string.signInFromOtherDevice);
             }
         });
         new Timer().schedule(new TimerTask() {
@@ -1376,7 +1252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MyMap.i().cleanMapObjectCollections(C_.MAP_PM_RED);
         MyMap.i().cleanMapObjectCollections(C_.MAP_PM_PURPLE);
         MyAds.i().mapPoint = null;
-        if(MyScreen.screen_mode == C_.SCREEN_MODE_ADD_ADS) {
+        if(MyScreen.screenMode == C_.SCREEN_MODE_ADD_ADS) {
             MyMap.i().setTapPm(this, point);
         }
     }
@@ -1384,11 +1260,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //--- net funcs ------------------------------------------------------------------------------------
     private void addAds() {
         String description = null;
-        if (addAdsDescription.getText()==null){
-            PUWindow.i().show("Введите текст объявления");
-            return;
-        }else if(addAdsDescription.getText().length() < 1){
-            PUWindow.i().show("Введите текст объявления");
+        if ((addAdsDescription.getText()==null) || (addAdsDescription.getText().length() == 0)){
+            PUWindow.i().show(R.string.enterAdsTxt);
             return;
         }else {
             description = addAdsDescription.getText().toString();
@@ -1406,7 +1279,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void callback(int code, Object o, int result) {
                 clearAddAdsData();
-                PUWindow.i().show("Объявление добавлено");
+                PUWindow.i().show(R.string.adsWasAdd);
                 getAllVisibleAds();
             }
         });
@@ -1447,7 +1320,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void setOnlineStatus(List<Integer> idList){
         for (int id : idList)
-        if (MyScreen.active_mode == C_.ACTIVE_SCREEN_USERS){
+        if (MyScreen.activeMode == C_.ACTIVE_SCREEN_USERS){
             for (FrameUserProfile userProfile : Usr.i().getUserProfiles()){
                 Log.i("MyStatus", "id -> "+ userProfile.getUserId()+"; login -> "+userProfile.getUserLogin());
                 userProfile.setOnline(this, idList.contains(userProfile.getUserId()));
@@ -1491,9 +1364,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //---  render funcs ----------------------------------------------------------------------------
     private void restorePrevView(){
-        new Render(activity).screen(MyScreen.prev_mode, MyScreen.prev_active);
-        MyScreen.prev_mode = -1;
-        MyScreen.prev_active = -1;
+        new Render(activity).screen(MyScreen.prevMode, MyScreen.prevActive);
+        MyScreen.prevMode = -1;
+        MyScreen.prevActive = -1;
     }
     private boolean rmvSubMenu(){
         return SubMenu.i().hide(this);
@@ -1509,7 +1382,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     private void setOnlineStatus(String idListStr){
-        Log.i("MyStatus", "list -> "+idListStr);
         Usr.i().onlineList = new ArrayList<>();
         if (idListStr.length()>0){
             try{
@@ -1518,12 +1390,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Usr.i().addIdToOnlineList(Integer.parseInt(id));
                 }
             }catch (Exception e){
-                Log.i("MyEx", "empty list");
                 e.printStackTrace();
             }
         }
 
-        switch (MyScreen.active_mode){
+        switch (MyScreen.activeMode){
             case C_.ACTIVE_SCREEN_MSG_GROUP :
                 rcVwMsgGroup.setOnlineStatus();
                 break;
@@ -1585,7 +1456,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new MyLog().sendException(e);
             return;
         }
-        sendMsgTxt.setHint("Текст сообщения");
+        sendMsgTxt.setHint(this.getString(R.string.msgTxt));
         ads = data.getTargetAds();
         ads.setUserId(data.getSpeaker().getId());
         ads.setUserLogin(data.getSpeaker().getLogin());
@@ -1607,7 +1478,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void showTargetAds(List<Ads>adsList, boolean openSingleAds){
         ArrayList<Ads> tmpAds = new ArrayList<>(adsList);
         if (rmvSubMenu())return;
-        if (MyScreen.screen_mode == C_.SCREEN_MODE_ADD_ADS) return;
+        if (MyScreen.screenMode == C_.SCREEN_MODE_ADD_ADS) return;
         if (tmpAds.size() == 0){
             new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
             return;
@@ -1618,9 +1489,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return;
             }
         }
-
-        showAdsList(adsList, null);//SubMenu.i().getPos()
-
+        showAdsList(adsList, null);
         new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
     }
     private void showVisibilityAds(){
@@ -1664,7 +1533,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Render(activity).screen(C_.SCREEN_MODE_ADD_ADS, C_.ACTIVE_SCREEN_ADD);
     }
     private void showMsgChain(List<StructMsg>msgs){
-        G_.ads_card_deploy = false;
+        G_.adsCardDeploy = false;
         new Render(activity).screen(C_.SCREEN_MODE_MSG_CHAIN, C_.ACTIVE_SCREEN_MSG_CHAIN);
         new FrameReplyToMsg(this).hide();
         MsgManager.ReplyData.clear();
@@ -1683,19 +1552,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MyImg myImg = new MyImg(this);
         List<Integer> finalIdList = myImg.showImgsArray(MyAds.i().images,true);
         new Render(this).showBigImagesList();
-        myImg.initCb(new MyImg.CB() {
-            @Override
-            public void callback(int code, Object object) {
-                Integer id = (Integer)object;
-                int index = finalIdList.indexOf(id);
-                try {
-                    index = finalIdList.indexOf(id);
-                    new MyFile(activity).removeTmpFile(MyAds.i().imgsNames.get(index));
-                    MyAds.i().removeImg(index);
-                } catch (IndexOutOfBoundsException ignored) {}
-                addAdsLoadImgsIcon.removeAllViews();
-                myImg.addImgIconsToView(MyAds.i().imagesIcon, addAdsLoadImgsIcon, 45,45);
-            }
+        myImg.initCb((code, object) -> {
+            Integer id = (Integer)object;
+            int index = finalIdList.indexOf(id);
+            try {
+                index = finalIdList.indexOf(id);
+                new MyFile(activity).removeTmpFile(MyAds.i().imgsNames.get(index));
+                MyAds.i().removeImg(index);
+            } catch (IndexOutOfBoundsException ignored) {}
+            addAdsLoadImgsIcon.removeAllViews();
+            myImg.addImgIconsToView(MyAds.i().imagesIcon, addAdsLoadImgsIcon, 45,45);
         });
     }
     private void showMyLocation(Location location){
@@ -1704,14 +1570,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MyMap.i().setTapPm(this, point);
         MyAds.i().cllct.setAdsType(C_.ADS_TYPE_ANY);
         new ButtonsHighLight(this).clearAdsParamBtColor();
-        getAdsCollection(new CbGetAdsCllct() {
-            @Override
-            public void callback(Object data, int result) {
-//                if(result > 0)new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
-//                else          new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
-
-            }
-        });
+        getAdsCollection(null);
     }
     private void showTargetUserAds(Integer userId){
         MyAds.i().cllct.setUserId(userId);
@@ -1795,7 +1654,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         minListStart.setSelection (0);
         minListStop.setSelection  (0);
     }
-//------- fill dataFields funcs --------------------------------------------------------------------
 
 
     @Override
@@ -1830,12 +1688,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-
-//------- highlight funcs --------------------------------------------------------------------------
-
-
-//--- Callback funcs -------------------------------------------------------------------------------
 
     interface CbGetAdsCllct{
         void callback(Object data, int result);

@@ -1,13 +1,11 @@
 package com.worksn.websocket;
 
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import java.security.Provider;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,9 +13,7 @@ import com.worksn.classes.ConvertMsgData;
 import com.worksn.objects.C_;
 import com.worksn.objects.SaveImgData;
 import com.worksn.objects.StructMsg;
-import com.worksn.objects.User;
 import com.worksn.singleton.MyStorage;
-import com.worksn.singleton.Usr;
 
 public class WsBroadcastReceiver extends BroadcastReceiver{
     public final static String BROADCAST_FILTER = "activity_to_ws_filter";
@@ -80,12 +76,12 @@ public class WsBroadcastReceiver extends BroadcastReceiver{
         saveImgData.setImg(img);
         saveImgData.setImgIcon(imgIcon);
         saveImgData.setMsgId(msgId);
-        saveImgData.setConsumerId(consumerId);
+        saveImgData.setDestinationConsumerId(consumerId);
 
         Ws.sendBindImgToMsg(saveImgData);
     }
     private void wsSendPrintMsgProcess(Intent intent){
-        if (!MyStorage.i().getBoolen(C_.VAR_SWITCH_SEND_PRINT_TEXT))return;
+        if (!MyStorage.i().getBoolen(C_.STR_SWITCH_SEND_PRINT_TEXT))return;
 
         long discusId  = intent.getLongExtra("discus_id", 0);
         int consumerId = intent.getIntExtra("consumer_id", 0);

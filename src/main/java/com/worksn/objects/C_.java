@@ -3,6 +3,7 @@ package com.worksn.objects;
 public class C_ {
     public final static String NOTIFY_CHANNEL_MAIN       = "notify_channel_main";
     public final static String NOTIFY_CHANNEL_FOREGROUND = "notify_channel_foreground";
+
     public final static boolean CONN_OFF = false;
     public final static boolean CONN_ON = true;
 
@@ -108,9 +109,10 @@ public class C_ {
     public final static String ACT_CONNECTION_OK         = "connection_ok";
     public final static String ACT_CONNECTION_ERROR      = "connection_error";
 
+    public final static String ACT_CHNG_PASSWORD         = "chng_password";
+    public final static String ACT_RECOVERY_PASSWORD     = "recovery_password";
 
-
-    //---------------- ACT APACHE --------------------------------------------------
+    //---------------- ACT --------------------------------------------------
     public final static String ACT_ENABLE_SHOW_STATUS    = "enable_show_status";
     public final static String ACT_DISABLE_SHOW_STATUS   = "disable_show_status";
 
@@ -126,130 +128,226 @@ public class C_ {
     public final static String ACT_GET_NEW_MSG           = "get_new_msg";
     public final static String ACT_GET_DISCUS_FOR_ADS    = "get_discus_for_ads";
     public final static String ACT_GET_CHAIN_MSG         = "get_chain_msg";
+
+
     public final static String ACT_UPDATE_USER_DATA      = "updt_user_data";
     public final static String ACT_UPDATE_AUTO_AUTH_DATA = "updt_auto_auth_data";
     public final static String ACT_GET_ADS_COLLECTION    = "get_ads_collection";
     public final static String ACT_REG_NEW_USER          = "reg_new_user";
+    public final static String ACT_ADD_USER_REVIEW       = "add_user_review";
 
+    public final static String ACT_ADS_REMOVE            = "rmv_ads";
+    public final static String ACT_ADS_RECOVERY          = "recovery_ads";
+    public final static String ACT_ADS_HIDDEN            = "hidden_ads";
+    public final static String ACT_ADS_SHOW              = "show_ads";
+    public final static String ACT_ADS_EDIT              = "edit_ads";
+    public final static String ACT_ADS_ADD               = "add_ads";
 
-    public final static String ACT_ADS_REMOVE   = "rmv_ads";
-    public final static String ACT_ADS_RECOVERY = "recovery_ads";
-    public final static String ACT_ADS_HIDDEN   = "hidden_ads";
-    public final static String ACT_ADS_SHOW     = "show_ads";
-    public final static String ACT_ADS_EDIT     = "edit_ads";
-    public final static String ACT_ADS_ADD      = "add_ads";
+    public final static String ACT_REMOVE_TMP_FILE       = "rm_tmp_file";
+    public final static String ACT_ANONYMOUS_LOGIN       = "anonym_login";
 
-    public final static String ACT_REMOVE_TMP_FILE      = "rm_tmp_file";
-    public final static String ACT_ANONYMOUS_LOGIN      = "anonym_login";
+    public final static String ACT_CHECK_NEW_NOTIFY      = "check_new_notify";
+    public final static String ACT_GET_NEW_NOTIFY        = "get_new_notify"  ;
+    public final static String ACT_GET_ALL_NOTIFY        = "get_all_notify"  ;
+    public final static String ACT_REFRESH_SESSION       = "refresh_session" ;
 
-    public final static String ACT_CHECK_NEW_NOTIFY  = "check_new_notify";
-    public final static String ACT_GET_NEW_NOTIFY    = "get_new_notify"  ;
-    public final static String ACT_GET_ALL_NOTIFY    = "get_all_notify"  ;
-    public final static String ACT_REFRESH_SESSION    = "refresh_session"  ;
+    public final static String ACT_ADD_MSG               = "add_msg"    ;
+    public final static String ACT_REMOVE_MSG            = "rmv_msg"    ;
+    public final static String ACT_REMOVE_DISCUS         = "rmv_discus" ;
+
 
 //---------------------------------------------------------------------------
 
 //--------------- NAMES OF STRING VARIABLES  ------------------------------------
 
-    public static final String VAR_STATUS                   = "status"                ;
-    public static final String VAR_BAN_LIST                 = "ban_list"              ;
-    public static final String VAR_LIKE_LIST                = "like_list"             ;
-    public static final String VAR_USERS_LIST               = "users_list"            ;
-    public static final String VAR_APP_ID                   = "app_id"                ;
-    public static final String VAR_S_TOKEN                  = "s_token"               ;
-    public static final String VAR_NEW_TOKEN                = "new_token"             ;
-    public static final String VAR_USER_ID                  = "user_id"               ;
-    public static final String VAR_USER_LOGIN               = "user_login"            ;
-    public static final String VAR_USER_RATING              = "user_rating"           ;
-    public static final String VAR_USER_AVATAR              = "user_avatar"           ;
-    public static final String VAR_USER_AVATAR_ICON         = "user_avatar_icon"      ;
+    public static final String STR_ID                       = "id"                    ;
+    public static final String STR_ACT                      = "act"                   ;
+    public static final String STR_CONTENT                  = "content"               ;
+    public static final String STR_DESCRIPTION              = "description"           ;
+    public static final String STR_COST                     = "cost"                  ;
+    public static final String STR_SEARCH_PHRASE            = "search_phrase"         ;
+    public static final String STR_ERROR                    = "error"                 ;
+    public static final String STR_VAL                      = "val"                   ;
+    public static final String STR_RESPONSE                 = "response"              ;
+    public static final String STR_RESULT                   = "result"                ;
+    public static final String STR_DATA                     = "data"                  ;
+    public static final String STR_CONTEXT                  = "context"               ;
+    public static final String STR_TYPE                     = "type"                  ;
+    public static final String STR_DELIVER                  = "deliver"               ;
+    public static final String STR_WS_TOKEN                 = "ws_token"              ;
+    public static final String STR_FAVORITE                 = "favorite"              ;
+    public static final String STR_COMMENT                  = "comment"               ;
 
-    public static final String VAR_OWNER_ID                 = "owner_id"              ;
-    public static final String VAR_OWNER_LOGIN              = "owner_login"           ;
-    public static final String VAR_OWNER_RATING             = "owner_rating"          ;
-    public static final String VAR_OWNER_AVATAR             = "owner_avatar"          ;
-    public static final String VAR_OWNER_AVATAR_ICON        = "owner_avatar_icon"     ;
+//-------------- USER ----------------------------------------------
+    public static final String STR_LOGIN                    = "login"                 ;
+    public static final String STR_PASSWORD                 = "password"              ;
+    public static final String STR_NEW_PASS                 = "new_pass"              ;
+    public static final String STR_NAME                     = "name"                  ;
+    public static final String STR_S_NAME                   = "s_name"                ;
+    public static final String STR_EMAIL                    = "email"                 ;
+    public static final String STR_PHONE                    = "phone"                 ;
+    public static final String STR_WEB_SITE                 = "web_site"              ;
+    public static final String STR_ABOUT_USER               = "about_user"            ;
+    public static final String STR_AUTO_AUTH                = "auto_auth"             ;
+    public static final String STR_LAST_TIME                = "last_time"             ;
+    public static final String STR_RATING                   = "rating"                ;
+    public static final String STR_RIGHTS                   = "rights"                ;
+    public static final String STR_TXT_REVIEW               = "txt_review"            ;
+    public static final String STR_STAR_QT                  = "star_qt"               ;
+    public static final String STR_VOTE_QT                  = "vote_qt"               ;
 
-    public static final String VAR_MSG_ID                   = "msg_id"                ;
-    public static final String VAR_DISCUS_ID                = "discus_id"             ;
-    public static final String VAR_NOTIFY_DISCUS_ID         = "notify_discus_id"      ;
-    public static final String VAR_ADS_ID                   = "ads_id"                ;
-    public static final String VAR_SENDER_ID                = "sender_id"             ;
-    public static final String VAR_SENDER_LOGIN             = "sender_login"          ;
-    public static final String VAR_SENDER_AVATAR            = "sender_avatar"         ;
-    public static final String VAR_SENDER_AVATAR_ICON       = "sender_avatar_icon"    ;
-    public static final String VAR_SENDER_RATING            = "sender_rating"         ;
-    public static final String VAR_SENDER_VOTE_QT           = "sender_vote_qt"        ;
-    public static final String VAR_CONSUMER_ID              = "consumer_id"           ;
-    public static final String VAR_CONSUMER_LOGIN           = "consumer_login"        ;
-    public static final String VAR_CONSUMER_AVATAR          = "consumer_avatar"       ;
-    public static final String VAR_CONSUMER_AVATAR_ICON     = "consumer_avatar_icon"  ;
-    public static final String VAR_CONSUMER_RATING          = "consumer_rating"       ;
-    public static final String VAR_CONSUMER_VOTE_QT         = "consumer_vote_qt"      ;
-    public static final String VAR_SPEAKER_ID               = "speaker_id"            ;
-    public static final String VAR_SPEAKER_LOGIN            = "speaker_login"         ;
-    public static final String VAR_SPEAKER_AVATAR           = "speaker_avatar"        ;
-    public static final String VAR_SPEAKER_AVATAR_ICON      = "speaker_avatar_icon"   ;
-    public static final String VAR_SPEAKER_RATING           = "speaker_rating"        ;
-    public static final String VAR_SPEAKER_VOTE_QT          = "speaker_vote_qt"       ;
-
-    public static final String VAR_SUBJECT_ID               = "subject_id"            ;
-    public static final String VAR_SUBJECT_LOGIN            = "subject_login"         ;
-    public static final String VAR_SUBJECT_AVATAR           = "subject_avatar"        ;
-    public static final String VAR_SUBJECT_AVATAR_ICON      = "subject_avatar_icon"   ;
-    public static final String VAR_SUBJECT_RATING           = "subject_rating"        ;
-    public static final String VAR_SUBJECT_VOTE_QT          = "subject_vote_qt"       ;
-
-    public static final String VAR_CONTENT                  = "content"               ;
-    public static final String VAR_IMG                      = "img"                   ;
-    public static final String VAR_IMG_ICON                 = "img_icon"              ;
-    public static final String VAR_ID_LIST                  = "id_list"               ;
-    public static final String VAR_STATUS_MSG               = "status_msg"            ;
-    public static final String VAR_CREATE_ID                = "create_id"             ;
-    public static final String VAR_CREATE_DATE              = "create_date"           ;
-    public static final String VAR_DATA_GROUP               = "data_group"            ;
-
-    public static final String VAR_REPLY_MSG_ID             = "reply_msg_id"          ;
-    public static final String VAR_REPLY_CONTENT            = "reply_content"         ;
-    public static final String VAR_REPLY_SENDER_ID          = "reply_sender_id"       ;
-    public static final String VAR_REPLY_SENDER_LOGIN       = "reply_sender_login"    ;
-    public static final String VAR_REPLY_IMG                = "reply_img"             ;
-
-    public static final String VAR_SHOW_STATUS              = "show_status"           ;
-
-    public static final String VAR_LAST_PING_TIME           = "last_ping_time"        ;
-    public static final String VAR_SWITCH_SHOW_STATUS       = "switch_show_status"    ;
-    public static final String VAR_SWITCH_CONFIRM_DELIVER   = "switch_confirm_deliver";
-    public static final String VAR_SWITCH_CONFIRM_VIEWED    = "switch_confirm_viewed" ;
-    public static final String VAR_SWITCH_SEND_PRINT_TEXT   = "switch_send_print_text";
-
-    public static final String VAR_SHOW_STATUS_CHANGE       = "show_status_change"    ;
-    public static final String VAR_CONFIRM_DELIVER_CHANGE   = "confirm_deliver_change";
-    public static final String VAR_CONFIRM_VIEWED_CHANGE    = "confirm_viewed_change" ;
-    public static final String VAR_SEND_PRINT_TEXT_CHANGE   = "send_print_text_change";
-
-    public static final String VAR_ACTIVE                   = "active";
-    public static final String VAR_VIEW                     = "view";
-
-    public static final String VAR_HOUR_START               = "hour_start";
-    public static final String VAR_HOUR_STOP                = "hour_stop";
-    public static final String VAR_MIN_START                = "min_start";
-    public static final String VAR_MIN_STOP                 = "min_stop";
-
-    public static final String VAR_VISIBLE_MODE             = "visible_mode";
-    public static final String VAR_EDIT                     = "edit";
-    public static final String VAR_IMG_LIST                 = "img_list";
+//-------------- FILE ------------------------------------------------------
+    public static final String STR_IMG                      = "img"                   ;
+    public static final String STR_IMG_ICON                 = "img_icon"              ;
+    public static final String STR_TMP_IMG                  = "tmp_img"               ;
+    public static final String STR_TMP_IMG_ICON             = "tmp_img_icon"          ;
+    public static final String STR_FILE_NAME                = "file_name"             ;
+    public static final String STR_SAVE_IMG_DATA            = "save_img_data"         ;
 
 
-//------------------------------------------------------------------------------------------------
+    public static final String STR_SESSION_ID               = "session_id"            ;
+    public static final String STR_NOTIFIES                 = "notifies"              ;
+    public static final String STR_SETTING_PAGE_DATA        = "setting_page_data"     ;
+
+    public static final String STR_INTEGER_DATA             = "integer_data"          ;
+    public static final String STR_FLOAT_DATA               = "float_data"            ;
+
+    public static final String STR_REMOVE                   = "remove"                ;
+    public static final String STR_COPY                     = "copy"                  ;
+    public static final String STR_EDIT                     = "edit"                  ;
+
+    public static final String STR_STATUS                   = "status"                ;
+    public static final String STR_BAN_LIST                 = "ban_list"              ;
+    public static final String STR_LIKE_LIST                = "like_list"             ;
+    public static final String STR_USERS_LIST               = "users_list"            ;
+    public static final String STR_APP_ID                   = "app_id"                ;
+    public static final String STR_S_TOKEN                  = "s_token"               ;
+    public static final String STR_NEW_TOKEN                = "new_token"             ;
+
+    public static final String STR_USER                     = "user"                  ;
+    public static final String STR_USER_ID                  = "user_id"               ;
+    public static final String STR_USER_LOGIN               = "user_login"            ;
+    public static final String STR_USER_RATING              = "user_rating"           ;
+    public static final String STR_USER_IMG                 = "user_img"              ;
+    public static final String STR_USER_IMG_ICON            = "user_img_icon"         ;
+    public static final String STR_USER_VOTE_QT             = "user_vote_qt"          ;
+    public static final String STR_USER_ONLINE              = "user_online"           ;
+    public static final String STR_REVIEW                   = "review"                ;
+    public static final String STR_USER_REVIEWS             = "user_reviews"          ;
+
+    public static final String STR_OWNER                    = "owner"                 ;
+    public static final String STR_OWNER_ID                 = "owner_id"              ;
+    public static final String STR_OWNER_LOGIN              = "owner_login"           ;
+    public static final String STR_OWNER_RATING             = "owner_rating"          ;
+    public static final String STR_OWNER_IMG                = "owner_img"             ;
+    public static final String STR_OWNER_IMG_ICON           = "owner_img_icon"        ;
+
+    public static final String STR_ADS_ID                   = "ads_id"                ;
+    public static final String STR_ADS_TYPE                 = "ads_type"              ;
+    public static final String STR_ADS_COLLECTION           = "ads_collection"        ;
+    public static final String STR_TARGET_ADS               = "target_ads"            ;
+    public static final String STR_ADS_CATEGORY             = "ads_category"          ;
+
+    public static final String STR_MSG                      = "msg"                   ;
+    public static final String STR_MESSAGES                 = "messages"              ;
+    public static final String STR_DISCUS                   = "discus"                ;
+    public static final String STR_MSG_ID                   = "msg_id"                ;
+    public static final String STR_DISCUS_ID                = "discus_id"             ;
+    public static final String STR_NOTIFY_DISCUS_ID         = "notify_discus_id"      ;
+    public static final String STR_TARGET_MSG               = "target_msg"            ;
+
+    public static final String STR_SENDER_ID                = "sender_id"             ;
+    public static final String STR_SENDER_LOGIN             = "sender_login"          ;
+    public static final String STR_SENDER_IMG               = "sender_img"            ;
+    public static final String STR_SENDER_IMG_ICON          = "sender_img_icon"       ;
+    public static final String STR_SENDER_RATING            = "sender_rating"         ;
+    public static final String STR_SENDER_VOTE_QT           = "sender_vote_qt"        ;
+
+    public static final String STR_CONSUMER_ID              = "consumer_id"           ;
+    public static final String STR_CONSUMER_LOGIN           = "consumer_login"        ;
+    public static final String STR_CONSUMER_IMG             = "consumer_img"          ;
+    public static final String STR_CONSUMER_IMG_ICON        = "consumer_img_icon"     ;
+    public static final String STR_CONSUMER_RATING          = "consumer_rating"       ;
+    public static final String STR_CONSUMER_VOTE_QT         = "consumer_vote_qt"      ;
+
+    public static final String STR_SPEAKER                  = "speaker"               ;
+    public static final String STR_SPEAKER_ID               = "speaker_id"            ;
+    public static final String STR_SPEAKER_LOGIN            = "speaker_login"         ;
+    public static final String STR_SPEAKER_IMG              = "speaker_img"           ;
+    public static final String STR_SPEAKER_IMG_ICON         = "speaker_img_icon"      ;
+    public static final String STR_SPEAKER_RATING           = "speaker_rating"        ;
+    public static final String STR_SPEAKER_VOTE_QT          = "speaker_vote_qt"       ;
+    public static final String STR_SPEAKER_1                = "speaker_1"             ;
+    public static final String STR_SPEAKER_2                = "speaker_2"             ;
+    public static final String STR_SPEAKER_ONLINE           = "speaker_online"        ;
+
+    public static final String STR_SUBJECT_ID               = "subject_id"            ;
+    public static final String STR_SUBJECT_LOGIN            = "subject_login"         ;
+    public static final String STR_SUBJECT_AVATAR           = "subject_avatar"        ;
+    public static final String STR_SUBJECT_AVATAR_ICON      = "subject_avatar_icon"   ;
+    public static final String STR_SUBJECT_RATING           = "subject_rating"        ;
+    public static final String STR_SUBJECT_VOTE_QT          = "subject_vote_qt"       ;
+
+    public static final String STR_ID_LIST                  = "id_list"               ;
+    public static final String STR_STATUS_MSG               = "status_msg"            ;
+    public static final String STR_CREATE_ID                = "create_id"             ;
+    public static final String STR_CREATE_DATE              = "create_date"           ;
+    public static final String STR_CREATE_TIME              = "create_time"           ;
+    public static final String STR_LIFETIME                 = "lifetime"              ;
+    public static final String STR_DATA_GROUP               = "data_group"            ;
+
+    public static final String STR_REPLY_MSG_ID             = "reply_msg_id"          ;
+    public static final String STR_REPLY_CONTENT            = "reply_content"         ;
+    public static final String STR_REPLY_SENDER_ID          = "reply_sender_id"       ;
+    public static final String STR_REPLY_SENDER_LOGIN       = "reply_sender_login"    ;
+    public static final String STR_REPLY_IMG                = "reply_img"             ;
+
+    public static final String STR_SHOW_STATUS              = "show_status"           ;
+
+    public static final String STR_LAST_PING_TIME           = "last_ping_time"        ;
+    public static final String STR_SWITCH_SHOW_STATUS       = "switch_show_status"    ;
+    public static final String STR_SWITCH_CONFIRM_DELIVER   = "switch_confirm_deliver";
+    public static final String STR_SWITCH_CONFIRM_VIEWED    = "switch_confirm_viewed" ;
+    public static final String STR_SWITCH_SEND_PRINT_TEXT   = "switch_send_print_text";
+
+    public static final String STR_SHOW_STATUS_CHANGE       = "show_status_change"    ;
+    public static final String STR_CONFIRM_DELIVER_CHANGE   = "confirm_deliver_change";
+    public static final String STR_CONFIRM_VIEWED_CHANGE    = "confirm_viewed_change" ;
+    public static final String STR_SEND_PRINT_TEXT_CHANGE   = "send_print_text_change";
+
+    public static final String STR_CATEGORY                 = "category";
+    public static final String STR_CATEGORIES               = "categories";
+    public static final String STR_ACTIVE                   = "active";
+    public static final String STR_VIEW                     = "view";
+
+    public static final String STR_HOUR_START               = "hour_start";
+    public static final String STR_HOUR_STOP                = "hour_stop";
+    public static final String STR_MIN_START                = "min_start";
+    public static final String STR_MIN_STOP                 = "min_stop";
+
+    public static final String STR_VISIBLE_MODE             = "visible_mode";
+    public static final String STR_IMG_LIST                 = "img_list";
+
+    public static final String STR_COORD_X                  = "coord_x";
+    public static final String STR_COORD_Y                  = "coord_y";
+
+    public static final String STR_MIN_X                    = "min_x";
+    public static final String STR_MIN_Y                    = "min_y";
+    public static final String STR_MAX_X                    = "max_x";
+    public static final String STR_MAX_Y                    = "max_y";
 
 
+    public static final String STR_ACTION_TYPE              = "action_type";
+    public static final String STR_RESP_TYPE                = "resp_type";
+    public static final String STR_NOTIFY_FIELD             = "notify_field";
 
-    public final static long ADS_ID_FOR_ADMIN         = 1;
-    public final static long ADS_ID_FOR_DIRECT_DISCUS = 2;
+    public static final String STR_WAS_SEND_POST_DATA       = "was_send_post_data";
+
+//-------------  --------------------------
+    public final static long ADS_ID_FOR_ADMIN               = 1;
+    public final static long ADS_ID_FOR_DIRECT_DISCUS       = 2;
     public final static long ADS_CATEGORY_FOR_ADMIN         = 100;
     public final static long ADS_CATEGORY_FOR_DIRECT_DISCUS = 101;
-
 
 //------------- User black/white list status -----------------------------
     public final static int BW_STATUS_EMPTY = 0;
@@ -263,6 +361,13 @@ public class C_ {
     public final static String URL_TMP_IMG_ICON  = "https://worksn.ru/wksn_users_img/tmp_img/icon/";
     public final static String URL_SERVICE_IMG   = "https://worksn.ru/service_img/";
     public final static String URL_NO_AVATAR     = "https://worksn.ru/service_img/avatars/no-avatar.jpg";
+
+//------------- File name --------------------------------------------------
+    public final static String FILE_NAME_TMP_PHOTO = "tmp_photo.jpg";
+    public final static String FILE_GALLERY = "service_img/design/gallery.gif";
+
+
+
 
 
 //   --------   Map  ---------------------------------------------

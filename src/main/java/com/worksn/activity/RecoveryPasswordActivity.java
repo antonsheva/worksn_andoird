@@ -14,11 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.worksn.R;
 import com.worksn.classes.Kbrd;
 import com.worksn.objects.C_;
+import com.worksn.objects.PostSubData;
 import com.worksn.singleton.AppMode;
 import com.worksn.singleton.PUWindow;
 import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.MyContext;
-import com.worksn.objects.PostDataRegistration;
 import com.worksn.static_class.Post;
 
 public class RecoveryPasswordActivity extends AppCompatActivity {
@@ -50,13 +50,13 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
     private void sendData(){
         String email = recoveryMail.getText().toString();
         if (email.equals("")){
-            PUWindow.i().show("Введите почту");
+            PUWindow.i().show(R.string.enterEmail);
             return;
         }
-        PostDataRegistration data = new PostDataRegistration();
+        PostSubData data = new PostSubData();
         data.setEmail(email);
         Context context = (Context)this;
-        Post.sendRequest(this,"recovery_password", data, new NetCallback() {
+        Post.sendRequest(this,C_.ACT_RECOVERY_PASSWORD, data, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 PUWindow.i().show(stringData);

@@ -11,21 +11,16 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-
 import android.net.Uri;
-
 import android.util.Log;
-
 import androidx.activity.result.ActivityResult;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.exifinterface.media.ExifInterface;
-
+import com.worksn.objects.C_;
 import com.worksn.objects.TmpImg;
 import com.worksn.singleton.Usr;
 
@@ -106,7 +101,6 @@ public class TargetFileData {
     }
     private void createBmpFromPhoto(ActivityResult result){
         try{
-            Log.i("MyFile", "tmpPhotoPath ---> "+TmpImg.photoPath);
             Bitmap bm = rotateBitmapOrientation(TmpImg.photoPath);
             if (bm != null){
                 bitmapImg  = bm;
@@ -163,7 +157,7 @@ public class TargetFileData {
             TmpImg.createId = mCreateId;
             Intent intent = new Intent();
 
-            intent.putExtra("respType"       , actionType);
+            intent.putExtra(C_.STR_RESP_TYPE       , actionType);
             ((Activity)context).setResult(RESULT_OK, intent);
             ((Activity)context).finish();
         }catch (Exception e){
@@ -176,7 +170,6 @@ public class TargetFileData {
         File dir = new File(context.getFilesDir(), "WorksnImages");
         if (!dir.exists()){
             try {
-                Log.i("MyDir", "try create");
                 createDirResult = dir.mkdir();
             }catch (SecurityException e){
                 e.printStackTrace();
@@ -192,11 +185,10 @@ public class TargetFileData {
             return dir.toString();
     }
     private void error(String str){
-        Log.i("MyImg", "error get file -> "+str);
         TmpImg.img = null;
         Intent intent = new Intent();
         TmpImg.photoPath = null;
-        intent.putExtra("respType", actionType);
+        intent.putExtra(C_.STR_RESP_TYPE, actionType);
         ((Activity)context).setResult(RESULT_CANCELED, intent);
         ((Activity)context).finish();
     }

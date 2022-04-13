@@ -5,18 +5,18 @@
     <string name="channel_main_description">main notify  channel</string>
     <string name="channel_foreground_description">foreground notify channel</string>
     <string name="title_activity_registration">RegistrationActivity</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="noNameUser">Кто-то</string>
+    <string name="msgTxt">Текст сообщения</string>
     <string name="errorSendMsg">Не удалось отправить сообщение :-(</string>
     <string name="errorSendFile">Не удалось отправить файл :-(</string>
     <string name="speaker">Собеседник</string>
-    <string name="someThrowable">Что-то пошло не так</string>
+    <string name="someThrowable">Что-то пошло не так :-(</string>
+    <string name="someUseful">Что-то очень полезное</string>
     <string name="notifyReply">Ответить</string>
-    <string name="notifyReplyHint">Текст сообщения</string>
     <string name="notifySetAsViewed">Прочитано</string>
     <string name="paste">Вставить</string>
     <string name="ownersOfVisibleAds">Владельцы видимых объявлений</string>
@@ -25,10 +25,14 @@
     <string name="emptyAdsList">В этом районе нет объявлений с данными критериями :-(</string>
     <string name="ads">Объявления</string>
     <string name="add">Добавить</string>
+    <string name="publish">Опубликовать</string>
     <string name="cancel">Отмена</string>
     <string name="addAds">Добавить объявление</string>
     <string name="discuses">Переписки</string>
+    <string name="discusWithAdmin">Переписка с администратором</string>
     <string name="categories">Категории</string>
+    <string name="category">Категория</string>
+    <string name="mlnR">млн.р.</string>
     <string name="lifetime">Продолжительность показа объявления</string>
     <string name="needAuthForSenMsg">Авторизуйтесь для отправки сообщений</string>
     <string name="needAuthForUserReview">Авторизуйтесь, чтобы оставить отзыв</string>
@@ -36,7 +40,14 @@
     <string name="search">найти</string>
     <string name="imEmployer">Я Заказчик</string>
     <string name="imWorker">Я Работник</string>
-    <string name="change_password">Сменить пароль</string>
+    <string name="enterLogin">Введите логин</string>
+    <string name="enterPassword">Введите пароль</string>
+    <string name="repeatPassword">Повторите пароль</string>
+    <string name="enterLoginAndPassword">Введите логин и пароль</string>
+    <string name="changePass">Сменить пароль</string>
+    <string name="enterOldPass">Введите старый пароль</string>
+    <string name="enterNewPass">Введите новый пароль</string>
+    <string name="passwordsAreNotEqual">Пароли не совпадают</string>
     <string name="avatar">avatar</string>
     <string name="login">Логин</string>
     <string name="email_for_recovery_access">Email (для восстановления)</string>
@@ -48,6 +59,34 @@
     <string name="no">Нет</string>
     <string name="waitUploadImg">Дождитесь загрузки изображения</string>
     <string name="privacy">Политика конфиденциальности</string>
+    <string name="enterReviewTxt">Введите текст отзыва</string>
+    <string name="enterSearchTxt">Введите текст для поиска</string>
+    <string name="enterMsgTxt">Введите текст сообщения</string>
+    <string name="enterAdsTxt">Введите текст объявления</string>
+    <string name="enterEmail">Введите почту</string>
+    <string name="whiteLoadPrevFile">Дождитесь загрузки предыдущего файла</string>
+    <string name="yourResponse">Ваш ответ</string>
+    <string name="discusWith_">Переписки с </string>
+    <string name="signInFromOtherDevice">Вход с другого устройства</string>
+    <string name="adsWasAdd">Объявление добавлено</string>
+    <string name="onlineNow">сейчас в сети</string>
+    <string name="chooseImg">Выберите изображение</string>
+    <string name="thereAreUnreadMsg">Имеются не прочитанные сообщения</string>
+    <string name="msgWasSend_discusInMsgs">Сообщение отправлено. Переписка доступна в сообщениях.</string>
+    <string name="newMsg">Новое сообщение</string>
+    <string name="imgFrom_">Изображение от </string>
+    <string name="newImg">Новое изображение</string>
+    <string name="noNotifies">Нет уведомлений</string>
+    <string name="service">Услуга</string>
+    <string name="msgHidden">Сообщение скрыто</string>
+    <string name="msgHiddenForTime">Сообщение скрыто по времени</string>
+    <string name="msgWasRemove">Сообщение удалено</string>
+    <string name="grantAccessToStorage">Предоставьте приложению доступ к хранилищу</string>
+    <string name="txtWasCopy">Текст скопирован в буфер обмена</string>
+
+    <string name="setPointOnMap">Укажите точку на карте</string>
+    <string name="setAdsType">Укажите тип объявления</string>
+    <string name="chooseCategory">Выберите категорию</string>
 
 
     <string-array name="hourList">

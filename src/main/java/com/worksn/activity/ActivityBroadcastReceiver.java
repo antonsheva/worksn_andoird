@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 
 import com.worksn.classes.ConvertMsgData;
 import com.worksn.objects.SaveImgData;
@@ -53,14 +52,14 @@ public class ActivityBroadcastReceiver extends BroadcastReceiver {
         String act = intent.getStringExtra("act");
         if (act == null) return;
         switch (act){
-            case C_.ACT_ONLINE_LIST         : wsOnlineList(intent);         break;
+            case C_.ACT_ONLINE_LIST         : wsOnlineList(intent);                  break;
             case C_.ACT_NEW_MSG             : wsNewMsg(context, intent);             break;
-            case C_.ACT_EXIT                : wsExit();                     break;
             case C_.ACT_CONFIRM_DELIVER_MSG : wsConfirmViewed(context, intent);      break;
-            case C_.ACT_NEW_AUTH_DATA       : wsNewAuthData();              break;
-            case C_.ACT_BAD_AUTH_DATA       : wsBadAuthData();              break;
+            case C_.ACT_NEW_AUTH_DATA       : wsNewAuthData();                       break;
+            case C_.ACT_BAD_AUTH_DATA       : wsBadAuthData();                       break;
             case C_.ACT_PRINT_MSG_PROCESS   : wsPrintTxt(context, intent);           break;
             case C_.ACT_BIND_IMG_TO_MSG     : wsBindImageToMessage(context, intent); break;
+//            case C_.ACT_EXIT                : wsExit();                     break;
         }
     }
     private void processingPageMyProfile(Context context, Intent intent){
@@ -70,7 +69,7 @@ public class ActivityBroadcastReceiver extends BroadcastReceiver {
 
     }
     private void processingPageUserPage(Context context, Intent intent){
-        String act = intent.getStringExtra("act");
+        String act = intent.getStringExtra(C_.STR_ACT);
         if (act == null) return;
         if (C_.ACT_ONLINE_LIST.equals(act)) {
             wsOnlineList(intent);
@@ -97,13 +96,13 @@ public class ActivityBroadcastReceiver extends BroadcastReceiver {
 
     private void wsBindImageToMessage(Context context, Intent intent){
         SaveImgData saveImgData = new SaveImgData();
-        saveImgData.setMsgId(intent.getLongExtra(C_.VAR_MSG_ID, 0));
-        saveImgData.setImg(intent.getStringExtra(C_.VAR_IMG));
-        saveImgData.setImgIcon(intent.getStringExtra(C_.VAR_IMG_ICON));
+        saveImgData.setMsgId(intent.getLongExtra(C_.STR_MSG_ID, 0));
+        saveImgData.setImg(intent.getStringExtra(C_.STR_IMG));
+        saveImgData.setImgIcon(intent.getStringExtra(C_.STR_IMG_ICON));
         MsgManager.i().wsRcvBindImageToMessage(context, saveImgData);
     }
     private void wsPrintTxt(Context context, Intent intent){
-        long discusId = intent.getLongExtra(C_.VAR_DISCUS_ID, 0);
+        long discusId = intent.getLongExtra(C_.STR_DISCUS_ID, 0);
         MsgManager.i().showPrintMsgProcess(context, discusId);
     }
     private void wsNewAuthData(){
@@ -116,21 +115,18 @@ public class ActivityBroadcastReceiver extends BroadcastReceiver {
 
     private void wsOnlineList(Intent intent){
         String idListStr = intent.getStringExtra("id_list");
-        Log.i("MyList", "reseive list -> "+idListStr);
         cb.cb(C_.CODE_WS_ONLINE_LIST, idListStr);
     }
     private void wsNewMsg(Context context,Intent intent){
         StructMsg msg = new ConvertMsgData().intentExtrasToMsg(intent);
         MsgManager.i().wsRcvNewMsg(context, msg, true);
-        Log.i("MyBroadcast", "wsNewMsg");
     }
-    private void wsExit(){
-        Log.i("MyBroadcast", "wsExit");
-    }
+//    private void wsExit(){
+//        Log.i("MyBroadcast", "wsExit");
+//    }
     private void wsConfirmViewed(Context context,Intent intent){
-        Log.i("MyConfirm", "wsConfirmViewed");
-        long discusId  = intent.getLongExtra("discus_id", 0);
-        int statusMsg = intent.getIntExtra("status_msg", 0);
+        long discusId  = intent.getLongExtra(C_.STR_DISCUS_ID, 0);
+        int statusMsg = intent.getIntExtra(C_.STR_STATUS_MSG, 0);
         if (discusId != 0)
             MsgManager.i().renderMsgViewedStatus(context, discusId, statusMsg);
     }
@@ -138,5 +134,4 @@ public class ActivityBroadcastReceiver extends BroadcastReceiver {
     public interface CB{
          void cb(int code, Object o);
     }
-
 }

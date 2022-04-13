@@ -7,11 +7,11 @@ import com.worksn.singleton.MyStorage;
 import com.worksn.singleton.Usr;
 
 public class PostData {
-    @SerializedName("act")
+    @SerializedName(C_.STR_ACT)
     @Expose
     private String act;
 
-    @SerializedName(C_.VAR_USER_ID)
+    @SerializedName(C_.STR_USER_ID)
     @Expose
     private Integer userId;
 
@@ -23,15 +23,15 @@ public class PostData {
         this.applicationId = applicationId;
     }
 
-    @SerializedName(C_.VAR_APP_ID)
+    @SerializedName(C_.STR_APP_ID)
     @Expose
     private String applicationId;
 
-    @SerializedName(C_.VAR_S_TOKEN)
+    @SerializedName(C_.STR_S_TOKEN)
     @Expose
     private String token;
 
-    @SerializedName(C_.VAR_DATA_GROUP)
+    @SerializedName(C_.STR_DATA_GROUP)
     @Expose
     private Object dataGroup = null;
 

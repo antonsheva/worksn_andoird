@@ -2,14 +2,9 @@ package com.worksn.singleton;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.widget.LinearLayout;
-
-
 import com.yandex.mapkit.geometry.Point;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.worksn.R;
@@ -23,7 +18,6 @@ import com.worksn.objects.C_;
 import com.worksn.objects.G_;
 import com.worksn.objects.MapAreaCoords;
 import com.worksn.objects.MyContext;
-import com.worksn.objects.PostDataAddAds;
 import com.worksn.objects.PostSubData;
 import com.worksn.objects.SelAdsParam;
 import com.worksn.objects.User;
@@ -107,21 +101,20 @@ public class MyAds {
             sendData.setEdit(1);
         }
         if (mapPoint == null){
-            PUWindow.i().show("Укажите точку на карте");
+            PUWindow.i().show(R.string.setPointOnMap);
             return;
         }
         if (cllct.getAdsType() == C_.ADS_TYPE_ANY){
-            LinearLayout frmAdsType = (LinearLayout)((Activity)context).findViewById(R.id.frmAdsType);
-            PUWindow.i().show("Укажите тип объявления");
+            LinearLayout frmAdsType = ((Activity)context).findViewById(R.id.frmAdsType);
+            PUWindow.i().show(R.string.setAdsType);
             BlinkView.i().blink((Activity)context, frmAdsType);
             return;
         } else {
             type = (cllct.getAdsType() == C_.ADS_TYPE_WORKER) ? C_.ADS_TYPE_EMPLOYER : C_.ADS_TYPE_WORKER;
         }
-
         if ((cllct.getCatNum() == null)||(cllct.getCatNum() == 0)){
-            LinearLayout adsParamCategoryField = (LinearLayout)((Activity)context).findViewById(R.id.adsParamCategoryField);
-            PUWindow.i().show("Выберите категорию");
+            LinearLayout adsParamCategoryField = ((Activity)context).findViewById(R.id.adsParamCategoryField);
+            PUWindow.i().show(R.string.chooseCategory);
             BlinkView.i().blink((Activity)context, adsParamCategoryField);
             return;
         }

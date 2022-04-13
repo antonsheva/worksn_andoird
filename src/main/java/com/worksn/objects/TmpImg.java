@@ -18,7 +18,6 @@ public class TmpImg {
    /* boolean wasSendPostImg, boolean postImgWasLoad;
     * отлов ситуации, когда большой файл прибыл на сервер раньше пакета с текстовым сообщением
     * при том, что сообщение было отправлено раньше загрузки файла.
-    *
     * */
     public static boolean wasSendPostImg = false;
     public static boolean postImgWasLoad = false;

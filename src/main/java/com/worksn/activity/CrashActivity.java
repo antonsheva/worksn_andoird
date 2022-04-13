@@ -6,19 +6,14 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.worksn.classes.BroadCastMsg;
+
 import com.worksn.objects.PostSubData;
-import com.worksn.objects.StorageConst;
-import com.worksn.singleton.MyStorage;
 import com.worksn.static_class.Post;
-import com.worksn.websocket.WsBroadcastReceiver;
-import com.worksn.websocket.WsService;
 
 public class CrashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        stopWsService();
         Log.d("MyException", "try send data to server");
         Intent intent = getIntent();
         String sendData = intent.getStringExtra("crash_data");

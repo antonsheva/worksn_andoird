@@ -4,13 +4,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class StructTxtData {
-    @SerializedName(C_.VAR_CREATE_DATE)
+    @SerializedName(C_.STR_CREATE_DATE)
     @Expose
     private String createDate = null;
-    @SerializedName("name")
+    @SerializedName(C_.STR_NAME)
     @Expose
     private String name = null;
-    @SerializedName("description")
+    @SerializedName(C_.STR_DESCRIPTION)
     @Expose
     private String description;
 

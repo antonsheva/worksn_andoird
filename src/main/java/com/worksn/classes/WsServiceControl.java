@@ -6,8 +6,7 @@ import android.content.IntentFilter;
 
 import androidx.core.app.ActivityCompat;
 
-import com.worksn.activity.MainActivity;
-import com.worksn.objects.StorageConst;
+import com.worksn.objects.MyStorageConst;
 import com.worksn.singleton.MyStorage;
 import com.worksn.websocket.WsAlarmManager;
 import com.worksn.websocket.WsAlarmReceiver;
@@ -17,7 +16,7 @@ public class WsServiceControl {
     Context context;
     public WsServiceControl(Context context){
         this.context = context;
-    };
+    }
     public void start(){
         WsAlarmReceiver wsAlarmReceiver = new WsAlarmReceiver();
         context.registerReceiver(wsAlarmReceiver, new IntentFilter(WsAlarmReceiver.BROADCAST_FILTER));
@@ -31,7 +30,7 @@ public class WsServiceControl {
     public void stop(){
         new WsAlarmManager().CancelAlarm(context);
         Intent intent = new Intent(context, WsService.class);
-        MyStorage.i().putData(StorageConst.STOP_FROM_ACTIVITY, true);
+        MyStorage.i().putData(MyStorageConst.STOP_FROM_ACTIVITY, true);
         context.stopService(intent);
     }
 }

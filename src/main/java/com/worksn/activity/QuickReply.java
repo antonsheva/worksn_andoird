@@ -13,10 +13,12 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.worksn.R;
 import com.worksn.classes.BroadCastMsg;
 import com.worksn.classes.ConfirmDeliverMsg;
 import com.worksn.classes.ConvertMsgData;
 import com.worksn.objects.C_;
+import com.worksn.objects.MyStorageConst;
 import com.worksn.singleton.MyStorage;
 import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.G_;
@@ -33,18 +35,16 @@ public class QuickReply extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CharSequence replyText = null;
-        Log.i("MyQuick", "------------------");
         Intent intent     = getIntent();
-        int consumerId    = intent.getIntExtra("sender_id",  0);
-        long adsId         = intent.getLongExtra("ads_id",     0);
-        long discusId      = intent.getLongExtra("discus_id",  0);
-        String createDate = intent.getStringExtra("create_date");
+        int consumerId    = intent.getIntExtra(C_.STR_SENDER_ID,  0);
+        long adsId         = intent.getLongExtra(C_.STR_ADS_ID,     0);
+        long discusId      = intent.getLongExtra(C_.STR_DISCUS_ID,  0);
+        String createDate = intent.getStringExtra(C_.STR_CREATE_DATE);
 
 
         Bundle results = RemoteInput.getResultsFromIntent(intent);
         if ((results != null) && (consumerId != 0)&&(adsId != 0) && (discusId != 0)) {
-            replyText = results.getCharSequence("notify_field");
-            Log.i("MyQuickReply", replyText.toString());
+            replyText = results.getCharSequence(C_.STR_NOTIFY_FIELD);
 
             PostSubData subData = new PostSubData();
             subData.setSenderId(Usr.i().getUser().getId());
@@ -53,7 +53,7 @@ public class QuickReply extends AppCompatActivity {
             subData.setContent( replyText.toString());
 
             StructMsg msg = new StructMsg();
-            msg.setConsumer_id(consumerId);
+            msg.setConsumerId(consumerId);
             msg.setSender_id(Usr.i().getUser().getId());
             msg.setAds_id(adsId);
             msg.setCreateDate(createDate);
@@ -61,8 +61,8 @@ public class QuickReply extends AppCompatActivity {
             msg.setDiscus_id(discusId);
             Context context = getApplicationContext();
             new ConfirmDeliverMsg(this, consumerId, discusId, C_.CODE_CONFIRM_VIEWED);
-            MyStorage.i().putData("new_msg_sign", false);
-            Post.sendRequest(context,"add_msg", subData, new NetCallback() {
+            MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, false);
+            Post.sendRequest(context,C_.ACT_ADD_MSG, subData, new NetCallback() {
                 @Override
                 public void callback(MyContext data, Integer result, String stringData) {
                     if (result == 1){
@@ -73,10 +73,9 @@ public class QuickReply extends AppCompatActivity {
                         finish();
                     }
                     if (result == -1){
-                        Log.i("MyQuickResponse", "rere");
                         StructMsg errorMsg = new StructMsg();
                         errorMsg.setContent(stringData);
-                        new MyNotify().newNotify(context, errorMsg, "Что-то пошло не так :-( ", false);
+                        new MyNotify().newNotify(context, errorMsg, context.getString(R.string.someThrowable), false);
                         new Timer().schedule(new TimerTask() {
                             @Override
                             public void run() {

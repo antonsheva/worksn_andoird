@@ -8,20 +8,16 @@ import android.util.Log;
 import com.worksn.classes.ConvertMsgData;
 import com.worksn.objects.StructMsg;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.worksn.activity.ActivityBroadcastReceiver;
-import com.worksn.activity.MainActivity;
 import com.worksn.classes.BroadCastMsg;
-import com.worksn.classes.ConvertMsgData;
 import com.worksn.objects.C_;
-import com.worksn.objects.StorageConst;
+import com.worksn.objects.MyStorageConst;
 import com.worksn.singleton.MyStorage;
 import com.worksn.activity.MyNotify;
-import com.worksn.objects.StructMsg;
 import com.worksn.singleton.Usr;
 
 public class WsEvents {
@@ -58,24 +54,24 @@ public class WsEvents {
         Log.i("MyMsg", "new msg WsService");
         if (msg.getDiscus_id() == null)return;
         HashMap<String, Object>map = new ConvertMsgData().rcvMsgToMap(msg);
-        MyStorage.i().putData(StorageConst.NEW_MSG_SIGN, true);
-        MyStorage.i().putData(StorageConst.NEW_MSG_DISCUS_ID, msg.getDiscus_id());
+        MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, true);
+        MyStorage.i().putData(MyStorageConst.NEW_MSG_DISCUS_ID, msg.getDiscus_id());
         new BroadCastMsg(context, map, ActivityBroadcastReceiver.BROADCAST_FILTER);
-        if(!MyStorage.i().getBoolen(StorageConst.MAIN_ACTIVITY_IS_ACTIVE))
+        if(!MyStorage.i().getBoolen(MyStorageConst.MAIN_ACTIVITY_IS_ACTIVE))
             new MyNotify().newNotify(context, msg, "Сообщение от ", true);
     }
     public void wsRcvConfirmDeliverMsg(Context context, WsReceiveData data){
         Log.i("MyMsg", " confirmViewedMsg ");
         HashMap<String, Object>map = new HashMap<>();
         map.put("act", C_.ACT_CONFIRM_DELIVER_MSG);
-        map.put(C_.VAR_DISCUS_ID, data.getDiscusId());
-        map.put(C_.VAR_STATUS_MSG, data.getStatusMsg());
+        map.put(C_.STR_DISCUS_ID, data.getDiscusId());
+        map.put(C_.STR_STATUS_MSG, data.getStatusMsg());
         new BroadCastMsg(context, map, ActivityBroadcastReceiver.BROADCAST_FILTER);
     }
     public void wsRvcOnlineList(Context context, String idListStr){
         HashMap<String, Object>map = new HashMap<>();
         map.put("act", C_.ACT_ONLINE_LIST);
-        map.put(C_.VAR_ID_LIST, idListStr);
+        map.put(C_.STR_ID_LIST, idListStr);
         new BroadCastMsg(context, map, ActivityBroadcastReceiver.BROADCAST_FILTER);
     }
     public void wsRvcBadAuthData(Context context){
@@ -86,7 +82,7 @@ public class WsEvents {
         Log.i("MyPrint", "wsRcvPrintTxt ok");
         HashMap<String, Object>map = new HashMap<>();
         map.put("act", C_.ACT_PRINT_MSG_PROCESS);
-        map.put(C_.VAR_DISCUS_ID, discusId);
+        map.put(C_.STR_DISCUS_ID, discusId);
         new BroadCastMsg(context, map, ActivityBroadcastReceiver.BROADCAST_FILTER);
     }
     public void wsRcvPing(){
@@ -99,9 +95,9 @@ public class WsEvents {
     public void bindImageToMessage(Context context, WsReceiveData data){
         HashMap<String, Object>map = new HashMap<>();
         map.put("act", C_.ACT_BIND_IMG_TO_MSG);
-        map.put(C_.VAR_MSG_ID, data.getMsgId());
-        map.put(C_.VAR_IMG, data.getImg());
-        map.put(C_.VAR_IMG_ICON, data.getImgIcon());
+        map.put(C_.STR_MSG_ID, data.getMsgId());
+        map.put(C_.STR_IMG, data.getImg());
+        map.put(C_.STR_IMG_ICON, data.getImgIcon());
         new BroadCastMsg(context, map, ActivityBroadcastReceiver.BROADCAST_FILTER);
     }
 }

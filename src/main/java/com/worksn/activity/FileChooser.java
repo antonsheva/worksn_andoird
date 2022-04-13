@@ -44,14 +44,14 @@ public class FileChooser extends AppCompatActivity {
         TmpImg.img = null;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Intent intent1 = getIntent();
-        actionType = intent1.getIntExtra("actionType", 0);
+        actionType = intent1.getIntExtra(C_.STR_ACTION_TYPE, 0);
         showFileChooser();
     }
     private void showFileChooser() {
         Intent intent = new Intent(
            Intent.ACTION_PICK,
            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        Intent intentForLaunch = Intent.createChooser(intent, "Выберите изображение");
+        Intent intentForLaunch = Intent.createChooser(intent, this.getString(R.string.chooseImg));
         mLauncher.launch(intentForLaunch);
     }
 }

@@ -4,120 +4,83 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
-
-    @SerializedName("notify_id")
-    @Expose
-    private Integer notifyId;
-
-    @SerializedName("system_notify")
-    @Expose
-    private String systemNotify;
-
-    @SerializedName(C_.VAR_BAN_LIST)
+    @SerializedName(C_.STR_BAN_LIST)
     @Expose
     private String banList = null;
 
-    @SerializedName(C_.VAR_LIKE_LIST)
+    @SerializedName(C_.STR_LIKE_LIST)
     @Expose
     private String likeList = null;
 
-    @SerializedName("id")
+    @SerializedName(C_.STR_ID)
     @Expose
     private Integer id = 0;
 
-    @SerializedName(C_.VAR_APP_ID)
-    @Expose
-    private String applicationId;
-
-    @SerializedName("login")
+    @SerializedName(C_.STR_LOGIN)
     @Expose
     private String login = null;
 
-    @SerializedName("auto_auth")
+    @SerializedName(C_.STR_AUTO_AUTH)
     @Expose
     private Integer autoAuth = 0;
 
-    @SerializedName("name")
+    @SerializedName(C_.STR_NAME)
     @Expose
     private String name = null;
 
-    @SerializedName("s_name")
+    @SerializedName(C_.STR_S_NAME)
     @Expose
     private String sName = null;
 
-    @SerializedName("phone")
+    @SerializedName(C_.STR_PHONE)
     @Expose
     private String phone = null;
 
-    @SerializedName("email")
+    @SerializedName(C_.STR_EMAIL)
     @Expose
     private String email = null;
 
-    @SerializedName("img")
+    @SerializedName(C_.STR_IMG)
     @Expose
     private String img = null;
 
-    @SerializedName("img_icon")
+    @SerializedName(C_.STR_IMG_ICON)
     @Expose
     private String imgIcon = null;
 
-    @SerializedName("create_date")
+    @SerializedName(C_.STR_CREATE_DATE)
     @Expose
     private String createDate = null;
 
-    @SerializedName("last_time")
+    @SerializedName(C_.STR_LAST_TIME)
     @Expose
     private String lastTime = null;
 
-    @SerializedName("rating")
+    @SerializedName(C_.STR_RATING)
     @Expose
     private Float rating = 0f;
 
-    @SerializedName("rights")
+    @SerializedName(C_.STR_RIGHTS)
     @Expose
     private Integer rights = null;
 
-    @SerializedName("vote_qt")
+    @SerializedName(C_.STR_VOTE_QT)
     @Expose
     private Integer voteQt = null;
 
-    @SerializedName("web_site")
+    @SerializedName(C_.STR_WEB_SITE)
     @Expose
     private String webSite = null;
 
-    @SerializedName("about_user")
+    @SerializedName(C_.STR_ABOUT_USER)
     @Expose
     private String aboutUser = null;
 
-    @SerializedName("ws_token")
+    @SerializedName(C_.STR_WS_TOKEN)
     @Expose
     private String wsToken = null;
 
     private Boolean online = false;
-
-
-
-    public Integer getNotifyId() {
-        return notifyId;
-    }
-
-    public void setNotifyId(Integer notifyId) {
-        this.notifyId = notifyId;
-    }
-
-
-
-    public void setSystemNotify(String systemNotify) {
-        this.systemNotify = systemNotify;
-    }
-
-    public String getApplicationId() {
-        return applicationId;
-    }
-
-    public void setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
-    }
 
     public String getBanList() {
         return banList;
@@ -133,14 +96,6 @@ public class User {
 
     public void setLikeList(String likeList) {
         this.likeList = likeList;
-    }
-
-    public String getsName() {
-        return sName;
-    }
-
-    public void setsName(String sName) {
-        this.sName = sName;
     }
 
     public Boolean getOnline() {

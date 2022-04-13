@@ -53,10 +53,10 @@ public class UserReviewsAdapter extends RecyclerView.Adapter<UserReviewsAdapter.
         return userReviewList.size();
     }
     private void renderUserReviewField(UserReview review, UserReviewVwHldr holder, boolean hglt){
-        if (review.getCreate_date() != null)
-            holder.reviewFrmTime.setText(review.getCreate_date());
-        if(review.getSender_id() != null){
-            if (review.getSender_id().equals(Usr.i().getUser().getId())){
+        if (review.getCreateDate() != null)
+            holder.reviewFrmTime.setText(review.getCreateDate());
+        if(review.getSenderId() != null){
+            if (review.getSenderId().equals(Usr.i().getUser().getId())){
                 holder.reviewFrmImg.setVisibility(View.VISIBLE);
                 Funcs.loadImg(context, holder.reviewFrmImg, C_.URL_BASE+Usr.i().getUser().getImgIcon(), 5, null);
             }
@@ -87,7 +87,6 @@ public class UserReviewsAdapter extends RecyclerView.Adapter<UserReviewsAdapter.
             reviewFrmImg     = (ImageView)itemView.findViewById(R.id.reviewFrmImg);
             reviewFrm        = (FrameLayout) itemView.findViewById(R.id.reviewFrm);
         }
-
 
         @Override
         public void onClick(View v) {

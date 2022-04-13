@@ -9,22 +9,22 @@ import com.google.gson.annotations.SerializedName;
 import com.worksn.R;
 
 public class AdsCllct {
-    @SerializedName("ads_type")
+    @SerializedName(C_.STR_ADS_TYPE)
     @Expose
     private Integer adsType = 0;
-    @SerializedName("category")
+    @SerializedName(C_.STR_CATEGORY)
     @Expose
     private Integer catNum;
-    @SerializedName("user_id")
+    @SerializedName(C_.STR_USER_ID)
     @Expose
     private Integer userId;
-    @SerializedName("remove")
+    @SerializedName(C_.STR_REMOVE)
     @Expose
     private Integer remove = 0;
-    @SerializedName("search_phrase")
+    @SerializedName(C_.STR_SEARCH_PHRASE)
     @Expose
     private String searchPhrase;
-    @SerializedName(C_.VAR_ACTIVE)
+    @SerializedName(C_.STR_ACTIVE)
     @Expose
     private Integer active = 1;
 

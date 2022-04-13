@@ -1,7 +1,5 @@
 package com.worksn.singleton;
 
-import android.util.Log;
-
 import com.worksn.objects.C_;
 
 public class AppMode {
@@ -30,9 +28,6 @@ public class AppMode {
             mode = C_.APP_MODE_MAIN;
         }
         if (mode == null) mode = 0;
-        Log.i("MyAppMode", "cnt  -> "+modeCnt);
-        Log.i("MyAppMode", "getMode - mode -> "+mode);
-
         return mode;
     }
     public Integer getMode(){
@@ -43,8 +38,6 @@ public class AppMode {
         this.mode = mode;
         if (this.mode == null)this.mode = C_.APP_MODE_MAIN;
         modeCnt = 0;
-        Log.i("MyAppMode", "setMode - mode -> "+mode);
     }
-
     private Integer modeCnt = 0;
 }

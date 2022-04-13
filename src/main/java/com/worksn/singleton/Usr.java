@@ -39,7 +39,7 @@ public class Usr {
 
     public int targetUserId = 0;
     public ArrayList<Integer> getBanList(){
-        String strBanList  = MyStorage.i().getString( C_.VAR_BAN_LIST);
+        String strBanList  = MyStorage.i().getString( C_.STR_BAN_LIST);
         Log.i("MyBw", "banList -> "+strBanList);
         String[] strBanListArray = null;
         ArrayList<Integer>banList  = new ArrayList<>();
@@ -55,7 +55,7 @@ public class Usr {
         return banList;
     }
     public ArrayList<Integer> getLikeList(){
-        String strLikeList = MyStorage.i().getString(C_.VAR_LIKE_LIST);
+        String strLikeList = MyStorage.i().getString(C_.STR_LIKE_LIST);
         Log.i("MyBw", "likeList -> "+strLikeList);
 
         String[] strLikeListArray = null;
@@ -99,7 +99,7 @@ public class Usr {
         }
     }
     public void clearUsersList(){
-        if (MyScreen.active_mode != C_.ACTIVE_SCREEN_USERS)
+        if (MyScreen.activeMode != C_.ACTIVE_SCREEN_USERS)
             userProfiles.clear();
 
         targetUsers.clear();
@@ -152,7 +152,7 @@ public class Usr {
 
         user = usr;
         auth = true;
-        MyStorage.i().putData(C_.VAR_USER_ID,       user.getId())     ;
+        MyStorage.i().putData(C_.STR_USER_ID,       user.getId())     ;
         MyStorage.i().putData("user_login",    user.getLogin())  ;
         MyStorage.i().putData("user_name",     user.getName())   ;
         MyStorage.i().putData("user_s_name",   user.getSName())  ;
@@ -164,8 +164,8 @@ public class Usr {
         MyStorage.i().putData("user_vote_qt",  user.getVoteQt()) ;
         MyStorage.i().putData("user_rights",   user.getVoteQt()) ;
         MyStorage.i().putData("user_ws_token", user.getWsToken());
-        MyStorage.i().putData(C_.VAR_BAN_LIST,      user.getBanList());
-        MyStorage.i().putData(C_.VAR_LIKE_LIST,     user.getLikeList());
+        MyStorage.i().putData(C_.STR_BAN_LIST,      user.getBanList());
+        MyStorage.i().putData(C_.STR_LIKE_LIST,     user.getLikeList());
     }
     public User getUser() {
         if (user != null)
@@ -224,10 +224,10 @@ public class Usr {
 
             StructMsg msg = (StructMsg)o;
             User user = new User();
-            user.setId(msg.getSpeaker_id());
-            user.setLogin(msg.getSpeaker_login());
-            user.setImgIcon(msg.getSpeaker_img());
-            user.setRating(msg.getSpeaker_rating());
+            user.setId(msg.getSpeakerId());
+            user.setLogin(msg.getSpeakerLogin());
+            user.setImgIcon(msg.getSpeakerImg());
+            user.setRating(msg.getSpeakerRating());
             return user;
         }
         return null;

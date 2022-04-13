@@ -8,8 +8,8 @@ import android.widget.LinearLayout;
 
 import com.worksn.R;
 import com.worksn.objects.HtmlSS;
+import com.worksn.objects.MyStorageConst;
 import com.worksn.objects.StructTxtData;
-import com.worksn.objects.T_;
 import com.worksn.singleton.MyStorage;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ public class CreateInfoContent {
     LinearLayout frmContent;
     public CreateInfoContent(Activity activity){
         this.activity = activity;
-        frmContent = (LinearLayout)activity.findViewById(R.id.settingFrmContent);
+        frmContent = activity.findViewById(R.id.settingFrmContent);
 
-        String fieldList = MyStorage.i().getString(T_.ENVIRONMENT_CONTENT_LIST);
+        String fieldList = MyStorage.i().getString(MyStorageConst.ENVIRONMENT_CONTENT_LIST);
         if (fieldList == null) return;
         String[] list = fieldList.split("___");
         ArrayList<StructTxtData> pageContents = new ArrayList<>();

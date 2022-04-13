@@ -76,6 +76,8 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
 
     RatingStars ratingStars;
     androidx.appcompat.widget.AppCompatButton userPageBtSend;
+
+
     Integer userId = null;
     int bwStatus = 0;
     boolean online = false;
@@ -139,15 +141,15 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
         userPageKonvert = (ImageView)findViewById(R.id.userPageKonvert);
 
         userPageReview = (EditText)findViewById(R.id.userPageReview);
-        userPageStars = (LinearLayout)findViewById(R.id.userPageStars);
-        userPageStar1 = (ImageView)findViewById(R.id.userPageStar1);
-        userPageStar2 = (ImageView)findViewById(R.id.userPageStar2);
-        userPageStar3 = (ImageView)findViewById(R.id.userPageStar3);
-        userPageStar4 = (ImageView)findViewById(R.id.userPageStar4);
-        userPageStar5 = (ImageView)findViewById(R.id.userPageStar5);
+        userPageStars  = (LinearLayout)findViewById(R.id.userPageStars);
+        userPageStar1  = (ImageView)findViewById(R.id.userPageStar1);
+        userPageStar2  = (ImageView)findViewById(R.id.userPageStar2);
+        userPageStar3  = (ImageView)findViewById(R.id.userPageStar3);
+        userPageStar4  = (ImageView)findViewById(R.id.userPageStar4);
+        userPageStar5  = (ImageView)findViewById(R.id.userPageStar5);
         userPageBtSend = (androidx.appcompat.widget.AppCompatButton)findViewById(R.id.userPageBtSend);
 
-        rcVwUserPage = (RecyclerView) findViewById(R.id.rcVwUserPage);
+        rcVwUserPage =   (RecyclerView) findViewById(R.id.rcVwUserPage);
         userPageScreen = (FrameLayout) findViewById(R.id.userPageScreen);
         userPageBigImg = (ImageView) findViewById(R.id.userPageBigImg);
 
@@ -170,11 +172,9 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
         }else {
             initTxtListener();
         }
-
     }
     boolean flg = false;
     private void initTxtListener(){
-
         userPageReview.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -188,8 +188,6 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
                     tmp = userPageReview.getText().toString();
                     a = tmp.substring(tmp.length()-2, tmp.length()-1);
                     a1 = tmp.substring(tmp.length()-1);
-                    Log.i("MyKey", "a -> "+a+"; a1 -> "+a1);
-
 
                     if (flg){
                         int pos = userPageReview.length();
@@ -248,14 +246,14 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 if (data.getBanList() != null)
-                    MyStorage.i().putData(C_.VAR_BAN_LIST, data.getBanList());
+                    MyStorage.i().putData(C_.STR_BAN_LIST, data.getBanList());
                 else
-                    MyStorage.i().putData(C_.VAR_BAN_LIST, "");
+                    MyStorage.i().putData(C_.STR_BAN_LIST, "");
 
                 if (data.getLikeList() != null)
-                    MyStorage.i().putData(C_.VAR_LIKE_LIST, data.getLikeList());
+                    MyStorage.i().putData(C_.STR_LIKE_LIST, data.getLikeList());
                 else
-                    MyStorage.i().putData(C_.VAR_LIKE_LIST, "");
+                    MyStorage.i().putData(C_.STR_LIKE_LIST, "");
                 initBwStatus();
             }
         });
@@ -285,9 +283,9 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
     }
     void initUser() {
         Intent intent = getIntent();
-        int userId = intent.getIntExtra("user_id", 0);
+        int userId = intent.getIntExtra(C_.STR_USER_ID, 0);
         if (userId == 0){
-            PUWindow.i().show("Что-то пошло не так");
+            PUWindow.i().show(R.string.someThrowable);
             finish();
         }else {
             this.userId = userId;
@@ -379,12 +377,9 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
         if (user.getSName() != null)
             userPageSName.setText(user.getSName());
 
-
-
-
-        if (user.getLastTime() != null){
+        if (user.getLastTime() != null)
             lastTime = "заходил  "+user.getLastTime().substring(0, user.getLastTime().length() - 3);
-        }
+
 
         if (online)
             userPageLastTime.setText("сейчас в сети");
@@ -416,71 +411,61 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
 
         ArrayList<Integer> finalBanList = banList;
         ArrayList<Integer> finalLikeList = likeList;
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                userPageBan.setImageResource(R.drawable.no_ban);
-                userPageChoose.setImageResource(R.drawable.no_choose);
-                bwStatus = C_.BW_STATUS_EMPTY;
-                if (finalBanList.contains(userId)){
-                    bwStatus = C_.BW_STATUS_BAN;
-                    userPageBan.setImageResource(R.drawable.ban);
-                }
+        this.runOnUiThread(() -> {
+            userPageBan.setImageResource(R.drawable.no_ban);
+            userPageChoose.setImageResource(R.drawable.no_choose);
+            bwStatus = C_.BW_STATUS_EMPTY;
+            if (finalBanList.contains(userId)){
+                bwStatus = C_.BW_STATUS_BAN;
+                userPageBan.setImageResource(R.drawable.ban);
+            }
 
-                if (finalLikeList.contains(userId)){
-                    bwStatus = C_.BW_STATUS_LIKE;
-                    userPageChoose.setImageResource(R.drawable.choose);
-                }
+            if (finalLikeList.contains(userId)){
+                bwStatus = C_.BW_STATUS_LIKE;
+                userPageChoose.setImageResource(R.drawable.choose);
             }
         });
     }
     void initSelfReview(UserReview review){
         if (review.getComment() != null)
             userPageReview.setText(review.getComment());
-        if (review.getStar_qt() != null)
-            highLightStars(review.getStar_qt());
+        if (review.getStarQt() != null)
+            highLightStars(review.getStarQt());
     }
     void setStatus(boolean status){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (status){
-                    userPageOnline.setVisibility(View.VISIBLE);
-                    userPageLastTime.setText("сейчас в сети");
-                    online = true;
-                } else {
-                    userPageOnline.setVisibility(View.GONE);
-                    online = false;
-                    userPageLastTime.setText(lastTime);
-                }
+        runOnUiThread(() -> {
+            if (status){
+                userPageOnline.setVisibility(View.VISIBLE);
+                userPageLastTime.setText(R.string.onlineNow);
+                online = true;
+            } else {
+                userPageOnline.setVisibility(View.GONE);
+                online = false;
+                userPageLastTime.setText(lastTime);
             }
         });
     }
     void addReview(){
         if(userPageReview.getText().toString().length() < 1) {
-            PUWindow.i().show("Введите текст отзыва");
+            PUWindow.i().show(R.string.enterReviewTxt);
             return;
         }
         PostSubData data = new PostSubData();
         data.setOwnerId(userId);
         data.setSenderId(Usr.i().getUser().getId());
         data.setTxtReview(userPageReview.getText().toString());
-        Post.sendRequest(this,"user_review", data, new NetCallback() {
-            @Override
-            public void callback(MyContext data, Integer result, String stringData) {
-                if (result == -1)return;
-                UserReview tmp = null;
-                for (UserReview review : userReviews){
-                    if (review.getSender_id() != null){
-                        tmp = review;
-                    }
+        Post.sendRequest(this,C_.ACT_ADD_USER_REVIEW, data, (data1, result, stringData) -> {
+            if (result == -1)return;
+            UserReview tmp = null;
+            for (UserReview review : userReviews){
+                if (review.getSenderId() != null){
+                    tmp = review;
                 }
-                if(tmp != null)
-                     userReviews.remove(tmp);
-                userReviews.add(0, data.getReview());
-                createReviewsRecyclerView(userReviews);
-                Log.i("MyReview", data.getReview().getComment());
             }
+            if(tmp != null)
+                 userReviews.remove(tmp);
+            userReviews.add(0, data1.getReview());
+            createReviewsRecyclerView(userReviews);
         });
         new Kbrd().hide(this);
     }
@@ -491,76 +476,59 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
         data.setOwnerId(userId);
         data.setSenderId(Usr.i().getUser().getId());
         data.setStarQt(num);
-        Post.sendRequest(this,"user_review", data, new NetCallback() {
-            @Override
-            public void callback(MyContext data, Integer result, String stringData) {
-                if (result == -1)return;
-                if ((data.getIntegerData()) == null || (data.getFloatData() == null))return;
-                String voteQt = data.getIntegerData().toString();
-                ratingStars.setRating(activity,data.getFloatData()/100f);
-                userPageVoteQt.setText(voteQt);
-            }
+        Post.sendRequest(this,C_.ACT_ADD_USER_REVIEW, data, (data1, result, stringData) -> {
+            if (result == -1)return;
+            if ((data1.getIntegerData()) == null || (data1.getFloatData() == null))return;
+            String voteQt = data1.getIntegerData().toString();
+            ratingStars.setRating(activity, data1.getFloatData()/100f);
+            userPageVoteQt.setText(voteQt);
         });
     }
     void highLightStars(int num){
         extinguishStars();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                switch (num){
-                    case 1 : {
-                        userPageStar1.setImageResource(R.drawable.choose);
-                    } break;
-                    case 2 : {
-                        userPageStar1.setImageResource(R.drawable.choose);
-                        userPageStar2.setImageResource(R.drawable.choose);
-                    } break;
-                    case 3 : {
-                        userPageStar1.setImageResource(R.drawable.choose);
-                        userPageStar2.setImageResource(R.drawable.choose);
-                        userPageStar3.setImageResource(R.drawable.choose);
-                    } break;
-                    case 4 : {
-                        userPageStar1.setImageResource(R.drawable.choose);
-                        userPageStar2.setImageResource(R.drawable.choose);
-                        userPageStar3.setImageResource(R.drawable.choose);
-                        userPageStar4.setImageResource(R.drawable.choose);
-                    } break;
-                    case 5 : {
-                        userPageStar1.setImageResource(R.drawable.choose);
-                        userPageStar2.setImageResource(R.drawable.choose);
-                        userPageStar3.setImageResource(R.drawable.choose);
-                        userPageStar4.setImageResource(R.drawable.choose);
-                        userPageStar5.setImageResource(R.drawable.choose);
-                    } break;
-                }
+        runOnUiThread(() -> {
+            switch (num){
+                case 1 : {
+                    userPageStar1.setImageResource(R.drawable.choose);
+                } break;
+                case 2 : {
+                    userPageStar1.setImageResource(R.drawable.choose);
+                    userPageStar2.setImageResource(R.drawable.choose);
+                } break;
+                case 3 : {
+                    userPageStar1.setImageResource(R.drawable.choose);
+                    userPageStar2.setImageResource(R.drawable.choose);
+                    userPageStar3.setImageResource(R.drawable.choose);
+                } break;
+                case 4 : {
+                    userPageStar1.setImageResource(R.drawable.choose);
+                    userPageStar2.setImageResource(R.drawable.choose);
+                    userPageStar3.setImageResource(R.drawable.choose);
+                    userPageStar4.setImageResource(R.drawable.choose);
+                } break;
+                case 5 : {
+                    userPageStar1.setImageResource(R.drawable.choose);
+                    userPageStar2.setImageResource(R.drawable.choose);
+                    userPageStar3.setImageResource(R.drawable.choose);
+                    userPageStar4.setImageResource(R.drawable.choose);
+                    userPageStar5.setImageResource(R.drawable.choose);
+                } break;
             }
         });
     }
     void extinguishStars(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                userPageStar1.setImageResource(R.drawable.no_choose);
-                userPageStar2.setImageResource(R.drawable.no_choose);
-                userPageStar3.setImageResource(R.drawable.no_choose);
-                userPageStar4.setImageResource(R.drawable.no_choose);
-                userPageStar5.setImageResource(R.drawable.no_choose);
-            }
+        runOnUiThread(() -> {
+            userPageStar1.setImageResource(R.drawable.no_choose);
+            userPageStar2.setImageResource(R.drawable.no_choose);
+            userPageStar3.setImageResource(R.drawable.no_choose);
+            userPageStar4.setImageResource(R.drawable.no_choose);
+            userPageStar5.setImageResource(R.drawable.no_choose);
         });
     }
     private void createReviewsRecyclerView(@NotNull List<UserReview> reviews){
-        int cnt = 0;
-        for(UserReview review: reviews){
-           String data = "null";
-           if(review.getSender_id() != null)data = review.getSender_id().toString();
-           Log.i("MyRev", "review №"+cnt+" id -> "+data);
-        }
         userReviewsAdapter = null;
         layoutManagerReviews = new LinearLayoutManager(this);
         userReviewsAdapter = new UserReviewsAdapter(reviews, adapterListener, R.layout.frm_user_review);
-//        layoutManagerReviews.setReverseLayout(true);
-//        layoutManagerReviews.setStackFromEnd(true);
         rcVwUserPage.setLayoutManager(layoutManagerReviews);
         rcVwUserPage.setHasFixedSize(true);
         rcVwUserPage.setAdapter(userReviewsAdapter);

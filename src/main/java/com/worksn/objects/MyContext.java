@@ -8,45 +8,41 @@ import com.google.gson.annotations.SerializedName;
 
 public class MyContext {
 
-    @SerializedName(C_.VAR_BAN_LIST)
+    @SerializedName(C_.STR_BAN_LIST)
     @Expose
     private String banList;
-    @SerializedName(C_.VAR_LIKE_LIST)
+    @SerializedName(C_.STR_LIKE_LIST)
     @Expose
     private String likeList;
 
 
-    @SerializedName(C_.VAR_USERS_LIST)
+    @SerializedName(C_.STR_USERS_LIST)
     @Expose
     private ArrayList<User>usersList = null;
 
-    @SerializedName(C_.VAR_IMG_LIST)
+    @SerializedName(C_.STR_IMG_LIST)
     @Expose
     private String imgList;
 
-    @SerializedName("lifetime")
+    @SerializedName(C_.STR_LIFETIME)
     @Expose
     private ArrayList<AssocData> lifetime = new ArrayList<>();
-    @SerializedName("categories")
+    @SerializedName(C_.STR_CATEGORIES)
     @Expose
     private ArrayList<AssocData> categories = new ArrayList<>();
 
-    @SerializedName("session_id")
-    @Expose
-    private String session_id;
-
-    @SerializedName("float_data")
+    @SerializedName(C_.STR_FLOAT_DATA)
     @Expose
     private Float floatData = null;
 
-    @SerializedName("integer_data")
+    @SerializedName(C_.STR_INTEGER_DATA)
     @Expose
     private Integer integerData = null;
-    @SerializedName("user")
+    @SerializedName(C_.STR_USER)
     @Expose
     private User user = null;
 
-    @SerializedName("owner")
+    @SerializedName(C_.STR_OWNER)
     @Expose
     private User owner = new User();
 
@@ -58,13 +54,13 @@ public class MyContext {
         this.speaker = speaker;
     }
 
-    @SerializedName("speaker")
+    @SerializedName(C_.STR_SPEAKER)
     @Expose
     private User speaker = new User();
 
 
 
-    @SerializedName("notifies")
+    @SerializedName(C_.STR_NOTIFIES)
     @Expose
     private ArrayList<SysNotify> notifies = new ArrayList<>();
 
@@ -76,7 +72,7 @@ public class MyContext {
         this.notifies = notifies;
     }
 
-    @SerializedName("setting_page_data")
+    @SerializedName(C_.STR_SETTING_PAGE_DATA)
     @Expose
     private ArrayList<StructTxtData>settingPageContent = new ArrayList<>();
 
@@ -88,90 +84,46 @@ public class MyContext {
         this.settingPageContent = settingPageContent;
     }
 
-    @SerializedName("discus")
+    @SerializedName(C_.STR_DISCUS)
     @Expose
     private Discus discus = new Discus();
 
-    @SerializedName("ads_collection")
+    @SerializedName(C_.STR_ADS_COLLECTION)
     @Expose
     private final ArrayList<Ads> adsCollection = new ArrayList<Ads>();
 
-    @SerializedName("review")
+    @SerializedName(C_.STR_REVIEW)
     @Expose
     private UserReview review;
 
-    @SerializedName("user_reviews")
+    @SerializedName(C_.STR_USER_REVIEWS)
     @Expose
     private final List<UserReview> userReviews = new ArrayList<UserReview>();
 
-    @SerializedName("target_ads")
+    @SerializedName(C_.STR_TARGET_ADS)
     @Expose
     private Ads targetAds;
 
-    @SerializedName("target_msg")
+    @SerializedName(C_.STR_TARGET_MSG)
     @Expose
     private StructMsg targetMsg;
 
-    @SerializedName("messages")
+    @SerializedName(C_.STR_MESSAGES)
     @Expose
     private ArrayList<StructMsg> messages = new ArrayList<StructMsg>();
 
-    @SerializedName("cat_list_w")
-    @Expose
-    private ArrayList<String> catListWorker = new ArrayList<String>();
-
-    @SerializedName("cat_list_e")
-    @Expose
-    private ArrayList<String> catListEmployer;
-
-    @SerializedName("lifetime_list")
-    @Expose
-    private ArrayList<Double> lifetimeList;
-
-    @SerializedName("lifetime_names")
-    @Expose
-    private ArrayList<String> lifetimeNames;
-
-
-    @SerializedName("ads_owner_id")
-    @Expose
-    private Integer adsOwnerId;
-
-    @SerializedName("s_token")
-    @Expose
-    private String sToken;
-
-    @SerializedName("date")
-    @Expose
-    private String date;
-
-    @SerializedName("page_name")
-    @Expose
-    private String pageName;
-
-    @SerializedName("ads_type")
-    @Expose
-    private Integer adsType;
-
-    @SerializedName("ads_category")
-    @Expose
-    private Integer adsCategory;
-
-    @SerializedName("tmp_img")
+    @SerializedName(C_.STR_TMP_IMG)
     @Expose
     private String tmpImg = null;
 
-    @SerializedName("tmp_img_icon")
+    @SerializedName(C_.STR_TMP_IMG_ICON)
     @Expose
     private String tmpImgIcon = null;
 
-    @SerializedName("save_img_data")
+    @SerializedName(C_.STR_SAVE_IMG_DATA)
     @Expose
     private SaveImgData saveImgData = null;
 
-    @SerializedName("cat_list")
-    @Expose
-    private ArrayList<String> catList;
 
 
     public void setBanList(String banList) {
@@ -238,22 +190,6 @@ public class MyContext {
 
     public void setFloatData(Float floatData) {this.floatData = floatData;}
 
-    public ArrayList<String> getLifetimeNames() {
-        return lifetimeNames;
-    }
-
-    public void setLifetimeNames(ArrayList<String> lifetimeNames) {
-        this.lifetimeNames = lifetimeNames;
-    }
-
-    public ArrayList<String> getCatList() {
-        return catList;
-    }
-
-    public void setCatList(ArrayList<String> catList) {
-        this.catList = catList;
-    }
-
     public String getTmpImg() {
         return tmpImg;
     }
@@ -268,30 +204,6 @@ public class MyContext {
 
     public void setTmpImgIcon(String tmpImgIcon) {
         this.tmpImgIcon = tmpImgIcon;
-    }
-
-    public ArrayList<String> getCatListWorker() {
-        return catListWorker;
-    }
-
-    public void setCatListWorker(ArrayList<String> catListWorker) {
-        this.catListWorker = catListWorker;
-    }
-
-    public ArrayList<String> getCatListEmployer() {
-        return catListEmployer;
-    }
-
-    public void setCatListEmployer(ArrayList<String> catListEmployer) {
-        this.catListEmployer = catListEmployer;
-    }
-
-    public ArrayList<Double> getLifetimeList() {
-        return lifetimeList;
-    }
-
-    public void setLifetimeList(ArrayList<Double> lifetimeList) {
-        this.lifetimeList = lifetimeList;
     }
 
     public void setMessages(ArrayList<StructMsg> data){
@@ -323,30 +235,6 @@ public class MyContext {
         return adsCollection;
     }
 
-    public Integer getAdsOwnerId() {
-        return adsOwnerId;
-    }
-
-    public String getsToken() {
-        return sToken;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public String getPageName() {
-        return pageName;
-    }
-
-    public Integer getAdsType() {
-        return adsType;
-    }
-
-    public Integer getAdsCategory() {
-        return adsCategory;
-    }
-
     public Ads getTargetAds() {
         return targetAds;
     }
@@ -355,14 +243,6 @@ public class MyContext {
 
     public List<UserReview> getUserReviews() {
         return userReviews;
-    }
-
-    public String getSession_id() {
-        return session_id;
-    }
-
-    public void setSession_id(String session_id) {
-        this.session_id = session_id;
     }
 
     public void setUser(User user) {
@@ -383,30 +263,6 @@ public class MyContext {
 
     public void setTargetAds(Ads targetAds) {
         this.targetAds = targetAds;
-    }
-
-    public void setAdsOwnerId(Integer adsOwnerId) {
-        this.adsOwnerId = adsOwnerId;
-    }
-
-    public void setsToken(String sToken) {
-        this.sToken = sToken;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setPageName(String pageName) {
-        this.pageName = pageName;
-    }
-
-    public void setAdsType(Integer adsType) {
-        this.adsType = adsType;
-    }
-
-    public void setAdsCategory(Integer adsCategory) {
-        this.adsCategory = adsCategory;
     }
 
     public Discus getDiscus() {

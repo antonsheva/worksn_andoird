@@ -19,12 +19,7 @@ public class MyHref {
                 TextView hrefTitle   = v.findViewById(R.id.hrefTitle);
                 hrefTitle.setText(title);
 
-                v.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new FollowLink(activity, url);
-                    }
-                });
+                v.setOnClickListener(v1 -> new FollowLink(activity, url));
             }
         });
     }

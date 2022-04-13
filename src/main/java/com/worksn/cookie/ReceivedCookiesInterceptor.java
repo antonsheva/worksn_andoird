@@ -1,9 +1,4 @@
-package com.worksn.cookie; // Original written by tsuharesu
-// Adapted to create a "drop it in and watch it work" approach by Nikhil Jha.
-// Just add your package statement and drop it in the folder with all your other worksn.classes.
-
-import android.content.Context;
-
+package com.worksn.cookie;
 
 import androidx.annotation.NonNull;
 
@@ -14,8 +9,7 @@ import okhttp3.Interceptor;
 import okhttp3.Response;
 
 public class ReceivedCookiesInterceptor implements Interceptor {
-    public ReceivedCookiesInterceptor() {
-    } // AddCookiesInterceptor()
+    public ReceivedCookiesInterceptor() {}
     @NonNull
     @Override
     public Response intercept(Chain chain) throws IOException {

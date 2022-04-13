@@ -36,16 +36,16 @@ public class Discus {
         return ads_id;
     }
 
-    @SerializedName("id")
+    @SerializedName(C_.STR_ID)
     @Expose
     Long id = null;
-    @SerializedName("speaker_1")
+    @SerializedName(C_.STR_SPEAKER_1)
     @Expose
     Integer speaker_1 = null;
-    @SerializedName("speaker_2")
+    @SerializedName(C_.STR_SPEAKER_2)
     @Expose
     Integer speaker_2 = null;
-    @SerializedName("ads_id")
+    @SerializedName(C_.STR_ADS_ID)
     @Expose
     Long ads_id = null;
 

@@ -40,7 +40,7 @@ public class MyLocation {
 
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private Location imHere; // здесь будет всегда доступна самая последняя информация о местоположении пользователя.
+    private Location imHere;
     private CB cb;
     public static boolean locationWasChange  = false;
 

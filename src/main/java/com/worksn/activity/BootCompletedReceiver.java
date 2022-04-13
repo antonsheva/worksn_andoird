@@ -29,12 +29,8 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         new BroadCastMsg(context, C_.ACT_OPEN_ACTIVITY, WsBroadcastReceiver.BROADCAST_FILTER);
         MyStorage.i().init(context);
         if (Usr.i().auth()){
-            Log.i("MyApp", "user is authorised");
-            Log.i("MyAlarm", "startWsService");
             Intent intent = new Intent(new Intent(context, WsService.class));
             ActivityCompat.startForegroundService(context, intent);
-        }else {
-            Log.i("MyApp", "user is not authorised");
         }
     }
 

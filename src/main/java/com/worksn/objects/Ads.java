@@ -4,98 +4,98 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Ads {
-    @SerializedName("id")
+    @SerializedName(C_.STR_ID)
     @Expose
     private Long id;
-    @SerializedName("ads_type")
+    @SerializedName(C_.STR_ADS_TYPE)
     @Expose
     private Integer adsType;
-    @SerializedName("user_id")
+    @SerializedName(C_.STR_USER_ID)
     @Expose
     private Integer userId;
-    @SerializedName("user_login")
+    @SerializedName(C_.STR_USER_LOGIN)
     @Expose
     private String userLogin;
-    @SerializedName("user_rating")
+    @SerializedName(C_.STR_USER_RATING)
     @Expose
     private Float userRating;
-    @SerializedName("user_vote_qt")
+    @SerializedName(C_.STR_USER_VOTE_QT)
     @Expose
     private Integer userVoteQt;
 
-    @SerializedName("user_img")
+    @SerializedName(C_.STR_USER_IMG)
     @Expose
     private String userImg;
-    @SerializedName("user_img_icon")
+    @SerializedName(C_.STR_USER_IMG_ICON)
     @Expose
     private String userImgIcon;
-    @SerializedName("user_online")
+    @SerializedName(C_.STR_USER_ONLINE)
     @Expose
     private boolean userOnline = false;
 
-    @SerializedName("category")
+    @SerializedName(C_.STR_CATEGORY)
     @Expose
     private Integer category;
-    @SerializedName("active")
+    @SerializedName(C_.STR_ACTIVE)
     @Expose
     private Integer active;
-    @SerializedName("coord_x")
+    @SerializedName(C_.STR_COORD_X)
     @Expose
     private Double coordX;
-    @SerializedName("coord_y")
+    @SerializedName(C_.STR_COORD_Y)
     @Expose
     private Double coordY;
-    @SerializedName("img")
+    @SerializedName(C_.STR_IMG)
     @Expose
     private String img;
-    @SerializedName("img_icon")
+    @SerializedName(C_.STR_IMG_ICON)
     @Expose
     private String imgIcon;
-    @SerializedName("description")
+    @SerializedName(C_.STR_DESCRIPTION)
     @Expose
     private String description;
-    @SerializedName("cost")
+    @SerializedName(C_.STR_COST)
     @Expose
     private Integer cost = 0;
-    @SerializedName("create_date")
+    @SerializedName(C_.STR_CREATE_DATE)
     @Expose
     private String createDate;
-    @SerializedName("create_time")
+    @SerializedName(C_.STR_CREATE_TIME)
     @Expose
     private Long createTime;
-    @SerializedName("lifetime")
+    @SerializedName(C_.STR_LIFETIME)
     @Expose
     private Long lifetime;
-    @SerializedName("remove")
+    @SerializedName(C_.STR_REMOVE)
     @Expose
     private Integer remove;
-    @SerializedName("min_x")
+    @SerializedName(C_.STR_MIN_X)
     @Expose
     private Float minX;
-    @SerializedName("max_x")
+    @SerializedName(C_.STR_MAX_X)
     @Expose
     private Float maxX;
-    @SerializedName("min_y")
+    @SerializedName(C_.STR_MIN_Y)
     @Expose
     private Float minY;
-    @SerializedName("max_y")
+    @SerializedName(C_.STR_MAX_Y)
     @Expose
     private Float maxY;
 
-    @SerializedName(C_.VAR_HOUR_START)
+    @SerializedName(C_.STR_HOUR_START)
     @Expose
     private Integer hourStart;
-    @SerializedName(C_.VAR_HOUR_STOP)
+    @SerializedName(C_.STR_HOUR_STOP)
     @Expose
     private Integer hourStop;
-    @SerializedName(C_.VAR_MIN_START)
+    @SerializedName(C_.STR_MIN_START)
     @Expose
     private Integer minStart;
-    @SerializedName(C_.VAR_VISIBLE_MODE)
+    @SerializedName(C_.STR_VISIBLE_MODE)
     @Expose
     private Integer visibleMode;
 
-    @SerializedName(C_.VAR_EDIT)
+    @SerializedName(C_.STR_EDIT)
     @Expose
     private Integer edit;
 
@@ -150,7 +150,7 @@ public class Ads {
         this.minStop = minStop;
     }
 
-    @SerializedName(C_.VAR_MIN_STOP)
+    @SerializedName(C_.STR_MIN_STOP)
     @Expose
     private Integer minStop;
 

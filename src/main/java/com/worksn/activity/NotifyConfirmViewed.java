@@ -21,6 +21,7 @@ import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.C_;
 import com.worksn.objects.G_;
 import com.worksn.objects.MyContext;
+import com.worksn.objects.MyStorageConst;
 import com.worksn.objects.PostSubData;
 import com.worksn.objects.StructMsg;
 import com.worksn.singleton.MyStorage;
@@ -33,15 +34,13 @@ public class NotifyConfirmViewed extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("MyQuick", "------------------");
         Intent intent     = getIntent();
-        int consumerId    = intent.getIntExtra("sender_id",  0);
-        long discusId      = intent.getLongExtra("discus_id",  0);
+        int consumerId    = intent.getIntExtra(C_.STR_SENDER_ID,  0);
+        long discusId      = intent.getLongExtra(C_.STR_DISCUS_ID,  0);
         G_.isQuickResponse = true;
         if ((consumerId != 0) && (discusId != 0)) {
             new ConfirmDeliverMsg(this, consumerId, discusId, C_.CODE_CONFIRM_VIEWED);
-            MyStorage.i().putData("new_msg_sign", false);
-
+            MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, false);
         }
         new MyNotify().removeNotify(context);
         finish();

@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.worksn.R;
 import com.worksn.adapters.MsgGroupAdapter;
+import com.worksn.objects.C_;
 import com.worksn.singleton.PUWindow;
 import com.worksn.interfaces.AdapterListener;
 import com.worksn.interfaces.NetCallback;
@@ -60,7 +61,7 @@ public class RcVwMsgGroup {
     public void setOnlineStatus(){
         renderOnlineStatus(Usr.i().onlineList);
         for (StructMsg msg : messages){
-            if (Usr.i().onlineList.contains(msg.getSpeaker_id()))msg.setSpeakerOnline(true);
+            if (Usr.i().onlineList.contains(msg.getSpeakerId()))msg.setSpeakerOnline(true);
         }
     }
     private void renderOnlineStatus(List<Integer> idList){
@@ -78,7 +79,7 @@ public class RcVwMsgGroup {
                         v = layoutManagerMsgGroup.findViewByPosition(i);
                         if(v == null) return;
                         ImageView online =  (ImageView)v.findViewById(R.id.uProfileOnline);
-                        if (idList.contains(msg.getSpeaker_id())){
+                        if (idList.contains(msg.getSpeakerId())){
                             online.setVisibility(View.VISIBLE);
                         }else {
                             online.setVisibility(View.GONE);
@@ -100,7 +101,7 @@ public class RcVwMsgGroup {
     private void removeMsgGroup(Context context, long id, CB cb){
         PostSubData subData = new PostSubData();
         subData.setId(id);
-        Post.sendRequest(context, "rmvDiscus", subData, new NetCallback() {
+        Post.sendRequest(context, C_.ACT_REMOVE_DISCUS, subData, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 if (result == 0)

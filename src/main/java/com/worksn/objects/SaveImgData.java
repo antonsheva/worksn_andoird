@@ -4,32 +4,32 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class SaveImgData {
-    @SerializedName("img")
+    @SerializedName(C_.STR_IMG)
     @Expose
     private String img;
 
-    @SerializedName("img_icon")
+    @SerializedName(C_.STR_IMG_ICON)
     @Expose
     private String imgIcon;
 
-    @SerializedName("create_id")
+    @SerializedName(C_.STR_CREATE_ID)
     @Expose
     private String createId;
 
-    @SerializedName("msg_id")
+    @SerializedName(C_.STR_MSG_ID)
     @Expose
     private Long msgId;
 
-    @SerializedName("consumer_id")
+    @SerializedName(C_.STR_CONSUMER_ID)
     @Expose
-    private Integer consumerId;
+    private Integer destinationConsumerId;
 
-    public Integer getConsumerId() {
-        return consumerId;
+    public Integer getDestinationConsumerId() {
+        return destinationConsumerId;
     }
 
-    public void setConsumerId(Integer consumerId) {
-        this.consumerId = consumerId;
+    public void setDestinationConsumerId(Integer destinationConsumerId) {
+        this.destinationConsumerId = destinationConsumerId;
     }
 
     public Long getMsgId() {

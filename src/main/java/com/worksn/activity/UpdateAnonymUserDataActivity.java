@@ -26,14 +26,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.worksn.R;
 import com.worksn.classes.Kbrd;
 import com.worksn.classes.MyFile;
-import com.worksn.classes.MyHref;
+import com.worksn.objects.PostSubData;
 import com.worksn.singleton.AppMode;
 import com.worksn.singleton.MyStorage;
 import com.worksn.singleton.PUWindow;
 import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.C_;
 import com.worksn.objects.MyContext;
-import com.worksn.objects.PostDataRegistration;
 import com.worksn.objects.TmpImg;
 import com.worksn.objects.User;
 import com.worksn.singleton.Usr;
@@ -42,39 +41,33 @@ import com.worksn.view.FrameProgressbar;
 
 
 public class UpdateAnonymUserDataActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageView regFormImg;
-    EditText  regFormLogin;
-    EditText  regFormPassword;
-    EditText  regFormRepeatPassword;
-    EditText  regFormName;
-    EditText  regFormSName;
-    EditText  regFormEmail;
-    EditText  regFormAbout;
+    ImageView    regFormImg;
+    EditText     regFormLogin;
+    EditText     regFormPassword;
+    EditText     regFormRepeatPassword;
+    EditText     regFormName;
+    EditText     regFormSName;
+    EditText     regFormEmail;
+    EditText     regFormAbout;
+    ImageView    regFormCamera;
+    ImageView    regFormGallery;
     LinearLayout regFormImgSource;
-    ImageView regFormCamera;
-    ImageView regFormGallery;
-
     androidx.appcompat.widget.AppCompatButton btSend;
 
     MyFile myFile = null;
-    Activity activity = this;
     boolean changeAvatarFlag = false;
 
-
-    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    saveDataChange();
-                    break;
-                case DialogInterface.BUTTON_NEGATIVE:
-                    changeAvatarFlag       = false;
-                    TmpImg.imgSend     = null;
-                    TmpImg.imgIconSend = null;
-                    onBackPressed();
-                    break;
-            }
+    DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+        switch (which){
+            case DialogInterface.BUTTON_POSITIVE:
+                saveDataChange();
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                changeAvatarFlag       = false;
+                TmpImg.imgSend     = null;
+                TmpImg.imgIconSend = null;
+                onBackPressed();
+                break;
         }
     };
 
@@ -91,11 +84,9 @@ public class UpdateAnonymUserDataActivity extends AppCompatActivity implements V
             new FrameProgressbar(this).hide();
             super.onBackPressed();
         }
-
     }
 
-
-
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,23 +111,22 @@ public class UpdateAnonymUserDataActivity extends AppCompatActivity implements V
             case R.id.btSend          : saveDataChange()    ; break;
             case R.id.regFormCamera   : makePhoto()         ; break;
             case R.id.regFormGallery  : chooseFile()        ; break;
-//            case R.id.privacyPageHref : new FollowLink(activity); break;
         }
     }
 
     private void initViewElements(){
-        regFormImg            = (ImageView)findViewById(R.id.regFormImg);
-        regFormLogin          = (EditText) findViewById(R.id.regFormLogin);
-        regFormPassword       = (EditText) findViewById(R.id.regFormPassword);
-        regFormRepeatPassword = (EditText) findViewById(R.id.regFormRepeatPassword);
-        regFormName           = (EditText) findViewById(R.id.regFormName);
-        regFormSName          = (EditText) findViewById(R.id.regFormSName);
-        regFormEmail          = (EditText) findViewById(R.id.regFormEmail);
-        regFormAbout          = (EditText) findViewById(R.id.regFormAbout);
-        regFormCamera         = (ImageView)findViewById(R.id.regFormCamera);
-        regFormGallery        = (ImageView)findViewById(R.id.regFormGallery);
-        regFormImgSource      = (LinearLayout) findViewById(R.id.regFormImgSource);
-        btSend                = (androidx.appcompat.widget.AppCompatButton)findViewById(R.id.btSend);
+        regFormImg            = findViewById(R.id.regFormImg);
+        regFormLogin          = findViewById(R.id.regFormLogin);
+        regFormPassword       = findViewById(R.id.regFormPassword);
+        regFormRepeatPassword = findViewById(R.id.regFormRepeatPassword);
+        regFormName           = findViewById(R.id.regFormName);
+        regFormSName          = findViewById(R.id.regFormSName);
+        regFormEmail          = findViewById(R.id.regFormEmail);
+        regFormAbout          = findViewById(R.id.regFormAbout);
+        regFormCamera         = findViewById(R.id.regFormCamera);
+        regFormGallery        = findViewById(R.id.regFormGallery);
+        regFormImgSource      = findViewById(R.id.regFormImgSource);
+        btSend                = findViewById(R.id.btSend);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -164,10 +154,6 @@ public class UpdateAnonymUserDataActivity extends AppCompatActivity implements V
                 if (regFormAbout.length()>1){
                     tmp = regFormAbout.getText().toString();
                     a = tmp.substring(tmp.length()-2);
-
-                    Log.i("MyKey",  " a1 -> "+a);
-
-
                     if (flg[0]){
                         int pos = regFormAbout.length();
                         regFormAbout.setInputType(TYPE_CLASS_TEXT | TYPE_TEXT_FLAG_MULTI_LINE);
@@ -183,7 +169,6 @@ public class UpdateAnonymUserDataActivity extends AppCompatActivity implements V
                     }
                 }
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
 
@@ -215,39 +200,34 @@ public class UpdateAnonymUserDataActivity extends AppCompatActivity implements V
         }
 
         if (login.equals("")){
-            PUWindow.i().show("Введите логин");
+            PUWindow.i().show(R.string.enterLogin);
             return;
         }
         if (password.equals("")) {
-            PUWindow.i().show("Введите пароль");
+            PUWindow.i().show(R.string.enterPassword);
             return;
         }
         if (repeatPassword.equals("")) {
-            PUWindow.i().show("Повторите пароль");
+            PUWindow.i().show(R.string.repeatPassword);
             return;
         }
         if (!password.equals(repeatPassword)){
-            PUWindow.i().show("Не совпадают пароли");
+            PUWindow.i().show(R.string.passwordsAreNotEqual);
             return;
         }
 
-        name  = regFormName.getText().toString();
-        sName = regFormSName.getText().toString();
-        email = regFormEmail.getText().toString();
-        about = regFormAbout.getText().toString();
-
-        PostDataRegistration userData = new PostDataRegistration();
+        PostSubData userData = new PostSubData();
         userData.setLogin(login);
         userData.setPassword(password);
         userData.setName(name);
-        userData.setsName(sName);
+        userData.setS_name(sName);
         userData.setEmail(email);
         userData.setAboutUser(about);
         sendData(userData);
     }
-    private void sendData(PostDataRegistration userData){
+    private void sendData(PostSubData userData){
         Context context = (Context)this;
-        Post.sendRequest(this,"updt_auto_auth_data", userData, new NetCallback() {
+        Post.sendRequest(this,C_.ACT_UPDATE_AUTO_AUTH_DATA, userData, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 PUWindow.i().show(stringData);

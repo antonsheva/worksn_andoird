@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class PostSubData {
-    @SerializedName(C_.VAR_USER_ID)
+    @SerializedName(C_.STR_USER_ID)
     @Expose
     private Integer userId = null;
 
@@ -16,119 +16,119 @@ public class PostSubData {
         this.userId = userId;
     }
 
-    @SerializedName(C_.VAR_SPEAKER_ID)
+    @SerializedName(C_.STR_SPEAKER_ID)
     @Expose
     private Integer speakerId = null;
 
-    @SerializedName(C_.VAR_OWNER_ID)
+    @SerializedName(C_.STR_OWNER_ID)
     @Expose
     Integer ownerId = null;
 
-    @SerializedName("id")
+    @SerializedName(C_.STR_ID)
     @Expose
     private Long id = null;
 
-    @SerializedName(C_.VAR_CONTENT)
+    @SerializedName(C_.STR_CONTENT)
     @Expose
     private String content = null;
 
-    @SerializedName(C_.VAR_ADS_ID)
+    @SerializedName(C_.STR_ADS_ID)
     @Expose
     private Long ads_id = null;
 
-    @SerializedName(C_.VAR_CONSUMER_ID)
+    @SerializedName(C_.STR_CONSUMER_ID)
     @Expose
     private Integer consumerId = null;
 
-    @SerializedName(C_.VAR_SENDER_ID)
+    @SerializedName(C_.STR_SENDER_ID)
     @Expose
     Integer senderId = null;
 
-    @SerializedName(C_.VAR_DISCUS_ID)
+    @SerializedName(C_.STR_DISCUS_ID)
     @Expose
     Long discusId = null;
 
-    @SerializedName(C_.VAR_IMG)
+    @SerializedName(C_.STR_IMG)
     @Expose
     String img=null;
 
-    @SerializedName(C_.VAR_IMG_ICON)
+    @SerializedName(C_.STR_IMG_ICON)
     @Expose
     String imgIcon=null;
 
-    @SerializedName("login")
+    @SerializedName(C_.STR_LOGIN)
     @Expose
     String login=null;
 
-    @SerializedName("password")
+    @SerializedName(C_.STR_PASSWORD)
     @Expose
     String password=null;
 
-    @SerializedName("new_pass")
+    @SerializedName(C_.STR_NEW_PASS)
     @Expose
     String new_pass=null;
 
-    @SerializedName("name")
+    @SerializedName(C_.STR_NAME)
     @Expose
     String name=null;
 
-    @SerializedName("s_name")
+    @SerializedName(C_.STR_S_NAME)
     @Expose
     String s_name=null;
 
-    @SerializedName("email")
+    @SerializedName(C_.STR_EMAIL)
     @Expose
     String email=null;
 
-    @SerializedName("phone")
+    @SerializedName(C_.STR_PHONE)
     @Expose
     String phone=null;
 
-    @SerializedName("about_user")
+    @SerializedName(C_.STR_ABOUT_USER)
     @Expose
     String about_user=null;
 
-    @SerializedName("file_name")
+    @SerializedName(C_.STR_FILE_NAME)
     @Expose
     String fileName = null;
 
-    @SerializedName("txt_review")
+    @SerializedName(C_.STR_TXT_REVIEW)
     @Expose
     String txtReview = null;
 
-    @SerializedName("star_qt")
+    @SerializedName(C_.STR_STAR_QT)
     @Expose
     Integer starQt = 0;
 
-    @SerializedName("create_id")
+    @SerializedName(C_.STR_CREATE_ID)
     @Expose
     String createId = null;
 
-    @SerializedName(C_.VAR_REPLY_MSG_ID)
+    @SerializedName(C_.STR_REPLY_MSG_ID)
     @Expose
     private Long replyMsgId = null;
 
-    @SerializedName(C_.VAR_REPLY_SENDER_ID)
+    @SerializedName(C_.STR_REPLY_SENDER_ID)
     @Expose
     private Integer replySenderId = null;
 
-    @SerializedName(C_.VAR_REPLY_SENDER_LOGIN)
+    @SerializedName(C_.STR_REPLY_SENDER_LOGIN)
     @Expose
     private String replySenderLogin = null;
 
-    @SerializedName(C_.VAR_REPLY_CONTENT)
+    @SerializedName(C_.STR_REPLY_CONTENT)
     @Expose
     private String replyContent = null;
 
-    @SerializedName(C_.VAR_REPLY_IMG)
+    @SerializedName(C_.STR_REPLY_IMG)
     @Expose
     private String replyImg;
 
-    @SerializedName(C_.VAR_STATUS)
+    @SerializedName(C_.STR_STATUS)
     @Expose
     private Integer status = null;
 
-    @SerializedName( C_.VAR_SUBJECT_ID)
+    @SerializedName( C_.STR_SUBJECT_ID)
     @Expose
     private Integer subjectId = null;
 
@@ -245,7 +245,7 @@ public class PostSubData {
     public String getPassword() {
         return password;
     }
-    public String getNew_pass() {
+    public String getNewPass() {
         return new_pass;
     }
     public String getName() {
@@ -326,10 +326,11 @@ public class PostSubData {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    public void setAbout_user(String about_user) {
+    public void setAboutUser(String about_user) {
         this.about_user = about_user;
     }
-    public void setNew_pass(String new_pass) {
+
+    public void setNewPass(String new_pass) {
         this.new_pass = new_pass;
     }
 }

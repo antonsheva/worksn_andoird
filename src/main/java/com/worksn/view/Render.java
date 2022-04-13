@@ -70,15 +70,15 @@ public class Render {
     }
     public void screen(Integer screen_mode, Integer active_mode){
         new Kbrd().hide(activity);
-        if ((screen_mode.equals(MyScreen.screen_mode)) && (active_mode.equals(MyScreen.active_mode))) return;
+        if ((screen_mode.equals(MyScreen.screenMode)) && (active_mode.equals(MyScreen.activeMode))) return;
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 TmpImg.imgSend = null;
-                MyScreen.prev_mode = MyScreen.screen_mode;
-                MyScreen.prev_active = MyScreen.active_mode;
-                MyScreen.screen_mode = screen_mode;
-                MyScreen.active_mode = active_mode;
+                MyScreen.prevMode = MyScreen.screenMode;
+                MyScreen.prevActive = MyScreen.activeMode;
+                MyScreen.screenMode = screen_mode;
+                MyScreen.activeMode = active_mode;
 
                 clearScreen();
 
@@ -186,7 +186,7 @@ public class Render {
     public void hideBigImagesList(){
         ekran.setVisibility(View.GONE);
         frmLoadImgs.setVisibility(View.GONE);
-        if (MyScreen.active_mode == C_.ACTIVE_SCREEN_MSG_CHAIN){
+        if (MyScreen.activeMode == C_.ACTIVE_SCREEN_MSG_CHAIN){
             frmSendMsg.setVisibility(View.VISIBLE);
         }
     }

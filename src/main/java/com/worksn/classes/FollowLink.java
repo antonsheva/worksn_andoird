@@ -15,7 +15,6 @@ import java.net.URL;
 
 public class FollowLink {
     public FollowLink(Activity activity, String url){
-        URL u;
         Uri uri;
         try{
             new URL(url);

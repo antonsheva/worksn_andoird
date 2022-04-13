@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,7 +16,6 @@ public class BlinkView {
         if (i == null)i = new BlinkView();
         return i;
     }
-
     Timer timer;
     public void blink(Activity context, View v){
         if (busy)return;
@@ -34,27 +32,18 @@ public class BlinkView {
             int cnt = 8;
             @Override
             public void run() {
-                context.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if((cnt % 2) == 0){
-                            v.setBackgroundColor(Color.RED);
-                        }else {
-                            v.setBackgroundColor(Color.GREEN);
-                        }
+                context.runOnUiThread(() -> {
+                    if((cnt % 2) == 0){
+                        v.setBackgroundColor(Color.RED);
+                    }else {
+                        v.setBackgroundColor(Color.GREEN);
                     }
                 });
                 cnt--;
                 if (cnt == 0){
                     timer.cancel();
                     busy = false;
-                    context.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            v.setBackgroundColor(color);
-                        }
-                    });
-
+                    context.runOnUiThread(() -> v.setBackgroundColor(color));
                 }
             }
         }, 1, 50);

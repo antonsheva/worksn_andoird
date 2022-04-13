@@ -4,27 +4,27 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class SysNotify {
-    @SerializedName("id")
+    @SerializedName(C_.STR_ID)
     @Expose
     private Long id = null;
-    @SerializedName(C_.VAR_USER_ID)
+    @SerializedName(C_.STR_USER_ID)
     @Expose
     private Integer userId = null;
-    @SerializedName(C_.VAR_CREATE_DATE)
+    @SerializedName(C_.STR_CREATE_DATE)
     @Expose
     private String createDate = null;
-    @SerializedName(C_.VAR_CONTENT)
+    @SerializedName(C_.STR_CONTENT)
     @Expose
     private String content = null;
-    @SerializedName(C_.VAR_IMG)
+    @SerializedName(C_.STR_IMG)
     @Expose
     private String img = null;
 
-    @SerializedName("type")
+    @SerializedName(C_.STR_TYPE)
     @Expose
     private Integer type = 0;
 
-    @SerializedName(C_.VAR_VIEW)
+    @SerializedName(C_.STR_VIEW)
     @Expose
     private Integer view = null;
 

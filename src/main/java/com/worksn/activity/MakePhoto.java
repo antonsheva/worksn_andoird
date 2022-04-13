@@ -24,7 +24,6 @@ import androidx.core.content.FileProvider;
 import com.worksn.BuildConfig;
 import com.worksn.classes.TargetFileData;
 import com.worksn.objects.C_;
-import com.worksn.objects.G_;
 import com.worksn.objects.TmpImg;
 import com.worksn.singleton.AppMode;
 
@@ -40,7 +39,7 @@ public class MakePhoto  extends AppCompatActivity {
         TmpImg.imgSend = null;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Intent intent1 = getIntent();
-        actionType = intent1.getIntExtra("actionType", 0);
+        actionType = intent1.getIntExtra(C_.STR_ACTION_TYPE, 0);
         makePhoto();
     }
     ActivityResultLauncher<Intent> mLauncher = registerForActivityResult(
@@ -55,11 +54,9 @@ public class MakePhoto  extends AppCompatActivity {
     @SuppressLint("QueryPermissionsNeeded")
     private void makePhoto(){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Log.i("MyFile", "makePhoto");
         if (intent.resolveActivity(getPackageManager()) != null){
-            Log.i("MyFile", "getPackageManager");
             try{
-                File tmpFile = new File(getFilesDir(), File.separator + "tmp_photo.jpg");
+                File tmpFile = new File(getFilesDir(), File.separator + C_.FILE_NAME_TMP_PHOTO);
                 Uri uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", tmpFile);
                 List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
                 for (ResolveInfo resolveInfo : resInfoList) {
@@ -70,7 +67,6 @@ public class MakePhoto  extends AppCompatActivity {
                 TmpImg.photoPath = tmpFile.getAbsolutePath();
                 mLauncher.launch(intent);
             }catch (Exception e){
-                Log.i("MyFile", "Exception -> "+e.toString());
                 e.printStackTrace();
             }
         }else  Log.i("MyFile", "Error getPackageManager");

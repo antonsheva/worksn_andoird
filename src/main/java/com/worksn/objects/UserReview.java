@@ -4,45 +4,45 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class UserReview {
-    @SerializedName("id")
+    @SerializedName(C_.STR_ID)
     @Expose
     private Long id;
 
 
-    @SerializedName("sender_id")
+    @SerializedName(C_.STR_SENDER_ID)
     @Expose
-    private Integer sender_id;
+    private Integer senderId;
 
 
-    @SerializedName("consumer_id")
+    @SerializedName(C_.STR_CONSUMER_ID)
     @Expose
-    private Integer consumer_id;
+    private Integer consumerId;
 
 
-    @SerializedName("star_qt")
+    @SerializedName(C_.STR_STAR_QT)
     @Expose
-    private Integer star_qt;
+    private Integer starQt;
 
 
-    @SerializedName("favorite")
+    @SerializedName(C_.STR_FAVORITE)
     @Expose
     private Integer favorite;
 
 
-    @SerializedName("comment")
+    @SerializedName(C_.STR_COMMENT)
     @Expose
     private String comment = null;
 
 
-    @SerializedName("create_date")
+    @SerializedName(C_.STR_CREATE_DATE)
     @Expose
-    private String create_date;
+    private String createDate;
 
-    @SerializedName("img")
+    @SerializedName(C_.STR_IMG)
     @Expose
     private String img;
 
-    @SerializedName("img_icon")
+    @SerializedName(C_.STR_IMG_ICON)
     @Expose
     private String imgIcon;
 
@@ -51,16 +51,16 @@ public class UserReview {
         return id;
     }
 
-    public Integer getSender_id() {
-        return sender_id;
+    public Integer getSenderId() {
+        return senderId;
     }
 
-    public Integer getConsumer_id() {
-        return consumer_id;
+    public Integer getConsumerId() {
+        return consumerId;
     }
 
-    public Integer getStar_qt() {
-        return star_qt;
+    public Integer getStarQt() {
+        return starQt;
     }
 
     public Integer getFavorite() {
@@ -87,24 +87,24 @@ public class UserReview {
         this.imgIcon = imgIcon;
     }
 
-    public String getCreate_date() {
-        return create_date;
+    public String getCreateDate() {
+        return createDate;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setSender_id(Integer sender_id) {
-        this.sender_id = sender_id;
+    public void setSenderId(Integer senderId) {
+        this.senderId = senderId;
     }
 
-    public void setConsumer_id(Integer consumer_id) {
-        this.consumer_id = consumer_id;
+    public void setConsumerId(Integer consumerId) {
+        this.consumerId = consumerId;
     }
 
-    public void setStar_qt(Integer star_qt) {
-        this.star_qt = star_qt;
+    public void setStarQt(Integer starQt) {
+        this.starQt = starQt;
     }
 
     public void setFavorite(Integer favorite) {
@@ -115,7 +115,7 @@ public class UserReview {
         this.comment = comment;
     }
 
-    public void setCreate_date(String create_date) {
-        this.create_date = create_date;
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 }

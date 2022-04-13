@@ -2,29 +2,21 @@ package com.worksn.classes;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import java.lang.reflect.Field;
+import com.worksn.objects.C_;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.worksn.activity.ActivityBroadcastReceiver;
-import com.worksn.activity.BootCompletedReceiver;
-import com.worksn.activity.MainActivity;
-import com.worksn.websocket.WsBroadcastReceiver;
 
 public class BroadCastMsg {
     public BroadCastMsg(Context context, String act, String filter){
         Intent intent = new Intent(filter);
-        intent.putExtra("act", act);
+        intent.putExtra(C_.STR_ACT, act);
         context.sendBroadcast(intent);
     }
     public BroadCastMsg(Context context, HashMap<String, Object>data, String filter){
         Intent intent = new Intent(filter);
         String valClass = null;
-        Log.i("MyPrint", "BroadCastMsg ok");
         for (Map.Entry<String, Object> pair : data.entrySet()){
             if (pair.getValue() != null){
                 valClass = pair.getValue().getClass().getSimpleName();

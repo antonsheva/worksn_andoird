@@ -4,10 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class AssocData {
-    @SerializedName("name")
+    @SerializedName(C_.STR_NAME)
     @Expose
     private String name = null;
-    @SerializedName("val")
+    @SerializedName(C_.STR_VAL)
     @Expose
     private Object val = null;
 

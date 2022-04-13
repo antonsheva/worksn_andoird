@@ -3,8 +3,6 @@ package com.worksn.classes;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -15,7 +13,6 @@ import androidx.annotation.Nullable;
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
-
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -38,13 +35,10 @@ import com.worksn.objects.TmpImg;
 import com.worksn.singleton.NetworkService;
 import com.worksn.singleton.PUWindow;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Funcs;
 import com.worksn.static_class.GetPermission;
 import com.worksn.static_class.Post;
 import com.worksn.view.FrameProgressbar;
-
 import static com.worksn.objects.G_.stopActivityType;
-
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
@@ -56,37 +50,34 @@ public class MyFile{
         this.context = context;
     }
     public void chooseFile(Context context, Integer action){
-        Log.i("MyChooseFile", "PermissionStorage -> "+ G_.getPermissionStorage());
         GetPermission.storage(context);
         if(G_.getPermissionStorage() == 0){
-            PUWindow.i().show("Предоставьте приложению доступ к хранилищу");
+            PUWindow.i().show(R.string.grantAccessToStorage);
             return;
         }
 
         stopActivityType = 1;
         Intent intent = new Intent(context, FileChooser.class);
-        intent.putExtra("actionType", action);
+        intent.putExtra(C_.STR_ACTION_TYPE, action);
         ((Activity)context).startActivityForResult(intent, C_.PICK_IMAGE_REQUEST);
     }
     public void makePhoto(Context context, Integer action){
-        Log.i("MyChooseFile", "PermissionStorage -> "+G_.getPermissionStorage());
         GetPermission.storage(context);
         if(G_.getPermissionStorage() == 0){
-            PUWindow.i().show("Предоставьте приложению доступ к хранилищу");
+            PUWindow.i().show(R.string.grantAccessToStorage);
             return;
         }
         stopActivityType = 1;
         Intent intent = new Intent(context, MakePhoto.class);
-        intent.putExtra("actionType", action);
+        intent.putExtra(C_.STR_ACTION_TYPE, action);
         ((Activity)context).startActivityForResult(intent, C_.PICK_IMAGE_REQUEST);
     }
     public void uploadNewAvatar(Context context, ImageView imageView, int requestCode, int resultCode, @Nullable Intent data, CB cb){
         MyImg myImg = new MyImg((Activity) context);
         if ((resultCode != RESULT_OK) || (data == null)){
-            PUWindow.i().show("Не удалось загрузить изображение");
+            PUWindow.i().show(R.string.errorSendFile);
             return;
         }
-        boolean createTmpFileError = true;
         if (requestCode == C_.PICK_IMAGE_REQUEST) {
             myImg.setTmpAvatar(TmpImg.icon);
             uploadFile(context, TmpImg.img, TmpImg.createId, true, new ComCallback() {
@@ -97,18 +88,17 @@ public class MyFile{
                         TmpImg.imgSend     = response.getTmpImg();
                         TmpImg.imgIconSend = response.getTmpImgIcon();
                         myImg.setNewAvatar(C_.URL_BASE + TmpImg.imgIconSend);
-                        Log.i("MyImg", "im -> "+ TmpImg.imgSend+"; imgIcon -> "+ TmpImg.imgIconSend);
                     }else {
                         TmpImg.imgSend     = null;
                         TmpImg.imgIconSend = null;
-                        PUWindow.i().show("Не удалось загрузить изображение");
+                        PUWindow.i().show(R.string.errorSendFile);
                     }
                     cb.callback(result);
                     return null;
                 }
             });
         }else{
-            PUWindow.i().show("Не удалось загрузить изображение");
+            PUWindow.i().show(R.string.errorSendFile);
         }
     }
     public void uploadFile(Context context, File file, String createId, boolean showBtCancel, ComCallback comCallback){
@@ -152,14 +142,12 @@ public class MyFile{
                             if (G_.respData.getError() == 0){
                                 File deleteFile = TmpImg.img;
                                 if(deleteFile != null && deleteFile.exists()){
-                                    Log.d("Delete", "File Exists");
                                     if(deleteFile.delete()){
                                         Log.d("Deleted",  TmpImg.img.getAbsolutePath() +" -> ok");
                                     }
                                 }
                                 deleteFile= TmpImg.icon;
                                 if(deleteFile != null && deleteFile.exists()){
-                                    Log.d("Delete", "File Exists");
                                     if(deleteFile.delete()){
                                         Log.d("Deleted",  TmpImg.icon.getAbsolutePath()+" -> ok");
                                     }
@@ -171,15 +159,12 @@ public class MyFile{
                             comCallback.callback(null, RESULT_CANCELED);
                         }
                         progressbar.hide();
-                        Log.i("MyPost", "file was upload");
                     }
                     @Override
                     public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                         t.printStackTrace();
                     }
                 });
-
-
     }
     public void removeTmpFile(String imgPath){
         PostSubData data = null;
