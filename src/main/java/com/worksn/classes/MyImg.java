@@ -1,9 +1,12 @@
  package com.worksn.classes;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +22,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.worksn.R;
+import com.worksn.interfaces.ComCallback;
 import com.worksn.objects.MyScreen;
 import com.worksn.objects.TmpImg;
 import com.worksn.singleton.MyAds;
 import com.worksn.singleton.NetworkService;
-import com.worksn.static_class.Funcs;
 import com.worksn.view.FrameProgressbar;
+import com.worksn.view.MyView;
 import com.worksn.view.Render;
 
  public class MyImg implements View.OnClickListener {
@@ -48,16 +54,51 @@ import com.worksn.view.Render;
         this.activity = activity;
         initViewElements();
     }
+
+    public void loadImgNecessarily(ImageView imageView, String src, int radius){
+         Handler uiHandler = new Handler(Looper.getMainLooper());
+         uiHandler.post(() -> {
+            if ((src == null)||(src.length() < 10)){
+                 imageView.setImageResource(R.drawable.no_avatar_r50);
+            }else {
+                 Glide
+                     .with(activity)
+                     .load(src)
+                     .error(R.drawable.no_avatar_r50)
+                     .transform(new RoundedCorners(radius))
+                     .into(imageView);
+            }
+        });
+    }
+    public void loadImg(ImageView imageView, String src, int radius, ComCallback comCallback){
+        try{
+            Glide
+                    .with(activity)
+                    .load(src)
+                    .transform(new RoundedCorners(radius))
+                    .into(imageView);
+            if(comCallback != null)comCallback.callback(null, 1);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
+    public void setImgSrc(ImageView imageView, int src){
+        Handler uiHandler = new Handler(Looper.getMainLooper());
+        uiHandler.post(() -> imageView.setImageResource( src));
+    }
+
+
     public void addImgIconToView(String img, FrameLayout imgWindow, int height, int width){
         LayoutInflater inflater = (activity.getLayoutInflater());
         View v = inflater.inflate(R.layout.layout_img_icon, (ViewGroup)imgWindow, false);
         ImageView tmpImg = v.findViewById(R.id.shellImg);
         FrameLayout.LayoutParams lpV = (FrameLayout.LayoutParams)v.getLayoutParams();
-        lpV.height = Funcs.dpToPx(activity, height);
-        lpV.width  = Funcs.dpToPx(activity, width);
+
+        lpV.height = MyView.dpToPx(activity, height);
+        lpV.width  = MyView.dpToPx(activity, width);
         lpV.leftMargin = sShiftLoadImg *2;
         v.setLayoutParams(lpV);
-        Funcs.loadImg(activity, tmpImg, img, 5, null);
+        loadImg(tmpImg, img, 5, null);
         imgWindow.addView(v);
         sShiftLoadImg += 5;
         if(sShiftLoadImg > 20)sShiftLoadImg = 3;
@@ -92,7 +133,7 @@ import com.worksn.view.Render;
             v.setId(id);
             idList.add(id);
             removeSn.setOnClickListener(this);
-            Funcs.loadImg(activity, tmpImg, img, 5, null);
+            loadImg(tmpImg, img, 5, null);
             loadImgsScroll.addView(v);
             v.setOnClickListener(view -> setWebView(img));
         }
@@ -173,7 +214,7 @@ import com.worksn.view.Render;
             bigImg.setImageResource(0);
             imageView.setVisibility(View.GONE);
             if (TmpImg.sendImgIsRun){
-                NetworkService.i(activity).cancelRequest();
+                NetworkService.i().cancelRequest();
                 new FrameProgressbar(activity).hide();
                 TmpImg.clear();
             }else {
@@ -199,7 +240,7 @@ import com.worksn.view.Render;
     public void setNewAvatar(String imgSrc){
         activity.runOnUiThread(() -> {
             regFormImg.setVisibility(View.VISIBLE);
-            Funcs.loadImg(activity, regFormImg, imgSrc, 5, null);
+            loadImg(regFormImg, imgSrc, 5, null);
         });
     }
     public void hideRegFormTmpImg(){

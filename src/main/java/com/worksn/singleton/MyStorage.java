@@ -2,8 +2,7 @@ package com.worksn.singleton;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-
+import com.worksn.objects.C_;
 import java.util.Date;
 
 public class MyStorage {
@@ -19,20 +18,17 @@ public class MyStorage {
     public String getApplicationId(){
         Long time;
         Double rand;
-        String applicationId = preferences.getString("app_id",null);
-//        Log.i("MyStorage1", "start app_id -> "+applicationId);
+        String applicationId = preferences.getString(C_.STR_APP_ID,null);
         if (applicationId == null){
             time = new Date().getTime();
             rand = Math.random();
             applicationId = time.toString().substring(10)+rand.toString().substring(10);
-            put("app_id", applicationId);
+            put(C_.STR_APP_ID, applicationId);
             editor.apply();
         }
-//        Log.i("MyStorage1", "final app_id -> "+applicationId);
         return applicationId;
     }
     public void init(Context context){
-//        preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences = context.getSharedPreferences("worksn.preference", Context.MODE_PRIVATE);
         editor = preferences.edit();
         editor.apply();
@@ -54,29 +50,19 @@ public class MyStorage {
     }
 
     public String getString(String key){
-        String data = preferences.getString(key, null);
-//        Log.i("MyStorage", "get "+key+" -> "+data);
-        return data;
+        return preferences.getString(key, null);
     }
     public Integer getInt(String key){
-        Integer data = preferences.getInt(key, 0);
-//        Log.i("MyStorage", "get "+key+" -> "+data.toString());
-        return data;
+        return preferences.getInt(key, 0);
     }
     public Boolean getBoolen(String key){
-        Boolean data = preferences.getBoolean(key, false);
-//        Log.i("MyStorage", "get "+key+" -> "+data.toString());
-        return data;
+        return preferences.getBoolean(key, false);
     }
     public Float getFloat(String key){
-        Float data = preferences.getFloat(key, 0);
-//        Log.i("MyStorage", "get "+key+" -> "+data.toString());
-        return data;
+        return preferences.getFloat(key, 0);
     }
     public Long getLong(String key){
-        Long data = preferences.getLong(key, 0);
-//        Log.i("MyStorage", "get "+key+" -> "+data.toString());
-        return data;
+        return preferences.getLong(key, 0);
     }
 
     private void put(String key, String data){

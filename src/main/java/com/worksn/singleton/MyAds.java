@@ -180,23 +180,20 @@ public class MyAds {
         subData.setAds_id(ads.getId());
         subData.setImg(ads.getImg());
         subData.setImgIcon(ads.getImgIcon());
-        Post.sendRequest(context, C_.ACT_ADS_EDIT, subData, new NetCallback() {
-            @Override
-            public void callback(MyContext data, Integer result, String stringData) {
-                if (result == -1){
-                    PUWindow.i().show(stringData);
-                    return;
-                }
-                String tmpImgList = data.getImgList();
-                if (tmpImgList == null)return;
-                if (tmpImgList.length() < 10)return;
-                String[] imgList = tmpImgList.split(",");
-                for (String img : imgList){
-                    new MyImg((Activity) context).addImgToGroup(C_.URL_TMP_IMG+img,
-                            C_.URL_TMP_IMG_ICON+img);
-                }
-
+        Post.sendRequest(context, C_.ACT_ADS_EDIT, subData, (data, result, stringData) -> {
+            if (result == -1){
+                PUWindow.i().show(stringData);
+                return;
             }
+            String tmpImgList = data.getImgList();
+            if (tmpImgList == null)return;
+            if (tmpImgList.length() < 10)return;
+            String[] imgList = tmpImgList.split(",");
+            for (String img : imgList){
+                new MyImg((Activity) context).addImgToGroup(C_.URL_TMP_IMG+img,
+                        C_.URL_TMP_IMG_ICON+img);
+            }
+
         });
     }
 

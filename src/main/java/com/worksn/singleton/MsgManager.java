@@ -32,7 +32,6 @@ import com.worksn.classes.ConfirmDeliverMsg;
 import com.worksn.classes.ConvertMsgData;
 import com.worksn.classes.MyImg;
 import com.worksn.classes.SubMenu;
-import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.C_;
 import com.worksn.objects.MyContext;
 import com.worksn.objects.MyScreen;
@@ -42,7 +41,6 @@ import com.worksn.objects.SaveImgData;
 import com.worksn.objects.StructMsg;
 import com.worksn.objects.TmpImg;
 import com.worksn.objects.User;
-import com.worksn.static_class.Funcs;
 import com.worksn.static_class.MyLog;
 import com.worksn.static_class.Post;
 import com.worksn.view.FrameReplyToMsg;
@@ -55,7 +53,7 @@ public class MsgManager {
     private LinearLayoutManager mLayoutManagerMsgChain;
     private MsgChainAdapter mMsgChainAdapter;
     private RecyclerView mRcVwMsgChain;
-    private MyContext mContext = new MyContext();
+    private MyContext mMyContext = new MyContext();
     private boolean startTm = false;
     private static MsgManager i;
     private static List<StructMsg> sMessages = new ArrayList<>();
@@ -86,13 +84,13 @@ public class MsgManager {
         return i;
     }
     public MyContext getMsgContext() {
-        return mContext;
+        return mMyContext;
     }
     public void scrollRcView(int position){
         mRcVwMsgChain.scrollToPosition(position);
     }
     public void setMsgContext(MyContext context) {
-        this.mContext = context;
+        this.mMyContext = context;
     }
     public void clearRcVw(Context context){
         List<StructMsg> tmp = new ArrayList<>();
@@ -106,7 +104,7 @@ public class MsgManager {
             mMsgChainAdapter = null;
             mLayoutManagerMsgChain = new LinearLayoutManager(context);
             mLayoutManagerMsgChain.setReverseLayout(true);
-            mMsgChainAdapter = new MsgChainAdapter(msgs, R.layout.frm_msg_chain_reply,
+            mMsgChainAdapter = new MsgChainAdapter(context, msgs, R.layout.frm_msg_chain_reply,
                     (eCode, data1, data2)-> {
                         if (eCode == C_.CODE_SHOW_REPLY_MSG){
                             scrollRcView((Integer)data1);
@@ -145,8 +143,8 @@ public class MsgManager {
         long discusId;
         int consumerId;
         try{
-            discusId = mContext.getDiscus().getId();
-            consumerId = mContext.getSpeaker().getId();
+            discusId = mMyContext.getDiscus().getId();
+            consumerId = mMyContext.getSpeaker().getId();
         }catch (Exception e){
             return;
         }
@@ -197,35 +195,32 @@ public class MsgManager {
         }
     }
     public void getMsgGroup(Context context, String act, ReturnMsgArray cb){
-        Post.sendRequest(context,act, null, new NetCallback() {
-            @Override
-            public void callback(MyContext data, Integer result, String stringData) {
-                boolean dataError;
-                List<StructMsg> msgs = new ArrayList<>();
-                if(result > 0){
-                    setMsgContext(data);
-                    if (data.getMessages() == null) return;
-                    for (StructMsg msg : data.getMessages()){
-                        dataError = false;
-                        if (msg.getSpeakerId() == null)dataError = true;
-                        if (msg.getSpeakerLogin() == null)dataError = true;
-                        if (msg.getAds_id() == null)dataError = true;
+        Post.sendRequest(context,act, null, (data, result, stringData) -> {
+            boolean dataError;
+            List<StructMsg> msgs = new ArrayList<>();
+            if(result > 0){
+                setMsgContext(data);
+                if (data.getMessages() == null) return;
+                for (StructMsg msg : data.getMessages()){
+                    dataError = false;
+                    if (msg.getSpeakerId() == null)dataError = true;
+                    if (msg.getSpeakerLogin() == null)dataError = true;
+                    if (msg.getAds_id() == null)dataError = true;
 
-                        if (!dataError){
-                            User user = Usr.i().getUserDataFromObject(msg);
-                            if (user != null){
-                                if ((user.getImgIcon() == null) || (user.getImgIcon().length()<10)){
-                                    user.setImgIcon(C_.URL_NO_AVATAR);
-                                }
-                                Usr.i().addUserToTable(user);
-                                msgs.add(msg);
+                    if (!dataError){
+                        User user = Usr.i().getUserDataFromObject(msg);
+                        if (user != null){
+                            if ((user.getImgIcon() == null) || (user.getImgIcon().length()<10)){
+                                user.setImgIcon(C_.URL_NO_AVATAR);
                             }
+                            Usr.i().addUserToTable(user);
+                            msgs.add(msg);
                         }
                     }
                 }
-                result = msgs.size();
-                cb.callback(msgs, result, stringData);
             }
+            result = msgs.size();
+            cb.callback(msgs, result, stringData);
         });
     }
     private void clearTmpImgData(){
@@ -351,7 +346,7 @@ public class MsgManager {
         }
         if (msg.getDiscus_id() == null)return;
         if(MyScreen.screenMode == C_.SCREEN_MODE_MSG_CHAIN) {
-            if (mContext.getDiscus().getId().equals(msg.getDiscus_id())) {
+            if (mMyContext.getDiscus().getId().equals(msg.getDiscus_id())) {
                 try{
                     if (msg.getImgIcon().equals(C_.STR_WAS_SEND_POST_DATA)){
                         msg.setImg(C_.FILE_GALLERY);
@@ -372,8 +367,9 @@ public class MsgManager {
         MyView.setBell((Activity) context);
     }
     public void renderMsgViewedStatus(Context context, long discusId, int statusMsg){
+        MyImg myImg = new MyImg((Activity) context);
         try{
-            if (discusId != mContext.getDiscus().getId())return;
+            if (discusId != mMyContext.getDiscus().getId())return;
         }catch (Exception e){
             return;
         }
@@ -385,43 +381,40 @@ public class MsgManager {
                 }catch (NullPointerException ignored){}
             }
         }
-        ((Activity)context).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int fst, lst;
-                View v = null;
-                fst = mLayoutManagerMsgChain.findFirstVisibleItemPosition();
-                lst = mLayoutManagerMsgChain.findLastVisibleItemPosition();
+        ((Activity)context).runOnUiThread(() -> {
 
-                try{
-                    for (int i = fst; i <= lst; i++){
-                        StructMsg msg = sMessages.get(i);
-                        if (msg.getSender_id().equals(Usr.i().getUser().getId())){
-                            v = mLayoutManagerMsgChain.findViewByPosition(i);
-                            ImageView status =  Objects.requireNonNull(v).findViewById(R.id.msgChainSenderStatus);
-                            try{
+            int fst, lst;
+            View v = null;
+            fst = mLayoutManagerMsgChain.findFirstVisibleItemPosition();
+            lst = mLayoutManagerMsgChain.findLastVisibleItemPosition();
 
-                                switch (msg.getView()){
-                                    case 0: Funcs.setImgSrc(status, R.drawable.birdie_1); break;
-                                    case C_.CODE_CONFIRM_DELIVER: Funcs.setImgSrc(status, R.drawable.birdie_2); break;
-                                    case C_.CODE_CONFIRM_VIEWED: Funcs.setImgSrc(status, R.drawable.birdie_3); break;
-                                }
-                            }catch (NullPointerException e){
-                                Log.i("MyConfirm", "exception");
-                                e.printStackTrace();
-                                Funcs.setImgSrc(status, R.drawable.birdie_1);
+            try{
+                for (int i = fst; i <= lst; i++){
+                    StructMsg msg = sMessages.get(i);
+                    if (msg.getSender_id().equals(Usr.i().getUser().getId())){
+                        v = mLayoutManagerMsgChain.findViewByPosition(i);
+                        ImageView status =  Objects.requireNonNull(v).findViewById(R.id.msgChainSenderStatus);
+                        try{
+                            switch (msg.getView()){
+                                case 0: myImg.setImgSrc(status, R.drawable.birdie_1); break;
+                                case C_.CODE_CONFIRM_DELIVER: myImg.setImgSrc(status, R.drawable.birdie_2); break;
+                                case C_.CODE_CONFIRM_VIEWED: myImg.setImgSrc(status, R.drawable.birdie_3); break;
                             }
+                        }catch (NullPointerException e){
+                            Log.i("MyConfirm", "exception");
+                            e.printStackTrace();
+                            myImg.setImgSrc(status, R.drawable.birdie_1);
                         }
                     }
-                }catch (IndexOutOfBoundsException e){
-                    e.printStackTrace();
                 }
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
             }
         });
     }
     public void showPrintMsgProcess(Context context, long discusId){
         try{
-            if (discusId != mContext.getDiscus().getId())return;
+            if (discusId != mMyContext.getDiscus().getId())return;
         }catch (NullPointerException ignored){};
         new PrintMsgProcess(context);
     }
@@ -452,8 +445,8 @@ public class MsgManager {
         try{
             msg.setDiscus_id(MsgManager.i().getMsgContext().getDiscus().getId());
             msg.setSender_id(Usr.i().getUser().getId());
-            msg.setConsumerId(mContext.getSpeaker().getId());
-            msg.setAds_id(mContext.getTargetAds().getId());
+            msg.setConsumerId(mMyContext.getSpeaker().getId());
+            msg.setAds_id(mMyContext.getTargetAds().getId());
             msg.setContent(content);
             msg.setCreateDate(new SimpleDateFormat().format(new Date()));
             msg.setView(0);
@@ -482,7 +475,7 @@ public class MsgManager {
                                 img.setImageResource(0);
                             }
                         });
-                        Funcs.loadImg(context, img, C_.URL_BASE+msg.getImgIcon(), 5, null);
+                        new MyImg((Activity)context).loadImg(img, C_.URL_BASE+msg.getImgIcon(), 5, null);
                     }
                 }
             }
@@ -508,7 +501,6 @@ public class MsgManager {
             mp.start();
         }).start();
     }
-
     private interface ReturnMsg {
         public void callback(StructMsg msg, Integer result);
     }
@@ -516,7 +508,3 @@ public class MsgManager {
         void callback(List<StructMsg> msgs, Integer result, String stringData);
     }
 }
-
-
-
-

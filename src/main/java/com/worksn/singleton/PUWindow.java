@@ -31,7 +31,6 @@ public class PUWindow {
                 }
             }, 2000);
         }
-
     }
     public void show(int msgId){
         String msg = MyApp.context.getString(msgId);

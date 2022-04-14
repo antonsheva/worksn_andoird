@@ -14,16 +14,18 @@ import com.worksn.objects.C_;
 import com.worksn.objects.MyScreen;
 import com.worksn.objects.StructMsg;
 import com.worksn.singleton.PUWindow;
-import com.worksn.static_class.Funcs;
+import com.worksn.view.MyView;
+import com.worksn.view.Render;
 
 public class SubMenu {
     private Object targetObject = null;
 
     private int pos;
     private CB cb;
-
-    public void initCb(CB cb){
+    Render render;
+    public void init(Activity activity, CB cb){
         this.cb = cb;
+        render = new Render(activity);
     }
     public int getPos() {
         return pos;
@@ -32,11 +34,12 @@ public class SubMenu {
     public void setPos(int pos) {
         this.pos = pos;
     }
-
     private boolean isShow = false;
     private static SubMenu i;
     public static SubMenu i(){
-        if (i == null) i = new SubMenu();
+        if (i == null){
+            i = new SubMenu();
+        }
         return i;
     }
     @SuppressLint("ResourceType")
@@ -59,8 +62,8 @@ public class SubMenu {
         btEdit    .setVisibility(View.GONE);
 
         this.targetObject = targetObject;
-        int h = Funcs.dpToPx(activity, 50) ;
-        int w = Funcs.dpToPx(activity,130);
+        int h = MyView.dpToPx(activity, 50) ;
+        int w = MyView.dpToPx(activity, 130);
 
         switch (targetObjectType){
             case C_.SUBMENU_OBJECT_TYPE_MSG :
@@ -101,7 +104,7 @@ public class SubMenu {
         if(left> MyScreen.sizePxX /2)left -= w+10;
         else left += 20;
 
-        if (top < Funcs.dpToPx(activity, 100) )top = Funcs.dpToPx(activity, 100);
+        if (top < MyView.dpToPx(activity, 100) )top = MyView.dpToPx(activity, 100);
         params.setMargins(left, top,0,0);
         subMenu.setLayoutParams(params);
 
@@ -163,7 +166,7 @@ public class SubMenu {
 
         activity.runOnUiThread(() -> {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(1,1); // высота и ширина
-            params.setMargins(0,-(Funcs.dpToPx(activity,200)),0,0);
+            params.setMargins(0,-(MyView.dpToPx(activity, 200)),0,0);
             subMenu.setLayoutParams(params);
         });
         isShow = false;

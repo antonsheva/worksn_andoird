@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import com.worksn.R;
 import com.worksn.objects.C_;
-import com.worksn.static_class.Funcs;
 
 public class NotifyChannel {
 
@@ -42,7 +41,8 @@ public class NotifyChannel {
         }
     }
     private void initForegroundChanel(Context context) {
-        Uri ringtoneUri = Funcs.getUri(R.raw.snd1);
+        Uri ringtoneUri = Uri.parse("android.resource://com.worksn/" +R.raw.snd1);
+//        Uri ringtoneUri = Funcs.getUri(R.raw.snd1);
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = context.getString(R.string.channel_name_foreground);

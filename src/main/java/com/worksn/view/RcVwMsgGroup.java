@@ -54,7 +54,7 @@ public class RcVwMsgGroup {
                 rcVwMsgGroup.setHasFixedSize(true);
                 rcVwMsgGroup.setAdapter(msgGrpAdapter);
                 if(pos!=null) rcVwMsgGroup.scrollToPosition(pos);
-                Usr.i().requestUsersStatus((Context) context, false);
+                Usr.i().requestUsersStatus((Context) context);
             }
         });
     }

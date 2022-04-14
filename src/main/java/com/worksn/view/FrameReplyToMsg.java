@@ -8,11 +8,11 @@ import android.widget.TextView;
 
 
 import com.worksn.R;
+import com.worksn.classes.MyImg;
 import com.worksn.objects.C_;
 import com.worksn.objects.StructMsg;
 import com.worksn.singleton.MsgManager;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Funcs;
 
 public class FrameReplyToMsg {
     LinearLayout frmReply   ;
@@ -49,7 +49,7 @@ public class FrameReplyToMsg {
         try{
             if (msg.getImgIcon().length()>5){
                 frmReplyImg.setVisibility(View.VISIBLE);
-                Funcs.loadImg(activity, frmReplyImg, C_.URL_BASE+msg.getImgIcon(), 10, null);
+                new MyImg(activity).loadImg(frmReplyImg, C_.URL_BASE+msg.getImgIcon(), 10, null);
             }else {
                 frmReplyImg.setImageResource(0);
                 frmReplyImg.setVisibility(View.GONE);

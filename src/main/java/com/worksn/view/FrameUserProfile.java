@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 
 import com.worksn.R;
+import com.worksn.classes.MyImg;
 import com.worksn.objects.C_;
 import com.worksn.objects.User;
-import com.worksn.static_class.Funcs;
 
 public class FrameUserProfile {
     ImageView avatarImg;
@@ -52,7 +52,7 @@ public class FrameUserProfile {
                 String src =  user.getImgIcon();
                 if (src != null){
                     src = C_.URL_BASE + src;
-                    Funcs.loadImgNecessarily((Activity) context,avatarImg, src, 5);
+                    new MyImg((Activity)context).loadImgNecessarily(avatarImg, src, 5);
                 }else{
                     avatarImg.setImageResource(R.drawable.no_avatar);
                 }

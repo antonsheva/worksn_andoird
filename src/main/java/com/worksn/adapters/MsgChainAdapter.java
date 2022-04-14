@@ -22,13 +22,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.worksn.R;
+import com.worksn.classes.MyImg;
 import com.worksn.classes.SubMenu;
 import com.worksn.objects.C_;
 import com.worksn.objects.G_;
 import com.worksn.objects.StructMsg;
 import com.worksn.objects.TmpImg;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Funcs;
 import com.worksn.view.Render;
 
 public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwHldr>{
@@ -39,16 +39,19 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
     private final Cb cb;
     private static int lastPosition = 0;
 
-    public MsgChainAdapter(List<StructMsg> msgList, int vhId, Cb callback){
+    MyImg myImg;
+
+    public MsgChainAdapter(Context context, List<StructMsg> msgList, int vhId, Cb callback){
+        this.context = context;
         lastPosition = 0;
         cb = callback;
         this.vhId    = vhId;
         this.msgList = msgList;
+        myImg = new MyImg((Activity) context);
     }
     @NonNull
     @Override
     public MsgVwHldr onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(vhId,parent,false);
         return new MsgVwHldr(view);
@@ -141,7 +144,7 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
         if(img !=null){
             if(img.length()>3){
                 holder.msg_chain_sndr_img.setVisibility(View.VISIBLE);
-                Funcs.loadImg((Activity)context, holder.msg_chain_sndr_img, C_.URL_BASE +img, 20, null);
+                myImg.loadImg(holder.msg_chain_sndr_img, C_.URL_BASE +img, 20, null);
             }
         }else {
             if (imgIconGallery != null){
@@ -152,12 +155,12 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
         }
         try{
             switch (msg.getView()){
-                case 0: Funcs.setImgSrc(holder.msg_chain_sndr_status, R.drawable.birdie_1); break;
-                case 1: Funcs.setImgSrc(holder.msg_chain_sndr_status, R.drawable.birdie_2); break;
-                case 2: Funcs.setImgSrc(holder.msg_chain_sndr_status, R.drawable.birdie_3); break;
+                case 0: myImg.setImgSrc(holder.msg_chain_sndr_status, R.drawable.birdie_1); break;
+                case 1: myImg.setImgSrc(holder.msg_chain_sndr_status, R.drawable.birdie_2); break;
+                case 2: myImg.setImgSrc(holder.msg_chain_sndr_status, R.drawable.birdie_3); break;
             }
         }catch (NullPointerException e){
-            Funcs.setImgSrc(holder.msg_chain_sndr_status, R.drawable.birdie_1);
+            myImg.setImgSrc(holder.msg_chain_sndr_status, R.drawable.birdie_1);
         }
 
         holder.msg_chain_sndr_txt.setText(txt);
@@ -165,7 +168,6 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
         holder.msg_chain_sndr_layout.setBackgroundResource(R.drawable.msg_sender);
     }
     private void renderReceiverMsg(StructMsg msg, MsgVwHldr holder){
-        int len = msg.getCreateDate().length();
         String timeTxt = msg.getCreateDate();
         String img = msg.getImgIcon();
         String txt = msg.getContent();
@@ -177,7 +179,7 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
         if(img != null)
             if (img.length()>3){
                 holder.msg_chain_rcvr_img.setVisibility(View.VISIBLE);
-                Funcs.loadImg((Activity)context, holder.msg_chain_rcvr_img, C_.URL_BASE +img, 20, null);
+                myImg.loadImg(holder.msg_chain_rcvr_img, C_.URL_BASE +img, 20, null);
             }
         holder.msg_chain_rcvr_txt.setText(txt);
         holder.msg_chain_rcvr_tm .setText(timeTxt);
@@ -192,7 +194,7 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
         if (msg.getReplyImg() != null){
             if (msg.getReplyImg().length()>3){
                 holder.msgChainSenderReplyImg.setVisibility(View.VISIBLE);
-                Funcs.loadImg(context, holder.msgChainSenderReplyImg, C_.URL_BASE+msg.getReplyImg(), 20, null);
+                myImg.loadImg(holder.msgChainSenderReplyImg, C_.URL_BASE+msg.getReplyImg(), 20, null);
             }
         }
     }
@@ -205,7 +207,7 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
         if (msg.getReplyImg() != null){
             if (msg.getReplyImg().length()>3){
                 holder.msgChainReceiverReplyImg.setVisibility(View.VISIBLE);
-                Funcs.loadImg(context, holder.msgChainReceiverReplyImg, C_.URL_BASE+msg.getReplyImg(), 20, null);
+                myImg.loadImg(holder.msgChainReceiverReplyImg, C_.URL_BASE+msg.getReplyImg(), 20, null);
             }
         }
     }

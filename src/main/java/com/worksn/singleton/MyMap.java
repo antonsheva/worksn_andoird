@@ -33,10 +33,10 @@ import com.worksn.objects.Ads;
 import com.worksn.objects.C_;
 
 public class MyMap {
-    public MapView mapView;
+    private static final String API_KEY = "a3c7187b-0029-4189-b28a-3a77ad3507ff";
 
+    public MapView mapView;
     Location location = new Location("gps");
-    boolean userLocationIsDefined = false;
     boolean isRunning = false;
     boolean stopTapEvent = false;
     static float zoom = 11.0f;
@@ -66,7 +66,7 @@ public class MyMap {
 
     public void initMapKit(Context context){
         if(isRunning)return;
-        MapKitFactory.setApiKey("a3c7187b-0029-4189-b28a-3a77ad3507ff");
+        MapKitFactory.setApiKey(API_KEY);
         MapKitFactory.initialize(context);
     }
     public void initMap(Context context, CB cb) {
@@ -93,7 +93,6 @@ public class MyMap {
         mapCollectionRed.addTapListener(mapObjectTapListener);
         mapCollectionGreen.addTapListener(mapObjectTapListener);
         mapCollectionYellow.addTapListener(mapObjectTapListener);
-
 
         mapView.getMap().addInputListener(inputListener);
         mapVisibleRegion = new VisibleRegion();
@@ -188,7 +187,7 @@ public class MyMap {
                 try{
                     ads = (Ads)mapObject.getUserData();
                 }catch (Exception e){
-                    Log.i("MyMapEx", "Error conver object to Ads ");
+                    Log.i("MyMapEx", "Error convert object to Ads ");
                     return false;
                 }
                 if(ads == null){
@@ -205,8 +204,6 @@ public class MyMap {
                     @Override
                     public void run() {
                         int len = targetAdsList.size();
-                        Log.i("MyMap", "ads qt -> "+len);
-//                        if(len>0)cb.callback(C_.CODE_MAP_ADS_DETAILS, targetAdsList);
                         if(len>0)cb.adsListReturn(targetAdsList);
                         targetAdsList.clear();
                         timer.cancel();
@@ -227,12 +224,7 @@ public class MyMap {
 
             @Override
             public void onFinish(@NonNull com.yandex.mapkit.map.Map map, @NonNull CameraPosition cameraPosition) {
-                Point pn = cameraPosition.getTarget();
-                Log.i("MyCameraPositionChanged", "onFinish  -> " + pn.getLatitude() + " - " + pn.getLongitude());
-
                 mapVisibleRegion = mapView.getFocusRegion();
-                Point pnTopLeft = mapVisibleRegion.getTopLeft();
-                Point pnBottomRight = mapVisibleRegion.getBottomRight();
                 zoom = mapView.getMap().getCameraPosition().getZoom();
                 cb.callback(C_.CODE_MAP_MOVE, mapVisibleRegion);
             }

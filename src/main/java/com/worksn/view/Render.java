@@ -1,6 +1,7 @@
 package com.worksn.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -63,7 +64,6 @@ public class Render {
         initViewElements();
         initOnClickListener();
     }
-
     public void showBtScrollDown(boolean state){
         if (state)rcVwMsgChainBtDown.setVisibility(View.VISIBLE);
         else      rcVwMsgChainBtDown.setVisibility(View.GONE);
@@ -117,33 +117,6 @@ public class Render {
             }
         });
     }
-
-    private void renderActive(Integer mode){
-        hideActiveTabs();
-        frmActiveTitle.setVisibility(View.VISIBLE);
-        switch (mode){
-            case C_.ACTIVE_SCREEN_MSG_GROUP  : activeMsgGroup .setVisibility(View.VISIBLE);break;
-            case C_.ACTIVE_SCREEN_CATEGORY   : activeCategory .setVisibility(View.VISIBLE);
-                                               frmActiveTitle.setText(R.string.categories);
-                                               break;
-            case C_.ACTIVE_SCREEN_USERS      : activeUsers    .setVisibility(View.VISIBLE);break;
-            case C_.ACTIVE_SCREEN_ADD        : activeAdd      .setVisibility(View.VISIBLE);
-                                               frmActiveTitle.setText(R.string.addAds);
-                                               break;
-            case C_.ACTIVE_SCREEN_LIFETIME   : activeLifetime .setVisibility(View.VISIBLE);
-                                               frmActiveTitle.setText(R.string.lifetime);
-                                               break;
-            case C_.ACTIVE_SCREEN_MSG_CHAIN  : activeMsgChain .setVisibility(View.VISIBLE);
-                                               frmActiveTitle.setVisibility(View.GONE);
-                                               if (Usr.i().getUser()==null){
-                                                   new PUWindow().show(R.string.needAuthForSenMsg);
-                                                   frmSendMsg.setVisibility(View.GONE);
-                                               }
-                                               break;
-            case C_.ACTIVE_SCREEN_TARGET_ADS : activeTargetAds.setVisibility(View.VISIBLE);break;
-            default                          : activeEmpty    .setVisibility(View.VISIBLE);break;
-        }
-    }
     public void header(){
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -161,10 +134,46 @@ public class Render {
             });
 
     }
+    public void hideBigImagesList(){
+        ekran.setVisibility(View.GONE);
+        frmLoadImgs.setVisibility(View.GONE);
+        if (MyScreen.activeMode == C_.ACTIVE_SCREEN_MSG_CHAIN){
+            frmSendMsg.setVisibility(View.VISIBLE);
+        }
+    }
+    public void hideFrmSendMsg(){
+        frmSendMsg.setVisibility(View.GONE);
+    }
     public void showBigImagesList(){
         ekran.setVisibility(View.VISIBLE);
         frmLoadImgs.setVisibility(View.VISIBLE);
         frmSendMsg.setVisibility(View.GONE);
+    }
+    private void renderActive(Integer mode){
+        hideActiveTabs();
+        frmActiveTitle.setVisibility(View.VISIBLE);
+        switch (mode){
+            case C_.ACTIVE_SCREEN_MSG_GROUP  : activeMsgGroup .setVisibility(View.VISIBLE);break;
+            case C_.ACTIVE_SCREEN_CATEGORY   : activeCategory .setVisibility(View.VISIBLE);
+                frmActiveTitle.setText(R.string.categories);
+                break;
+            case C_.ACTIVE_SCREEN_USERS      : activeUsers    .setVisibility(View.VISIBLE);break;
+            case C_.ACTIVE_SCREEN_ADD        : activeAdd      .setVisibility(View.VISIBLE);
+                frmActiveTitle.setText(R.string.addAds);
+                break;
+            case C_.ACTIVE_SCREEN_LIFETIME   : activeLifetime .setVisibility(View.VISIBLE);
+                frmActiveTitle.setText(R.string.lifetime);
+                break;
+            case C_.ACTIVE_SCREEN_MSG_CHAIN  : activeMsgChain .setVisibility(View.VISIBLE);
+                frmActiveTitle.setVisibility(View.GONE);
+                if (Usr.i().getUser()==null){
+                    new PUWindow().show(R.string.needAuthForSenMsg);
+                    frmSendMsg.setVisibility(View.GONE);
+                }
+                break;
+            case C_.ACTIVE_SCREEN_TARGET_ADS : activeTargetAds.setVisibility(View.VISIBLE);break;
+            default                          : activeEmpty    .setVisibility(View.VISIBLE);break;
+        }
     }
     private void clearScreen(){
         frmMap.setVisibility(View.GONE);
@@ -182,16 +191,6 @@ public class Render {
 
         new MyImg(activity).setWebView(null);
         showBtScrollDown(false);
-    }
-    public void hideBigImagesList(){
-        ekran.setVisibility(View.GONE);
-        frmLoadImgs.setVisibility(View.GONE);
-        if (MyScreen.activeMode == C_.ACTIVE_SCREEN_MSG_CHAIN){
-            frmSendMsg.setVisibility(View.VISIBLE);
-        }
-    }
-    public void hideFrmSendMsg(){
-        frmSendMsg.setVisibility(View.GONE);
     }
     private void hideActiveTabs(){
         activeMsgGroup.setVisibility(View.GONE);

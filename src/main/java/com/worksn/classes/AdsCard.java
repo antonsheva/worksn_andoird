@@ -25,7 +25,6 @@ import com.worksn.objects.G_;
 import com.worksn.singleton.MsgManager;
 import com.worksn.singleton.UiClick;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Funcs;
 import com.worksn.static_class.MyLog;
 import com.worksn.view.RatingStars;
 import com.worksn.view.MyView;
@@ -93,7 +92,7 @@ public class AdsCard{
         if(d.getUserId().equals(Usr.i().getUser().getId())){
             activity.runOnUiThread(() -> adsCardProfileOnline.setVisibility(View.VISIBLE));
         }else {
-            Usr.i().requestUsersStatus(activity, false);
+            Usr.i().requestUsersStatus(activity);
         }
     }
     public void setStatus(List<Integer> idList){
@@ -131,7 +130,7 @@ public class AdsCard{
         if(d.getUserImgIcon() != null){
             userImgIcon = C_.URL_BASE +d.getUserImgIcon();
             try{
-                Funcs.loadImg(activity, adsCardProfileImg, userImgIcon, 10, null);
+                new MyImg(activity).loadImg(adsCardProfileImg, userImgIcon, 10, null);
             }catch (Exception ignored){};
         }else{
             adsCardProfileImg.setImageResource(R.drawable.no_avatar);
@@ -183,7 +182,7 @@ public class AdsCard{
         if(d.getUserImgIcon() != null){
             userImgIcon = C_.URL_BASE +d.getUserImgIcon();
             try{
-                Funcs.loadImgNecessarily(activity, adsCardProfileImg, userImgIcon, 10);
+                new MyImg(activity).loadImgNecessarily(adsCardProfileImg, userImgIcon, 10);
             }catch (Exception ignored){};
         }else{
             adsCardProfileImg.setImageResource(R.drawable.no_avatar);

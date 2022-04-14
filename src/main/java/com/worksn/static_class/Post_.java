@@ -44,7 +44,7 @@ public class Post_ {
 
     private static void sendData(Context context, MyCallBack myCallBack){
         G_.clickListenerEnable = false;
-        NetworkService.i(context)
+        NetworkService.i()
                 .getWsnApi()
                 .getData(myCallBack.getObject())
                 .enqueue(new Callback<JsonResponse>() {

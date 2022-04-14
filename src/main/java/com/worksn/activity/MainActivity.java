@@ -84,7 +84,6 @@ import com.worksn.singleton.MyMap;
 import com.worksn.classes.AdsCard;
 import com.worksn.singleton.UiClick;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Funcs;
 import com.worksn.static_class.GetPermission;
 import com.worksn.classes.ConfirmDeliverMsg;
 import com.worksn.singleton.MsgManager;
@@ -757,7 +756,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
     }
     private void initSubMenuListener() {
-        SubMenu.i().initCb(new SubMenu.CB() {
+        SubMenu.i().init(this, new SubMenu.CB() {
             @Override
             public void cb(int code, Object object) {
                 switch (code) {
@@ -1419,7 +1418,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Usr.i().addUsersList(users);
                 new Render(this).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_USERS);
                 initUsersPanel(Usr.i().getTargetUsers());
-                Usr.i().requestUsersStatus(this, false);
+                Usr.i().requestUsersStatus(this);
             }
             else new Render(this).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
         });
@@ -1584,8 +1583,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LayoutInflater inflater = (this.getLayoutInflater());
         View v = inflater.inflate(R.layout.shell_layout_wc, (ViewGroup) activeUsersGrid, false);
         GridLayout.LayoutParams vLp = (GridLayout.LayoutParams)v.getLayoutParams();
-        int h = Funcs.dpToPx(this,80);
-        int w = Funcs.dpToPx(this,55);
+        int h = MyView.dpToPx(this,80);
+        int w = MyView.dpToPx(this, 55);
         vLp.height = h;
         vLp.width  = w;
         v.setLayoutParams(vLp);

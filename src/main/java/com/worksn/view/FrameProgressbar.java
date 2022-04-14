@@ -69,7 +69,7 @@ public class FrameProgressbar {
         progressBarCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NetworkService.i(activity).cancelRequest();
+                NetworkService.i().cancelRequest();
                 if (activity.findViewById(R.id.regFormTmpImg) != null)
                     new MyImg(activity).hideRegFormTmpImg();
 

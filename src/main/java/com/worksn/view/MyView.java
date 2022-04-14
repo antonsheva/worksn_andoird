@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.worksn.R;
+import com.worksn.classes.MyImg;
 import com.worksn.singleton.MyStorage;
-import com.worksn.static_class.Funcs;
 
 public class MyView {
     public static void setHeightLl(Activity activity, View ll, int val){
@@ -23,19 +23,20 @@ public class MyView {
             @Override
             public void run() {
                 int ht = height;
-                if(height>0)ht = Funcs.dpToPx(activity, height);
+                if(height>0)ht = dpToPx(activity, height);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ht);
                 ll.setLayoutParams(params);
             }
         });
     }
     public static void setSizeFrameLayout(Activity activity, View fl, int width, int height){
-        if(width>0)width = Funcs.dpToPx(activity, width);
-        if(height>0)height = Funcs.dpToPx(activity, height);
+        if(width>0)width = dpToPx(activity, width);
+        if(height>0)height = dpToPx(activity, height);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width, height);
         fl.setLayoutParams(params);
     }
     public static void setBell(Activity activity) {
+        MyImg myImg = new MyImg(activity);
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -43,17 +44,16 @@ public class MyView {
                 boolean newMsgSign = MyStorage.i().getBoolen("new_msg_sign");
                 uMenuBell = (ImageView) activity.findViewById(R.id.uMenuBell);
                 if (newMsgSign) {
-                    Funcs.setImgSrc(uMenuBell, R.drawable.bell_act);
+                    myImg.setImgSrc(uMenuBell, R.drawable.bell_act);
                     MyStorage.i().putData("new_msg_sign", true);
                 }
                 else {
-                    Funcs.setImgSrc(uMenuBell, R.drawable.no_bell);
+                    myImg.setImgSrc(uMenuBell, R.drawable.no_bell);
                 }
             }
         });
     }
     public static void setNotifySign(Activity activity, boolean sign){
-
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -64,5 +64,8 @@ public class MyView {
                     img.setImageResource(R.drawable.setting);
             }
         });
+    }
+    public static int dpToPx(Activity activity, float dp) {
+        return (int)(dp * activity.getResources().getDisplayMetrics().density);
     }
 }

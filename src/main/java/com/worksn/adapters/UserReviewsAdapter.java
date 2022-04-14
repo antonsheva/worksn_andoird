@@ -2,6 +2,7 @@ package com.worksn.adapters;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import com.worksn.R;
+import com.worksn.classes.MyImg;
 import com.worksn.interfaces.AdapterListener;
 import com.worksn.objects.C_;
 import com.worksn.objects.UserReview;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Funcs;
 
 public class UserReviewsAdapter extends RecyclerView.Adapter<UserReviewsAdapter.UserReviewVwHldr>{
     public Context context;
@@ -58,7 +59,7 @@ public class UserReviewsAdapter extends RecyclerView.Adapter<UserReviewsAdapter.
         if(review.getSenderId() != null){
             if (review.getSenderId().equals(Usr.i().getUser().getId())){
                 holder.reviewFrmImg.setVisibility(View.VISIBLE);
-                Funcs.loadImg(context, holder.reviewFrmImg, C_.URL_BASE+Usr.i().getUser().getImgIcon(), 5, null);
+                new MyImg((Activity)context).loadImg(holder.reviewFrmImg, C_.URL_BASE+Usr.i().getUser().getImgIcon(), 5, null);
             }
         }
 

@@ -22,7 +22,7 @@ public class MainActivityTimers {
             requestOnlineUsers.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Usr.i().requestUsersStatus(context, true);
+                    Usr.i().requestUsersStatus(context);
                 }
             },100,30000);
         }

@@ -26,16 +26,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.worksn.R;
 import com.worksn.classes.Kbrd;
 import com.worksn.classes.MyFile;
+import com.worksn.classes.MyImg;
 import com.worksn.objects.PostSubData;
 import com.worksn.objects.TmpImg;
 import com.worksn.singleton.AppMode;
 import com.worksn.singleton.MyStorage;
 import com.worksn.singleton.PUWindow;
-import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.C_;
-import com.worksn.objects.MyContext;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Funcs;
 import com.worksn.static_class.Post;
 import com.worksn.view.FrameProgressbar;
 
@@ -151,7 +149,7 @@ public class UpdateUserDataActivity extends AppCompatActivity implements View.On
             if (Usr.i().getUser().getSName() != null)regFormSName.setText(Usr.i().getUser().getSName());
             if (Usr.i().getUser().getEmail() != null)regFormEmail.setText(Usr.i().getUser().getEmail());
             if (Usr.i().getUser().getAboutUser() != null)regFormAbout.setText(Usr.i().getUser().getAboutUser());
-            if (Usr.i().getUser().getImgIcon() != null) Funcs.loadImgNecessarily( activity, regFormImg, C_.URL_BASE+Usr.i().getUser().getImgIcon(), 5);
+            if (Usr.i().getUser().getImgIcon() != null) new MyImg(activity).loadImgNecessarily(regFormImg, C_.URL_BASE+Usr.i().getUser().getImgIcon(), 5);
         });
     }
     private void initTxtListener(){

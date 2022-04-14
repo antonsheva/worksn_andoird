@@ -89,7 +89,6 @@ public class C_ {
     public final static String ACT_CONFIRM_DELIVER_MSG   = "deliver_msg";
     public final static String ACT_CHECK_NEW_MSG         = "check_new_msg";
     public final static String ACT_GET_ONLINE_STATUS     = "get_online_status";
-    public final static String ACT_EXIT                  = "exit";
     public final static String ACT_CLOSE_ACTIVITY        = "enable_notify";
     public final static String ACT_OPEN_ACTIVITY         = "disable_notify";
     public final static String ACT_WAKEUP                = "wakeup";
@@ -118,6 +117,7 @@ public class C_ {
 
     public final static String ACT_GET_ENVIRONMENT_DATA  = "get_env_data";
     public final static String ACT_GET_USER_REVIEWS      = "get_user_reviews";
+    public final static String ACT_GET_USER_DATA         = "get_user_data";
 
     public final static String ACT_GET_LIKE_USERS        = "get_like_users";
     public final static String ACT_GET_BAN_USERS         = "get_ban_users";
@@ -129,6 +129,10 @@ public class C_ {
     public final static String ACT_GET_DISCUS_FOR_ADS    = "get_discus_for_ads";
     public final static String ACT_GET_CHAIN_MSG         = "get_chain_msg";
 
+
+    public final static String ACT_LOGIN                 = "login";
+    public final static String ACT_ANONYMOUS_LOGIN       = "anonym_login";
+    public final static String ACT_EXIT                  = "exit";
 
     public final static String ACT_UPDATE_USER_DATA      = "updt_user_data";
     public final static String ACT_UPDATE_AUTO_AUTH_DATA = "updt_auto_auth_data";
@@ -143,8 +147,8 @@ public class C_ {
     public final static String ACT_ADS_EDIT              = "edit_ads";
     public final static String ACT_ADS_ADD               = "add_ads";
 
+    public final static String ACT_ADD_IMG               = "add_img";
     public final static String ACT_REMOVE_TMP_FILE       = "rm_tmp_file";
-    public final static String ACT_ANONYMOUS_LOGIN       = "anonym_login";
 
     public final static String ACT_CHECK_NEW_NOTIFY      = "check_new_notify";
     public final static String ACT_GET_NEW_NOTIFY        = "get_new_notify"  ;
@@ -227,13 +231,19 @@ public class C_ {
     public static final String STR_USER                     = "user"                  ;
     public static final String STR_USER_ID                  = "user_id"               ;
     public static final String STR_USER_LOGIN               = "user_login"            ;
+    public static final String STR_USER_NAME                = "user_name"             ;
+    public static final String STR_USER_S_NAME              = "user_s_name"           ;
+    public static final String STR_USER_PHONE               = "user_phone"            ;
+    public static final String STR_USER_EMAIL               = "user_email"            ;
     public static final String STR_USER_RATING              = "user_rating"           ;
     public static final String STR_USER_IMG                 = "user_img"              ;
     public static final String STR_USER_IMG_ICON            = "user_img_icon"         ;
     public static final String STR_USER_VOTE_QT             = "user_vote_qt"          ;
+    public static final String STR_USER_RIGHTS              = "user_rights"           ;
     public static final String STR_USER_ONLINE              = "user_online"           ;
     public static final String STR_REVIEW                   = "review"                ;
     public static final String STR_USER_REVIEWS             = "user_reviews"          ;
+    public static final String STR_USER_WS_TOKEN            = "user_ws_token"         ;
 
     public static final String STR_OWNER                    = "owner"                 ;
     public static final String STR_OWNER_ID                 = "owner_id"              ;

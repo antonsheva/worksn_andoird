@@ -44,6 +44,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class MyFile{
+    private static final String FILE_SIZE = "5242880";
     Context context;
     public MyFile(){}
     public MyFile(Context context){
@@ -125,12 +126,12 @@ public class MyFile{
         ProgressRequestBody fileBody    = new ProgressRequestBody(context, file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("userfile", file.getName(), fileBody);
         RequestBody filename            = RequestBody.create(file.getName(), MediaType.parse("text/plain"));
-        RequestBody act                 = RequestBody.create( "add_img",MediaType.parse("text/plain"));
+        RequestBody act                 = RequestBody.create( C_.ACT_ADD_IMG,MediaType.parse("text/plain"));
         RequestBody create_id           = RequestBody.create(createId, MediaType.parse("text/plain"));
         RequestBody s_token             = RequestBody.create(mToken, MediaType.parse("text/plain"));
-        RequestBody MAX_FILE_SIZE       = RequestBody.create("5000000", MediaType.parse("text/plain"));
+        RequestBody MAX_FILE_SIZE       = RequestBody.create(FILE_SIZE, MediaType.parse("text/plain"));
 
-        NetworkService.i(context)
+        NetworkService.i()
                 .getUploadFile()
                 .uploadFile(act, create_id, s_token, MAX_FILE_SIZE, filename, fileToUpload)
                 .enqueue(new Callback<JsonResponse>() {

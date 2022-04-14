@@ -17,13 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.worksn.R;
+import com.worksn.classes.MyImg;
 import com.worksn.classes.SubMenu;
 import com.worksn.objects.C_;
 import com.worksn.objects.G_;
 import com.worksn.objects.StructMsg;
 import com.worksn.singleton.UiClick;
-import com.worksn.static_class.Funcs;
-
 
 public class MsgGroupAdapter extends RecyclerView.Adapter<MsgGroupAdapter.MsgVwHolder>{
     private final int msgQt;
@@ -121,9 +120,9 @@ public class MsgGroupAdapter extends RecyclerView.Adapter<MsgGroupAdapter.MsgVwH
         else                       holder.uProfileOnline.setVisibility(View.GONE);
 
         if (msg.getImgIcon() != null)
-            Funcs.loadImg(context, holder.msgImg, C_.URL_BASE+msg.getImgIcon(), 5, null);
+            new MyImg((Activity)context).loadImg(holder.msgImg, C_.URL_BASE+msg.getImgIcon(), 5, null);
 
-        Funcs.loadImgNecessarily(context, holder.msgAvatar, C_.URL_BASE+msg.getSpeakerImg(), 20);
+        new MyImg((Activity)context).loadImgNecessarily(holder.msgAvatar, C_.URL_BASE+msg.getSpeakerImg(), 20);
         holder.msgAvatar.setOnClickListener(v -> UiClick.i().showUserPage(context, msg.getSpeakerId()));
     }
 

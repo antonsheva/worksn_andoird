@@ -2,7 +2,6 @@ package com.worksn.singleton;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,18 +28,17 @@ public class Usr {
         if (i == null) i = new Usr();
         return i;
     }
-    private static User user = new User();
-    private boolean auth = false;
+    private User mUser = new User();
+    private boolean mAuth = false;
 
     public List<Integer>onlineList = new ArrayList<>();
-    private static final ArrayList<User> targetUsers = new ArrayList<User>();
-    private static final List<Integer> usersIdTable = new ArrayList<Integer>();
-    private final ArrayList<FrameUserProfile>userProfiles = new ArrayList< >();
+    private final ArrayList<User> mTargetUsers = new ArrayList<>();
+    private final List<Integer> mUsersIdTable = new ArrayList<>();
+    private final ArrayList<FrameUserProfile> mUserProfiles = new ArrayList<>();
 
     public int targetUserId = 0;
     public ArrayList<Integer> getBanList(){
         String strBanList  = MyStorage.i().getString( C_.STR_BAN_LIST);
-        Log.i("MyBw", "banList -> "+strBanList);
         String[] strBanListArray = null;
         ArrayList<Integer>banList  = new ArrayList<>();
         if (strBanList != null){
@@ -49,16 +47,11 @@ public class Usr {
                 if (d.length() > 0)banList.add(Integer.parseInt(d));
             }
         }
-        for (Integer d : banList){
-            Log.i("MyBw", "banList -> "+d.toString());
-        }
         return banList;
     }
     public ArrayList<Integer> getLikeList(){
         String strLikeList = MyStorage.i().getString(C_.STR_LIKE_LIST);
-        Log.i("MyBw", "likeList -> "+strLikeList);
-
-        String[] strLikeListArray = null;
+        String[] strLikeListArray;
         ArrayList<Integer>likeList = new ArrayList<>();
         if (strLikeList != null){
             strLikeListArray = strLikeList.split("_");
@@ -66,26 +59,23 @@ public class Usr {
                 if (d.length() > 0)likeList.add(Integer.parseInt(d));
             }
         }
-        for (Integer d : likeList){
-            Log.i("MyBw", "likeList -> "+d.toString());
-        }
         return likeList;
     }
 
     public ArrayList<User> getTargetUsers() {
-        return targetUsers;
+        return mTargetUsers;
     }
     public ArrayList<FrameUserProfile> getUserProfiles() {
-        return userProfiles;
+        return mUserProfiles;
     }
 
     public void addViewUserToList(FrameUserProfile userProfile){
-        userProfiles.add(userProfile);
+        mUserProfiles.add(userProfile);
     }
     public void addUserToTable(User user){
-        if (!usersIdTable.contains(user.getId())){
-            usersIdTable.add(user.getId());
-            targetUsers.add(user);
+        if (!mUsersIdTable.contains(user.getId())){
+            mUsersIdTable.add(user.getId());
+            mTargetUsers.add(user);
         }
     }
     public void addIdToOnlineList(int id){
@@ -93,43 +83,40 @@ public class Usr {
     }
     public void addUsersList(ArrayList<User>users){
         clearUsersList();
-        targetUsers.addAll(users);
-        for (User user : targetUsers){
-            usersIdTable.add(user.getId());
+        mTargetUsers.addAll(users);
+        for (User user : mTargetUsers){
+            mUsersIdTable.add(user.getId());
         }
     }
     public void clearUsersList(){
         if (MyScreen.activeMode != C_.ACTIVE_SCREEN_USERS)
-            userProfiles.clear();
+            mUserProfiles.clear();
 
-        targetUsers.clear();
-        usersIdTable.clear();
+        mTargetUsers.clear();
+        mUsersIdTable.clear();
 
     }
     public void initUser(Context context, CB cb){
-        Post.sendRequest(context, "get_user_data", null, new NetCallback() {
-            @Override
-            public void callback(MyContext data, Integer result, String stringData) {
-                if (result == -1)  {
-                    setUser(null);
-                    cb.callback(0, null);
-                    return;
-                };
-                if (data.getUser() != null){
-                    if (data.getUser().getId() != null){
-                        setUser(data.getUser());
-                        cb.callback(1, null);
-                    }
-                }else {
-                    setUser(null);
-                    cb.callback(0, null);
+        Post.sendRequest(context, C_.ACT_GET_USER_DATA, null, (data, result, stringData) -> {
+            if (result == -1)  {
+                setUser(null);
+                cb.callback(0, null);
+                return;
+            };
+            if (data.getUser() != null){
+                if (data.getUser().getId() != null){
+                    setUser(data.getUser());
+                    cb.callback(1, null);
                 }
+            }else {
+                setUser(null);
+                cb.callback(0, null);
             }
         });
     }
 
     public void setNewToken(String newToken){
-        user.setWsToken(newToken);
+        mUser.setWsToken(newToken);
     }
     public void setUser(User usr) {
         if (usr == null){
@@ -140,69 +127,61 @@ public class Usr {
             if ((usr.getId() == 0)||
                 (usr.getLogin().length()==0)||
                 (usr.getWsToken().length()<4)){
-                    user = null;
-                    auth = false;
+                    mUser = null;
+                    mAuth = false;
                     return;
             }
         }catch (Exception e){
-            user = null;
-            auth = false;
+            mUser = null;
+            mAuth = false;
             return;
         }
 
-        user = usr;
-        auth = true;
-        MyStorage.i().putData(C_.STR_USER_ID,       user.getId())     ;
-        MyStorage.i().putData("user_login",    user.getLogin())  ;
-        MyStorage.i().putData("user_name",     user.getName())   ;
-        MyStorage.i().putData("user_s_name",   user.getSName())  ;
-        MyStorage.i().putData("user_phone",    user.getPhone())  ;
-        MyStorage.i().putData("user_email",    user.getEmail())  ;
-        MyStorage.i().putData("user_img",      user.getImg())    ;
-        MyStorage.i().putData("user_img_icon", user.getImgIcon());
-        MyStorage.i().putData("user_rating",   user.getRating()) ;
-        MyStorage.i().putData("user_vote_qt",  user.getVoteQt()) ;
-        MyStorage.i().putData("user_rights",   user.getVoteQt()) ;
-        MyStorage.i().putData("user_ws_token", user.getWsToken());
-        MyStorage.i().putData(C_.STR_BAN_LIST,      user.getBanList());
-        MyStorage.i().putData(C_.STR_LIKE_LIST,     user.getLikeList());
+        mUser = usr;
+        mAuth = true;
+        MyStorage.i().putData(C_.STR_USER_ID,       mUser.getId())     ;
+        MyStorage.i().putData(C_.STR_USER_LOGIN,    mUser.getLogin())  ;
+        MyStorage.i().putData(C_.STR_USER_NAME,     mUser.getName())   ;
+        MyStorage.i().putData(C_.STR_USER_S_NAME,   mUser.getSName())  ;
+        MyStorage.i().putData(C_.STR_USER_PHONE,    mUser.getPhone())  ;
+        MyStorage.i().putData(C_.STR_USER_EMAIL,    mUser.getEmail())  ;
+        MyStorage.i().putData(C_.STR_USER_IMG,      mUser.getImg())    ;
+        MyStorage.i().putData(C_.STR_USER_IMG_ICON, mUser.getImgIcon());
+        MyStorage.i().putData(C_.STR_USER_RATING,   mUser.getRating()) ;
+        MyStorage.i().putData(C_.STR_USER_VOTE_QT,  mUser.getVoteQt()) ;
+        MyStorage.i().putData(C_.STR_USER_RIGHTS,   mUser.getVoteQt()) ;
+        MyStorage.i().putData(C_.STR_USER_WS_TOKEN, mUser.getWsToken());
+        MyStorage.i().putData(C_.STR_BAN_LIST,      mUser.getBanList());
+        MyStorage.i().putData(C_.STR_LIKE_LIST,     mUser.getLikeList());
     }
     public User getUser() {
-        if (user != null)
-            if ((user.getId() != 0)&&
-                (user.getLogin().length()>0)&&
-                (user.getWsToken().length()>3))
-                return user;
+        if (mUser != null)
+            if ((mUser.getId() != 0)&&
+                (mUser.getLogin().length()>0)&&
+                (mUser.getWsToken().length()>3))
+                return mUser;
 
-        user = new User();
-        user.setId(MyStorage.i()        .getInt     ("user_id"       ));
-        user.setLogin(MyStorage.i()     .getString  ("user_login"    ));
-        user.setName(MyStorage.i()      .getString  ("user_name"     ));
-        user.setSName(MyStorage.i()     .getString  ("user_s_name"   ));
-        user.setPhone(MyStorage.i()     .getString  ("user_phone"    ));
-        user.setEmail(MyStorage.i()     .getString  ("user_email"    ));
-        user.setImg(MyStorage.i()       .getString  ("user_img"      ));
-        user.setImgIcon(MyStorage.i()   .getString  ("user_img_icon" ));
-        user.setRating(MyStorage.i()    .getFloat   ("user_rating"   ));
-        user.setRights(MyStorage.i()    .getInt     ("user_rights"   ));
-        user.setWsToken(MyStorage.i()   .getString  ("user_ws_token" ));
+        mUser = new User();
+        mUser.setId(MyStorage.i()        .getInt     (C_.STR_USER_ID       ));
+        mUser.setLogin(MyStorage.i()     .getString  (C_.STR_USER_LOGIN    ));
+        mUser.setName(MyStorage.i()      .getString  (C_.STR_USER_NAME     ));
+        mUser.setSName(MyStorage.i()     .getString  (C_.STR_USER_S_NAME   ));
+        mUser.setPhone(MyStorage.i()     .getString  (C_.STR_USER_PHONE    ));
+        mUser.setEmail(MyStorage.i()     .getString  (C_.STR_USER_EMAIL    ));
+        mUser.setImg(MyStorage.i()       .getString  (C_.STR_USER_IMG      ));
+        mUser.setImgIcon(MyStorage.i()   .getString  (C_.STR_USER_IMG_ICON ));
+        mUser.setRating(MyStorage.i()    .getFloat   (C_.STR_USER_RATING   ));
+        mUser.setVoteQt(MyStorage.i()    .getInt     (C_.STR_USER_VOTE_QT  ));
+        mUser.setRights(MyStorage.i()    .getInt     (C_.STR_USER_RIGHTS   ));
+        mUser.setWsToken(MyStorage.i()   .getString  (C_.STR_USER_WS_TOKEN ));
+        mUser.setBanList(MyStorage.i()   .getString  (C_.STR_BAN_LIST      ));
+        mUser.setLikeList(MyStorage.i()  .getString  (C_.STR_LIKE_LIST     ));
+        
 
-        Log.i("MyUser", "user_id       -> " + user.getId());
-        Log.i("MyUser", "user_login    -> " + user.getLogin());
-        Log.i("MyUser", "user_name     -> " + user.getName());
-        Log.i("MyUser", "user_s_name   -> " + user.getSName());
-        Log.i("MyUser", "user_phone    -> " + user.getPhone());
-        Log.i("MyUser", "user_email    -> " + user.getEmail());
-        Log.i("MyUser", "user_img      -> " + user.getImg());
-        Log.i("MyUser", "user_img_icon -> " + user.getImgIcon());
-        Log.i("MyUser", "user_rating   -> " + user.getRating());
-        Log.i("MyUser", "user_rights   -> " + user.getRights());
-        Log.i("MyUser", "user_ws_token -> " + user.getWsToken());
-
-        if ((user.getId() != 0)&&
-            (user.getLogin().length()>0)&&
-            (user.getWsToken().length()>3))
-            return user;
+        if ((mUser.getId() != 0)&&
+            (mUser.getLogin().length()>0)&&
+            (mUser.getWsToken().length()>3))
+            return mUser;
         else
             return null;
     }
@@ -220,8 +199,6 @@ public class Usr {
             return user;
         }
         if (name.equals("StructMsg")){
-
-
             StructMsg msg = (StructMsg)o;
             User user = new User();
             user.setId(msg.getSpeakerId());
@@ -233,11 +210,11 @@ public class Usr {
         return null;
     }
     public boolean auth(){
-        if (!auth){
+        if (!mAuth){
             User mUser = getUser();
-            if (mUser != null) auth = true;
+            if (mUser != null) mAuth = true;
         }
-        return auth;
+        return mAuth;
     }
     public void checkNewNotify(Context context){
         Post.sendRequest(context,C_.ACT_CHECK_NEW_NOTIFY, null,(data, result, stringData)->{
@@ -246,27 +223,28 @@ public class Usr {
     }
 
     public void clearUser(){
-        user = null;
-        auth = false;
-        MyStorage.i().clearField("user_id"       );
-        MyStorage.i().clearField("user_login"    );
-        MyStorage.i().clearField("user_name"     );
-        MyStorage.i().clearField("user_s_name"   );
-        MyStorage.i().clearField("user_phone"    );
-        MyStorage.i().clearField("user_email"    );
-        MyStorage.i().clearField("user_img"      );
-        MyStorage.i().clearField("user_img_icon" );
-        MyStorage.i().clearField("user_rating"   );
-        MyStorage.i().clearField("user_vote_qt"  );
-        MyStorage.i().clearField("user_rights"   );
-        MyStorage.i().clearField("user_ws_token" );
+        mUser = null;
+        mAuth = false;
+        MyStorage.i().clearField(C_.STR_USER_ID       );
+        MyStorage.i().clearField(C_.STR_USER_LOGIN    );
+        MyStorage.i().clearField(C_.STR_USER_NAME     );
+        MyStorage.i().clearField(C_.STR_USER_S_NAME   );
+        MyStorage.i().clearField(C_.STR_USER_PHONE    );
+        MyStorage.i().clearField(C_.STR_USER_EMAIL    );
+        MyStorage.i().clearField(C_.STR_USER_IMG      );
+        MyStorage.i().clearField(C_.STR_USER_IMG_ICON );
+        MyStorage.i().clearField(C_.STR_USER_RATING   );
+        MyStorage.i().clearField(C_.STR_USER_VOTE_QT  );
+        MyStorage.i().clearField(C_.STR_USER_RIGHTS   );
+        MyStorage.i().clearField(C_.STR_USER_WS_TOKEN );
+        MyStorage.i().clearField(C_.STR_BAN_LIST      );
+        MyStorage.i().clearField(C_.STR_LIKE_LIST     );
     }
     public void loginUser(Context context, String login, String password, CB cb){
-        String act = "login";
         PostSubData data = new PostSubData();
         data.setLogin(login);
         data.setPassword(password);
-        Post.sendRequest(context, act, data, new NetCallback() {
+        Post.sendRequest(context, C_.ACT_LOGIN, data, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 if(result == 0)
@@ -297,24 +275,20 @@ public class Usr {
         });
     }
     public void exit(Context context, CB cb){
-
-        Post.sendRequest(context,"exit", null, new NetCallback() {
-            @Override
-            public void callback(MyContext data, Integer result, String stringData) {
-                setUser(null);
-                if (cb != null)
-                    cb.callback(0, null);
-            }
+        Post.sendRequest(context,C_.ACT_EXIT, null, (data, result, stringData) -> {
+            setUser(null);
+            if (cb != null)
+                cb.callback(0, null);
         });
     }
-    public void requestUsersStatus(Context context, boolean timerScr){
+    public void requestUsersStatus(Context context){
         String listId = "";
         listId = getTargetUsersList();
         if (listId.length()>0){
             listId = listId.substring(0, listId.length()-1);
             HashMap<String, Object>map = new HashMap<>();
-            map.put("act", C_.ACT_GET_ONLINE_STATUS);
-            map.put("list_id", listId);
+            map.put(C_.STR_ACT, C_.ACT_GET_ONLINE_STATUS);
+            map.put(C_.STR_ID_LIST, listId);
             new BroadCastMsg(context, map, WsBroadcastReceiver.BROADCAST_FILTER);
         }
     }
@@ -322,13 +296,13 @@ public class Usr {
         if (userId == null) return;
         String id = userId.toString();
         HashMap<String, Object>map = new HashMap<>();
-        map.put("act", C_.ACT_GET_ONLINE_STATUS);
-        map.put("list_id", id);
+        map.put(C_.STR_ACT, C_.ACT_GET_ONLINE_STATUS);
+        map.put(C_.STR_ID_LIST, id);
         new BroadCastMsg(context, map, WsBroadcastReceiver.BROADCAST_FILTER);
     }
     private String getTargetUsersList(){
         String listId = "";
-        for (Integer userId : usersIdTable){
+        for (Integer userId : mUsersIdTable){
             listId = String.format("%s%s_", listId, userId.toString());
         }
         return listId;
@@ -336,8 +310,5 @@ public class Usr {
 
     public interface CB{
        void callback(int code, Object data);
-    }
-    public interface CbInitUser{
-        void cb(boolean result);
     }
 }

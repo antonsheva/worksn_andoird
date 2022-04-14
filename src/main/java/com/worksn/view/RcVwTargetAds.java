@@ -79,7 +79,7 @@ public class RcVwTargetAds {
                 sRequestStatusTimeout = false;
             }
         }, 3000);
-        Usr.i().requestUsersStatus(context, false);
+        Usr.i().requestUsersStatus(context);
     }
     public void setOnlineStatus(){
         renderOnlineStatus(Usr.i().onlineList);

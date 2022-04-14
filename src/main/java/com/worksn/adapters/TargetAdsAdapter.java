@@ -14,7 +14,8 @@ import android.widget.TextView;
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.worksn.static_class.Funcs;
+
+import com.worksn.classes.MyImg;
 import com.yandex.mapkit.geometry.Point;
 import com.worksn.R;
 import com.worksn.classes.SubMenu;
@@ -127,7 +128,7 @@ public class TargetAdsAdapter extends RecyclerView.Adapter<TargetAdsAdapter.AdsV
             String[] imgList = ads.getImgIcon().split(",", 2);
             if (imgList[0].length()>1){
                 holder.frmAdsCardImgFrame.setVisibility(View.VISIBLE);
-                Funcs.loadImg(context, holder.frmAdsCardImg, C_.URL_BASE+imgList[0],3, null);
+                new MyImg((Activity)context).loadImg(holder.frmAdsCardImg, C_.URL_BASE+imgList[0],3, null);
             }
         }
 

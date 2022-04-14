@@ -40,7 +40,7 @@ public class WsBroadcastReceiver extends BroadcastReceiver{
         }
     }
     private void processingReceiveData(Context context, Intent intent){
-        String act = intent.getStringExtra("act");
+        String act = intent.getStringExtra(C_.STR_ACT);
         if (act == null)return;
         switch (act){
             case C_.ACT_EXIT               : exit();                         break;
@@ -107,9 +107,9 @@ public class WsBroadcastReceiver extends BroadcastReceiver{
         long discusId;
         int consumerId, statusMsg;
 
-        discusId   = intent.getLongExtra("discusId", 0);
-        consumerId = intent.getIntExtra("consumerId", 0);
-        statusMsg  = intent.getIntExtra("status_msg", 0);
+        discusId   = intent.getLongExtra(C_.STR_DISCUS_ID, 0);
+        consumerId = intent.getIntExtra(C_.STR_CONSUMER_ID, 0);
+        statusMsg  = intent.getIntExtra(C_.STR_STATUS_MSG, 0);
 
         Ws.sendConfirmDeliverMsg(consumerId, discusId, statusMsg);
     }
@@ -126,7 +126,7 @@ public class WsBroadcastReceiver extends BroadcastReceiver{
         mGetStatusTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                String idList = intent.getStringExtra("list_id");
+                String idList = intent.getStringExtra(C_.STR_ID_LIST);
                 Ws.sendGetOnlineStatus(idList);
             }
         }, 2000);

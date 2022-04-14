@@ -32,6 +32,7 @@ import java.util.List;
 import com.worksn.R;
 import com.worksn.adapters.UserReviewsAdapter;
 import com.worksn.classes.Kbrd;
+import com.worksn.classes.MyImg;
 import com.worksn.singleton.AppMode;
 import com.worksn.singleton.MyStorage;
 import com.worksn.singleton.PUWindow;
@@ -43,7 +44,6 @@ import com.worksn.objects.PostSubData;
 import com.worksn.objects.User;
 import com.worksn.objects.UserReview;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Funcs;
 import com.worksn.static_class.Post;
 import com.worksn.view.RatingStars;
 
@@ -264,7 +264,7 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
         finish();
     }
     void showBigAvatar(String src){
-        Funcs.loadImgNecessarily(this, userPageBigImg, src, 20);
+        new MyImg(this).loadImgNecessarily(userPageBigImg, src, 20);
         userPageScreen.setVisibility(View.VISIBLE);
     }
     void clickAboutText(){
@@ -351,7 +351,7 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
 
 
         if(user.getImgIcon() != null)
-            Funcs.loadImgNecessarily(this, userPageAvatar, C_.URL_BASE+user.getImgIcon(), 5);
+            new MyImg(this).loadImgNecessarily(userPageAvatar, C_.URL_BASE+user.getImgIcon(), 5);
 
         if (user.getLogin() != null)
             userPageLogin.setText(user.getLogin());
