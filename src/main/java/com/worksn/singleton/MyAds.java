@@ -21,7 +21,7 @@ import com.worksn.objects.MyContext;
 import com.worksn.objects.PostSubData;
 import com.worksn.objects.SelAdsParam;
 import com.worksn.objects.User;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 
 public class MyAds {
     public AdsCllct cllct = new AdsCllct();
@@ -60,7 +60,7 @@ public class MyAds {
         MapAreaCoords mapAreaCoords = new MapAreaCoords(MyMap.i().getMapVisibleRegion());
         SelAdsParam selAdsParam = new SelAdsParam(MyAds.i().cllct, mapAreaCoords);
         new ButtonsHighLight((Activity) context).setAdsTypeBtColor(MyAds.i().cllct);
-        Post.sendRequest(context,C_.ACT_GET_ADS_COLLECTION, selAdsParam,
+        MyNet.sendRequest(context,C_.ACT_GET_ADS_COLLECTION, selAdsParam,
                 (MyContext data, Integer result, String stringData) -> {
                     MyMap.i().cleanMapObjectCollections();
                     if(result > 0) {
@@ -137,7 +137,7 @@ public class MyAds {
         MyMap.i().cleanMapObjectCollections(C_.MAP_PM_RED);
         editAdsId = 0;
         AppMode.i().setMode(null);
-        Post.sendRequest(context,C_.ACT_ADS_ADD, sendData,
+        MyNet.sendRequest(context,C_.ACT_ADS_ADD, sendData,
                 (MyContext data, Integer result, String stringData) -> {
                     if (result == -1){
                         PUWindow.i().show(stringData);
@@ -164,7 +164,7 @@ public class MyAds {
     public void modifyAdsState(Context context, Ads ads, String act, CB cb){
         PostSubData subData = new PostSubData();
         subData.setId(ads.getId());
-        Post.sendRequest(context, act, subData, new NetCallback() {
+        MyNet.sendRequest(context, act, subData, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 if (result == -1){
@@ -180,7 +180,7 @@ public class MyAds {
         subData.setAds_id(ads.getId());
         subData.setImg(ads.getImg());
         subData.setImgIcon(ads.getImgIcon());
-        Post.sendRequest(context, C_.ACT_ADS_EDIT, subData, (data, result, stringData) -> {
+        MyNet.sendRequest(context, C_.ACT_ADS_EDIT, subData, (data, result, stringData) -> {
             if (result == -1){
                 PUWindow.i().show(stringData);
                 return;

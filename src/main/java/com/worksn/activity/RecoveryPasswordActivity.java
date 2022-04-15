@@ -19,7 +19,7 @@ import com.worksn.singleton.AppMode;
 import com.worksn.singleton.PUWindow;
 import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.MyContext;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 
 public class RecoveryPasswordActivity extends AppCompatActivity {
     EditText recoveryMail;
@@ -56,7 +56,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
         PostSubData data = new PostSubData();
         data.setEmail(email);
         Context context = (Context)this;
-        Post.sendRequest(this,C_.ACT_RECOVERY_PASSWORD, data, new NetCallback() {
+        MyNet.sendRequest(this,C_.ACT_RECOVERY_PASSWORD, data, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 PUWindow.i().show(stringData);

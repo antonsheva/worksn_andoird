@@ -3,7 +3,6 @@ package com.worksn.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +25,7 @@ import com.worksn.objects.MyContext;
 import com.worksn.objects.PostSubData;
 import com.worksn.objects.StructMsg;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 import com.worksn.websocket.WsBroadcastReceiver;
 
 public class QuickReply extends AppCompatActivity {
@@ -62,7 +61,7 @@ public class QuickReply extends AppCompatActivity {
             Context context = getApplicationContext();
             new ConfirmDeliverMsg(this, consumerId, discusId, C_.CODE_CONFIRM_VIEWED);
             MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, false);
-            Post.sendRequest(context,C_.ACT_ADD_MSG, subData, new NetCallback() {
+            MyNet.sendRequest(context,C_.ACT_ADD_MSG, subData, new NetCallback() {
                 @Override
                 public void callback(MyContext data, Integer result, String stringData) {
                     if (result == 1){

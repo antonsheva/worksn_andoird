@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.worksn.objects.PostSubData;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 
 public class CrashActivity extends AppCompatActivity {
     @Override
@@ -20,7 +20,7 @@ public class CrashActivity extends AppCompatActivity {
         Log.i("MyException", "sen data -> " + sendData);
         PostSubData subData = new PostSubData();
         subData.setContent(sendData.toString());
-        Post.sendRequest(getApplicationContext(),"send_exception", subData, (data, result, stringData)->{
+        MyNet.sendRequest(getApplicationContext(),"send_exception", subData, (data, result, stringData)->{
             if (result == 1){
                 Log.d("MyException", "exception was send to server");
             }

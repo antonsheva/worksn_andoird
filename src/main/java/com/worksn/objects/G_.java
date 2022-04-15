@@ -7,7 +7,7 @@ public class G_ {
     public static long notifyDiscusId = 0;
     public static boolean clickListenerEnable = true;
     public static MyContext context = null;
-    public static JsonResponse respData = null;
+
     public static Map<String, ?> cookie;
     public static String dateTime = null;
     public static boolean adsCardDeploy = false;

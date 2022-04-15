@@ -7,15 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import com.worksn.R;
 import com.worksn.adapters.TargetAdsAdapter;
 import com.worksn.interfaces.AdapterListener;
@@ -24,56 +20,52 @@ import com.worksn.objects.C_;
 import com.worksn.singleton.Usr;
 
 public class RcVwTargetAds {
-
-
     RecyclerView rcVwTargetAds;
     TargetAdsAdapter targetAdsAdapter;
     AdapterListener adapterListener;
     Activity activity;
     LinearLayoutManager layoutManager;
+
     private List<Ads> adsList = null;
+    private boolean sRequestStatusTimeout = false;
+    private Timer sTimer;
+
     public RcVwTargetAds(Activity activ, AdapterListener adapterLstnr){
         activity = activ;
         adapterListener = adapterLstnr;
         rcVwTargetAds = (RecyclerView)activity.findViewById(R.id.rcVwTargetAds);
     }
     public void createTargetAdsRecyclerView(Context context, List<Ads> ads, Integer position) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adsList = ads;
-                targetAdsAdapter = null;
-                layoutManager = new LinearLayoutManager(activity);
-                targetAdsAdapter = new TargetAdsAdapter(adsList.size(), adsList, R.layout.frm_ads_card,
-                        (eCode, data1, data2) -> adapterListener.event(eCode, data1, data2));
-                layoutManager.setReverseLayout(true);
-                rcVwTargetAds.setLayoutManager(layoutManager);
-                rcVwTargetAds.setAdapter(targetAdsAdapter);
+        activity.runOnUiThread(() -> {
+            adsList = ads;
+            targetAdsAdapter = null;
+            layoutManager = new LinearLayoutManager(activity);
+            targetAdsAdapter = new TargetAdsAdapter(adsList.size(), adsList, R.layout.frm_ads_card,
+                    (eCode, data1, data2) -> adapterListener.event(eCode, data1, data2));
+            layoutManager.setReverseLayout(true);
+            rcVwTargetAds.setLayoutManager(layoutManager);
+            rcVwTargetAds.setAdapter(targetAdsAdapter);
 
-                if (position != null){
-                    rcVwTargetAds.scrollToPosition(position);
-                }else{
-                    if (adsList.size()>0)
-                        rcVwTargetAds.scrollToPosition(adsList.size()-1);
+            if (position != null)
+                rcVwTargetAds.scrollToPosition(position);
+            else
+                if (adsList.size()>0)
+                    rcVwTargetAds.scrollToPosition(adsList.size()-1);
 
-                }
-
-                requesOnlinetStatus(context);
-            }
+            requesOnlinetStatus(context);
         });
     }
 
-    private static boolean sRequestStatusTimeout = false;
-    static Timer tm;
+
     private void requesOnlinetStatus(Context context){
         if (sRequestStatusTimeout)return;
         sRequestStatusTimeout = true;
-        if (tm != null){
-            tm.cancel();
-            tm = null;
+        if (sTimer != null){
+            sTimer.cancel();
+            sTimer = null;
         }
-        tm = new Timer();
-        tm.schedule(new TimerTask() {
+        sTimer = new Timer();
+        sTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 sRequestStatusTimeout = false;

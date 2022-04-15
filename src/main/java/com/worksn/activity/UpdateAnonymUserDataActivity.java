@@ -5,7 +5,6 @@ import static android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
 import static android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,7 +35,7 @@ import com.worksn.objects.MyContext;
 import com.worksn.objects.TmpImg;
 import com.worksn.objects.User;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 import com.worksn.view.FrameProgressbar;
 
 
@@ -227,7 +226,7 @@ public class UpdateAnonymUserDataActivity extends AppCompatActivity implements V
     }
     private void sendData(PostSubData userData){
         Context context = (Context)this;
-        Post.sendRequest(this,C_.ACT_UPDATE_AUTO_AUTH_DATA, userData, new NetCallback() {
+        MyNet.sendRequest(this,C_.ACT_UPDATE_AUTO_AUTH_DATA, userData, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 PUWindow.i().show(stringData);

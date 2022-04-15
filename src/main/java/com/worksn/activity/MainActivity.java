@@ -67,8 +67,8 @@ import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.Ads;
 import com.worksn.objects.C_;
 import com.worksn.objects.G_;
-import com.worksn.static_class.MyLog;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyLog;
+import com.worksn.classes.MyNet;
 import com.worksn.view.FrameProgressbar;
 import com.worksn.view.FrameReplyToMsg;
 import com.worksn.view.Render;
@@ -84,13 +84,12 @@ import com.worksn.singleton.MyMap;
 import com.worksn.classes.AdsCard;
 import com.worksn.singleton.UiClick;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.GetPermission;
+import com.worksn.classes.GetPermission;
 import com.worksn.classes.ConfirmDeliverMsg;
 import com.worksn.singleton.MsgManager;
 import com.worksn.view.RcVwMsgGroup;
 import com.worksn.view.RcVwTargetAds;
 import com.worksn.view.SelectButton;
-import com.worksn.view.MyView;
 import com.worksn.view.FrameUserProfile;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
@@ -209,7 +208,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //---- common vars -----------------------------------------------------------------------------
     Activity activity = (Activity) this;
-    MyFile myFile = null;
+    MyFile mMyFile = null;
+    Render mVw = null;
 
     public static boolean sActive = false;
     public static boolean sLockUi = false;
@@ -278,6 +278,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mMyFile = new MyFile();
+
         sLockUi = true;
         Log.i("MyAppState", "-------------onCreate-------");
         G_.isQuickResponse = false;
@@ -285,7 +287,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MyMap.i().initMapKit(this);
         setContentView(R.layout.activity_main);
         initViewElements();
-        myFile = new MyFile();
+
+        mVw     = new Render(this);
+
         MyScreen.init(this);
         MyStorage.i().init(this);
         initPreferenceStorage();
@@ -304,14 +308,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     protected void onStart() {
-
         super.onStart();
         if (G_.isQuickResponse){
             G_.isQuickResponse = false;
             Log.i("MyAppState", "------------------- QuickResponse ---------------------");
             finish();
         }
-
         new MyNotify ().removeNotify(this);
         AppMode.i().setPage(C_.APP_PAGE_MAIN);
         sLockUi = true;
@@ -327,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (code == 1)
                     initAuthorizedUserMode();
                 else{
-                    new Render(this).header();
+                    mVw.header();
                     new WsServiceControl(this).stop();
                 }
             });
@@ -408,10 +410,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (MyScreen.activeMode == C_.ACTIVE_SCREEN_USERS)return;
         if(result > 0){
             frmActiveTitle.setText(R.string.ads);
-            new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
+            mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
         }else{
             frmActiveTitle.setText(R.string.emptyAdsList);
-            new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
+            mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
         }
     }
 
@@ -430,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Usr.i().checkNewNotify(this);
         new WsServiceControl(this).start();
         checkDiscusId();
-        new Render(this).header();
+        mVw.header();
         checkNewMsg();
     }
     @SuppressLint({"NewApi", "BatteryLife"})
@@ -756,38 +758,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
     }
     private void initSubMenuListener() {
-        SubMenu.i().init(this, new SubMenu.CB() {
-            @Override
-            public void cb(int code, Object object) {
-                switch (code) {
-                    case C_.SUBMENU_CODE_REMOVE_MSG:
-                        MsgManager.i().removeMsg(activity, (StructMsg) object);
-                        break;
-                    case C_.SUBMENU_CODE_REMOVE_MSG_GROUP:
-                        rcVwMsgGroup.removeMsgGroup((StructMsg) object);
-                        break;
-                    case C_.SUBMENU_CODE_REPLY_TO_MSG:
-                        sendMsgTxt.setHint(activity.getString(R.string.yourResponse));
-                        new FrameReplyToMsg(activity).show((StructMsg) object);
-                        break;
-                    case C_.SUBMENU_CODE_ADS_REMOVE:
-                        modifyAdsState((Ads) object, C_.ACT_ADS_REMOVE);
-                        break;
-                    case C_.SUBMENU_CODE_ADS_RECOVERY:
-                        modifyAdsState((Ads) object, C_.ACT_ADS_RECOVERY);
-                        break;
-                    case C_.SUBMENU_CODE_ADS_HIDDEN:
-                        modifyAdsState((Ads) object, C_.ACT_ADS_HIDDEN);
-                        break;
-                    case C_.SUBMENU_CODE_ADS_SHOW:
-                        modifyAdsState((Ads) object, C_.ACT_ADS_SHOW);
-                        break;
-                    case C_.SUBMENU_CODE_ADS_EDIT:
-                        showEditAdsPanel((Ads) object);
-                        break;
+        SubMenu.i().hide(this);
+        SubMenu.i().init(this, (code, object) -> {
+            switch (code) {
+                case C_.SUBMENU_CODE_REMOVE_MSG:
+                    MsgManager.i().removeMsg(activity, (StructMsg) object);
+                    break;
+                case C_.SUBMENU_CODE_REMOVE_MSG_GROUP:
+                    rcVwMsgGroup.removeMsgGroup((StructMsg) object);
+                    break;
+                case C_.SUBMENU_CODE_REPLY_TO_MSG:
+                    sendMsgTxt.setHint(activity.getString(R.string.yourResponse));
+                    new FrameReplyToMsg(activity).show((StructMsg) object);
+                    break;
+                case C_.SUBMENU_CODE_ADS_REMOVE:
+                    modifyAdsState((Ads) object, C_.ACT_ADS_REMOVE);
+                    break;
+                case C_.SUBMENU_CODE_ADS_RECOVERY:
+                    modifyAdsState((Ads) object, C_.ACT_ADS_RECOVERY);
+                    break;
+                case C_.SUBMENU_CODE_ADS_HIDDEN:
+                    modifyAdsState((Ads) object, C_.ACT_ADS_HIDDEN);
+                    break;
+                case C_.SUBMENU_CODE_ADS_SHOW:
+                    modifyAdsState((Ads) object, C_.ACT_ADS_SHOW);
+                    break;
+                case C_.SUBMENU_CODE_ADS_EDIT:
+                    showEditAdsPanel((Ads) object);
+                    break;
 
 
-                }
             }
         });
     }
@@ -907,7 +907,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         new MyImg(this).setWebView(null);
-        myFile.chooseFile(this, action);
+        mMyFile.chooseFile(this, action);
     }
     private void makePhoto(Integer action){
         if (TmpImg.sendImgIsRun){
@@ -915,7 +915,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         new MyImg(this).setWebView(null);
-        myFile.makePhoto(this, action);
+        mMyFile.makePhoto(this, action);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -926,10 +926,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             TmpImg.wasSendImg = true;
             if (imgDestination == C_.IMG_FOR_MSG){
                 frmActiveTitle.setVisibility(View.GONE);
-                new Render(activity).screen(C_.SCREEN_MODE_MSG_CHAIN, C_.ACTIVE_SCREEN_MSG_CHAIN);
+                mVw.screen(C_.SCREEN_MODE_MSG_CHAIN, C_.ACTIVE_SCREEN_MSG_CHAIN);
                 new MyImg(this).setImageView(TmpImg.img.getAbsolutePath());
             }
-            myFile.uploadFile(this, TmpImg.img, TmpImg.createId, showBtCancel, new ComCallback() {
+            mMyFile.uploadFile(this, TmpImg.img, TmpImg.createId, showBtCancel, new ComCallback() {
                 @Override
                 public Object callback(Object object, Integer result) {
                     if (result == RESULT_OK){
@@ -968,7 +968,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             MyAds.i().cllct.setAdsType(C_.ADS_TYPE_WORKER);
         }
-        new Render(this).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
+        mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
         new ButtonsHighLight(this).clearAdsParamBtColor();
         getAdsCollection(new CbGetAdsCllct() {
             @Override
@@ -983,7 +983,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             MyAds.i().cllct.setAdsType(C_.ADS_TYPE_EMPLOYER);
         }
-        new Render(this).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
+        mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
         new ButtonsHighLight(this).clearAdsParamBtColor();
         getAdsCollection(new CbGetAdsCllct() {
             @Override
@@ -1005,10 +1005,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getAdsCollection(( data,  result)->{
             if(result > 0){
                 frmActiveTitle.setText(R.string.ownersOfVisibleAds);
-                new Render(this).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_USERS);
+                mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_USERS);
                 initUsersPanel(Usr.i().getTargetUsers());
             }
-            else new Render(this).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
+            else mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
         });
         new ButtonsHighLight(this).setAdsParamBtColor(C_.ADS_PARAM_USER);
     }
@@ -1016,7 +1016,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         clearAddAdsData();
         AppMode.i().setMode(C_.APP_MODE_MAIN);
         new ButtonsHighLight(this).clearAdsParamBtColor();
-        new Render(this).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
+        mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
     }
     private void btAddAdsClick() {
         if (Usr.i().getUser() == null){
@@ -1043,7 +1043,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void btAnonymousLogin(){
         Usr.i().anonymousLogin(this, (code, data) -> {
-            new Render(activity).header();
+            mVw.header();
             initAuthorizedUserMode();
         });
     }
@@ -1056,7 +1056,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Usr.i().loginUser(this, login, password, new Usr.CB() {
             @Override
             public void callback(int code, Object data) {
-                new Render(activity).header();
+                mVw.header();
                 initAuthorizedUserMode();
             }
         });
@@ -1072,7 +1072,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (discus_id == null || rmvSubMenu())return;
         PostSubData subData = new PostSubData();
         subData.setDiscusId(discus_id);
-        Post.sendRequest(this,C_.ACT_GET_CHAIN_MSG, subData, (data, result, stringData) ->{
+        MyNet.sendRequest(this,C_.ACT_GET_CHAIN_MSG, subData, (data, result, stringData) ->{
             if (result != -1){
                 showDiscus(data, result);
                 checkNewMsg();
@@ -1086,7 +1086,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         subData.setConsumerId(consumerId == 0 ? ads.getUserId() : consumerId);
         subData.setSenderId(Usr.i().getUser().getId());
 
-        Post.sendRequest(this,C_.ACT_GET_DISCUS_FOR_ADS, subData, (data, result, stringData) -> {
+        MyNet.sendRequest(this,C_.ACT_GET_DISCUS_FOR_ADS, subData, (data, result, stringData) -> {
             if (result != -1)
                 showDiscus(data, result);
 
@@ -1105,14 +1105,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 PUWindow.i().show(stringData);
                 if(msgGrpType == C_.MSG_TYPE_NEW){
                     MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, false);
-                    MyView.setBell(activity);
+                    mVw.setBell();
                 }
             }
             if (result > 0){
                 showMsgGroup(msgs);
                 if(msgGrpType == C_.MSG_TYPE_NEW){
                     MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, true);
-                    MyView.setBell(activity);
+                    mVw.setBell();
                 }
             }
         });
@@ -1120,7 +1120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getDiscusWithUser(int userId){
         PostSubData subData = new PostSubData();
         subData.setSpeakerId(userId);
-        Post.sendRequest(this, C_.ACT_GET_USER_MSG, subData, new NetCallback() {
+        MyNet.sendRequest(this, C_.ACT_GET_USER_MSG, subData, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 boolean dataError;
@@ -1178,16 +1178,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void callback(Object data, int result) {
                 new ButtonsHighLight(activity).setAdsParamBtColor(C_.ADS_PARAM_ANY);
-                new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
+                mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
             }
         });
     }
     private void selectCategoryAds(){
         new ButtonsHighLight(this).setAdsParamBtColor(C_.ADS_PARAM_CATEGORY);
-        new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_CATEGORY);
+        mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_CATEGORY);
     }
     private void selectAdsLifetime(){
-        new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_LIFETIME);
+        mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_LIFETIME);
     }
     private void searchAds(){
         String searchPhrase = (searchTxt.getText() != null) ? searchTxt.getText().toString() : null;
@@ -1201,9 +1201,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void checkNewMsg(){
         PostSubData subData = new PostSubData();
-        Post.sendRequest(this,C_.ACT_CHECK_NEW_MSG, subData, (MyContext data, Integer result, String stringData) -> {
+        MyNet.sendRequest(this,C_.ACT_CHECK_NEW_MSG, subData, (MyContext data, Integer result, String stringData) -> {
             MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, result == 1);
-            MyView.setBell(activity);
+            mVw.setBell();
         });
     }
     private void modifyAdsState(Ads ads, String act){
@@ -1294,7 +1294,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TmpImg.icon = null;
     }
     private void getEnvironmentData(){
-        Post.sendRequest(this, C_.ACT_GET_ENVIRONMENT_DATA, null, new NetCallback() {
+        MyNet.sendRequest(this, C_.ACT_GET_ENVIRONMENT_DATA, null, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 if (result == 1){
@@ -1312,7 +1312,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (data.getSettingPageContent() != null)
                         saveEnvironmentContentToStorage(data.getSettingPageContent());
 
-                    new Render(activity).header();
+                    mVw.header();
                 }
             }
         });
@@ -1331,8 +1331,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void callback(int code, Object data) {
                 Usr.i().clearUser();
-                new Render(activity).header();
-                new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_CATEGORY);
+                mVw.header();
+                mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_CATEGORY);
                 clearTempAppData();
                 rcVwMsgGroup.clearRcVw();
                 MsgManager.i().clearRcVw(activity);
@@ -1363,7 +1363,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //---  render funcs ----------------------------------------------------------------------------
     private void restorePrevView(){
-        new Render(activity).screen(MyScreen.prevMode, MyScreen.prevActive);
+        mVw.screen(MyScreen.prevMode, MyScreen.prevActive);
         MyScreen.prevMode = -1;
         MyScreen.prevActive = -1;
     }
@@ -1411,16 +1411,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //--- VIEWS funcs ------------------------------------------------------------------------------
     private void showBwList(String act){
-        Post.sendRequest(this, act, null, (data, result, stringData)->{
+        MyNet.sendRequest(this, act, null, (data, result, stringData)->{
             if(result > 0){
                 AppMode.i().setMode(C_.APP_MODE_SHOW_BW_LIST);
                 ArrayList<User> users = new ArrayList<>(data.getUsersList());
                 Usr.i().addUsersList(users);
-                new Render(this).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_USERS);
+                mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_USERS);
                 initUsersPanel(Usr.i().getTargetUsers());
                 Usr.i().requestUsersStatus(this);
             }
-            else new Render(this).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
+            else mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
         });
     }
     private void clearSearchField(){
@@ -1464,7 +1464,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ads.setUserRating(data.getSpeaker().getRating());
         ads.setUserVoteQt(data.getSpeaker().getVoteQt());
     /////////////////////////////////////////////////////////
-        new Render(activity).screen(C_.SCREEN_MODE_MSG_CHAIN, C_.ACTIVE_SCREEN_MSG_CHAIN);
+        mVw.screen(C_.SCREEN_MODE_MSG_CHAIN, C_.ACTIVE_SCREEN_MSG_CHAIN);
         new AdsCard(activity).init(ads, true, false, this::restorePrevView);
         MsgManager.i().getMsgContext().setDiscus(data.getDiscus());
         MsgManager.i().createMsgChainRecyclerView(this, new ArrayList<StructMsg>(), 0);
@@ -1479,7 +1479,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (rmvSubMenu())return;
         if (MyScreen.screenMode == C_.SCREEN_MODE_ADD_ADS) return;
         if (tmpAds.size() == 0){
-            new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
+            mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
             return;
         }
         if (openSingleAds){
@@ -1489,16 +1489,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         showAdsList(adsList, null);
-        new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
+        mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
     }
     private void showVisibilityAds(){
         getAdsCollection(new CbGetAdsCllct() {
             @Override
             public void callback(Object data, int result) {
                 if(result > 0)
-                    new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
+                    mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
                 else
-                    new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
+                    mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_EMPTY);
+
             }
         });
     }
@@ -1510,13 +1511,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (rmvSubMenu())return;
         if(Usr.i().auth()) getMsgChainForAds(ads, 0);
         else {
-            new Render(activity).screen(C_.SCREEN_MODE_MSG_CHAIN, C_.ACTIVE_SCREEN_MSG_CHAIN);
+            mVw.screen(C_.SCREEN_MODE_MSG_CHAIN, C_.ACTIVE_SCREEN_MSG_CHAIN);
             new AdsCard(activity).init(ads, false, true, this::restorePrevView);
         }
 }
     private void showAllAds(){
         MyAds.i().cllct.setAdsType(C_.ADS_TYPE_ANY);
-        new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
+        mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_TARGET_ADS);
         new ButtonsHighLight(this).clearAdsParamBtColor();
         getAdsCollection(null);
     }
@@ -1529,11 +1530,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             addAdsNoAuth.setVisibility(View.VISIBLE);
         }
         new ButtonsHighLight(this).setAdsParamBtColor(C_.ADS_PARAM_ADD);
-        new Render(activity).screen(C_.SCREEN_MODE_ADD_ADS, C_.ACTIVE_SCREEN_ADD);
+        mVw.screen(C_.SCREEN_MODE_ADD_ADS, C_.ACTIVE_SCREEN_ADD);
     }
     private void showMsgChain(List<StructMsg>msgs){
         G_.adsCardDeploy = false;
-        new Render(activity).screen(C_.SCREEN_MODE_MSG_CHAIN, C_.ACTIVE_SCREEN_MSG_CHAIN);
+        mVw.screen(C_.SCREEN_MODE_MSG_CHAIN, C_.ACTIVE_SCREEN_MSG_CHAIN);
         new FrameReplyToMsg(this).hide();
         MsgManager.ReplyData.clear();
         MsgManager.i().createMsgChainRecyclerView(this, msgs, 0);
@@ -1543,14 +1544,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new ButtonsHighLight(this).clearAdsParamBtColor();
         if (messages == null) return;
 
-        new Render(activity).screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_MSG_GROUP);
+        mVw.screen(C_.SCREEN_MODE_MAIN, C_.ACTIVE_SCREEN_MSG_GROUP);
         rcVwMsgGroup.createMsgGroupRecyclerView(messages, 0);
     }
     private void showLoadImgs(){
         if(MyAds.i().images.size() == 0)return;
         MyImg myImg = new MyImg(this);
         List<Integer> finalIdList = myImg.showImgsArray(MyAds.i().images,true);
-        new Render(this).showBigImagesList();
+        mVw.bigImagesList(C_.VAL_SHOW);
         myImg.initCb((code, object) -> {
             Integer id = (Integer)object;
             int index = finalIdList.indexOf(id);
@@ -1583,8 +1584,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LayoutInflater inflater = (this.getLayoutInflater());
         View v = inflater.inflate(R.layout.shell_layout_wc, (ViewGroup) activeUsersGrid, false);
         GridLayout.LayoutParams vLp = (GridLayout.LayoutParams)v.getLayoutParams();
-        int h = MyView.dpToPx(this,80);
-        int w = MyView.dpToPx(this, 55);
+        int h = MyScreen.dpToPx(80);
+        int w = MyScreen.dpToPx(55);
         vLp.height = h;
         vLp.width  = w;
         v.setLayoutParams(vLp);

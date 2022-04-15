@@ -2,10 +2,8 @@ package com.worksn.singleton;
 
 import android.view.Gravity;
 import android.widget.Toast;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 import com.worksn.activity.MyApp;
 
 public class PUWindow {
@@ -48,6 +46,5 @@ public class PUWindow {
                 }
             }, 2000);
         }
-
     }
 }

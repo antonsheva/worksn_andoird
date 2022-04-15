@@ -159,6 +159,8 @@ public class C_ {
     public final static String ACT_REMOVE_MSG            = "rmv_msg"    ;
     public final static String ACT_REMOVE_DISCUS         = "rmv_discus" ;
 
+    public final static String ACT_SEND_LOG_SERVICE      = "send_log_service" ;
+
 
 //---------------------------------------------------------------------------
 
@@ -353,7 +355,16 @@ public class C_ {
 
     public static final String STR_WAS_SEND_POST_DATA       = "was_send_post_data";
 
-//-------------  --------------------------
+//--------------------------------------------------------------------------------------------------
+
+
+//----------------------------- VALUES -------------------------------------------------------------
+    public final static boolean VAL_SHOW = true;
+    public final static boolean VAL_HIDE = false;
+
+
+
+
     public final static long ADS_ID_FOR_ADMIN               = 1;
     public final static long ADS_ID_FOR_DIRECT_DISCUS       = 2;
     public final static long ADS_CATEGORY_FOR_ADMIN         = 100;

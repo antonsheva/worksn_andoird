@@ -14,7 +14,6 @@ import com.worksn.objects.C_;
 import com.worksn.objects.MyScreen;
 import com.worksn.objects.StructMsg;
 import com.worksn.singleton.PUWindow;
-import com.worksn.view.MyView;
 import com.worksn.view.Render;
 
 public class SubMenu {
@@ -22,10 +21,10 @@ public class SubMenu {
 
     private int pos;
     private CB cb;
-    Render render;
+    Render mVw;
     public void init(Activity activity, CB cb){
         this.cb = cb;
-        render = new Render(activity);
+        mVw = new Render(activity);
     }
     public int getPos() {
         return pos;
@@ -62,8 +61,8 @@ public class SubMenu {
         btEdit    .setVisibility(View.GONE);
 
         this.targetObject = targetObject;
-        int h = MyView.dpToPx(activity, 50) ;
-        int w = MyView.dpToPx(activity, 130);
+        int h = MyScreen.dpToPx(50) ;
+        int w = MyScreen.dpToPx(130);
 
         switch (targetObjectType){
             case C_.SUBMENU_OBJECT_TYPE_MSG :
@@ -104,7 +103,7 @@ public class SubMenu {
         if(left> MyScreen.sizePxX /2)left -= w+10;
         else left += 20;
 
-        if (top < MyView.dpToPx(activity, 100) )top = MyView.dpToPx(activity, 100);
+        if (top < MyScreen.dpToPx(100) )top = MyScreen.dpToPx(100);
         params.setMargins(left, top,0,0);
         subMenu.setLayoutParams(params);
 
@@ -163,10 +162,9 @@ public class SubMenu {
         boolean result = isShow;
 
         LinearLayout subMenu = (LinearLayout)activity.findViewById(R.id.subMenu);
-
         activity.runOnUiThread(() -> {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(1,1); // высота и ширина
-            params.setMargins(0,-(MyView.dpToPx(activity, 200)),0,0);
+            params.setMargins(0,-(MyScreen.dpToPx(200)),0,0);
             subMenu.setLayoutParams(params);
         });
         isShow = false;

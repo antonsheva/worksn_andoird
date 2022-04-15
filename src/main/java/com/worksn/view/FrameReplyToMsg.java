@@ -5,8 +5,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-
 import com.worksn.R;
 import com.worksn.classes.MyImg;
 import com.worksn.objects.C_;
@@ -25,7 +23,6 @@ public class FrameReplyToMsg {
 
     public FrameReplyToMsg(Activity activity){
         this.activity = activity;
-        //--- frame reply to message -------------------
         frmReply    = (LinearLayout) activity.findViewById(R.id.frmReply);
         frmReplySpeaker = (TextView) activity.findViewById(R.id.frmReplySpeaker);
         frmReplyContent = (TextView) activity.findViewById(R.id.frmReplyContent);
@@ -33,7 +30,7 @@ public class FrameReplyToMsg {
         frmReplyImg    = (ImageView) activity.findViewById(R.id.frmReplyImg);
     }
     public void show(StructMsg msg){
-        String speaker = "Вы";
+        String speaker = activity.getString(R.string.you);
 
         try{
             if (!msg.getSender_id().equals(Usr.i().getUser().getId())){
@@ -61,20 +58,15 @@ public class FrameReplyToMsg {
 
         frmReply.setVisibility(View.VISIBLE);
 
-
         MsgManager.ReplyData.replyMsgId = msg.getId();
         MsgManager.ReplyData.replySenderId = msg.getSender_id();
         MsgManager.ReplyData.replySenderLogin = speaker;
         MsgManager.ReplyData.replyContent = msg.getContent();
         MsgManager.ReplyData.replyImg = msg.getImgIcon();
 
-
-        frmReplyClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hide();
-                MsgManager.ReplyData.clear();
-            }
+        frmReplyClose.setOnClickListener(v -> {
+            hide();
+            MsgManager.ReplyData.clear();
         });
     }
     public void hide(){
@@ -84,7 +76,4 @@ public class FrameReplyToMsg {
         frmReplyImg.setVisibility(View.GONE);
         frmReply.setVisibility(View.GONE);
     }
-
-
-
 }

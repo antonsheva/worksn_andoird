@@ -21,7 +21,7 @@ import com.worksn.singleton.PUWindow;
 import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.MyContext;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 
 public class ChangePassword extends AppCompatActivity {
     EditText oldPassword;
@@ -74,7 +74,7 @@ public class ChangePassword extends AppCompatActivity {
         data.setPassword(oldPass);
         data.setNewPass(newPass);
         data.setLogin(Usr.i().getUser().getLogin());
-        Post.sendRequest(this, C_.ACT_CHNG_PASSWORD, data, new NetCallback() {
+        MyNet.sendRequest(this, C_.ACT_CHNG_PASSWORD, data, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 PUWindow.i().show(stringData);

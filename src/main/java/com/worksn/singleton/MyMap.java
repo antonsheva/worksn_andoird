@@ -238,7 +238,7 @@ public class MyMap {
             }
             @Override
             public void onMapLongTap(@NonNull Map map, @NonNull Point point) {
-                Log.i("MyMap", "33333333");
+                Log.i("MyMap", "onMapLongTap");
             }
         };
     }

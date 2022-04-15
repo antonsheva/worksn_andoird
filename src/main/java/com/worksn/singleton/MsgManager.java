@@ -41,11 +41,10 @@ import com.worksn.objects.SaveImgData;
 import com.worksn.objects.StructMsg;
 import com.worksn.objects.TmpImg;
 import com.worksn.objects.User;
-import com.worksn.static_class.MyLog;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyLog;
+import com.worksn.classes.MyNet;
 import com.worksn.view.FrameReplyToMsg;
 import com.worksn.view.PrintMsgProcess;
-import com.worksn.view.MyView;
 import com.worksn.view.Render;
 import com.worksn.websocket.WsBroadcastReceiver;
 
@@ -127,7 +126,7 @@ public class MsgManager {
             mRcVwMsgChain.setAdapter(mMsgChainAdapter);
             if(pos!=null) {
                 mRcVwMsgChain.scrollToPosition(pos);
-                if (pos < 5)new Render((Activity)context).showBtScrollDown(false);
+                if (pos < 5)new Render((Activity)context).buttonScrollDown(false);
             }
         });
     }
@@ -195,7 +194,7 @@ public class MsgManager {
         }
     }
     public void getMsgGroup(Context context, String act, ReturnMsgArray cb){
-        Post.sendRequest(context,act, null, (data, result, stringData) -> {
+        MyNet.sendRequest(context,act, null, (data, result, stringData) -> {
             boolean dataError;
             List<StructMsg> msgs = new ArrayList<>();
             if(result > 0){
@@ -271,7 +270,7 @@ public class MsgManager {
         }
         clearTmpImgData();
 
-        Post.sendRequest(context,C_.ACT_ADD_MSG, subData, (data, result, stringData)->{
+        MyNet.sendRequest(context,C_.ACT_ADD_MSG, subData, (data, result, stringData)->{
             StructMsg showMsg;
             if (result == 0)
                 PUWindow.i().show(stringData);
@@ -340,9 +339,10 @@ public class MsgManager {
         }
     }
     public void wsRcvNewMsg(Context context, StructMsg msg, boolean enRingtone){
+        Render vw = new Render((Activity) context);
         if (msg.getSysNotify() != null){
             int notifySign = Integer.parseInt(msg.getSysNotify().toString());
-            MyView.setNotifySign( (Activity) context, notifySign == 1);
+            vw.notifySign(notifySign == 1);
         }
         if (msg.getDiscus_id() == null)return;
         if(MyScreen.screenMode == C_.SCREEN_MODE_MSG_CHAIN) {
@@ -364,7 +364,7 @@ public class MsgManager {
         new ConfirmDeliverMsg(context, msg.getSender_id(), msg.getDiscus_id(), C_.CODE_CONFIRM_DELIVER);
         if (enRingtone)playMsgRingtone(context);
         MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, true);
-        MyView.setBell((Activity) context);
+        vw.setBell();
     }
     public void renderMsgViewedStatus(Context context, long discusId, int statusMsg){
         MyImg myImg = new MyImg((Activity) context);
@@ -486,7 +486,7 @@ public class MsgManager {
     private void remove(Context context, long id, ReturnMsg returnMsg){
         PostSubData subData = new PostSubData();
         subData.setId(id);
-        Post.sendRequest(context, C_.ACT_REMOVE_MSG, subData, (data, result, stringData) -> {
+        MyNet.sendRequest(context, C_.ACT_REMOVE_MSG, subData, (data, result, stringData) -> {
             if(result == 0)
                 PUWindow.i().show(stringData);
             if (result == 1)

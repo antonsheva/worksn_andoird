@@ -32,7 +32,7 @@ import com.worksn.objects.C_;
 import com.worksn.objects.TmpImg;
 import com.worksn.objects.User;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 import com.worksn.view.FrameProgressbar;
 
 
@@ -227,7 +227,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
     private void sendData(PostSubData userData){
         Context context = this;
-        Post.sendRequest(this,C_.ACT_REG_NEW_USER, userData, (data, result, stringData) -> {
+        MyNet.sendRequest(this,C_.ACT_REG_NEW_USER, userData, (data, result, stringData) -> {
             PUWindow.i().show(stringData);
             if (result == 1) {
                 Usr.i().loginUser(context, userData.getLogin(), userData.getPassword(), (code, data1) -> {

@@ -2,9 +2,7 @@ package com.worksn.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.widget.TextView;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,7 +19,7 @@ public class PrintMsgProcess {
         }catch (NullPointerException e){
             return;
         }
-        txt.setText("Печатает");
+        txt.setText(R.string.prints);
         if (tm != null){
             tm.cancel();
             tm = null;
@@ -47,26 +45,22 @@ public class PrintMsgProcess {
                tmCycle = null;
                tm.cancel();
                tm = null;
-               ((Activity)context).runOnUiThread(new Runnable() {
-                   @Override
-                   public void run() {
-                       txt.setText("");
-                   }
-               });
+               ((Activity)context).runOnUiThread(() -> txt.setText(""));
 
             }
         }, 5000);
     }
     private void setText(Context context, int cnt){
-        ((Activity)context).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                switch (cnt & 3){
-                    case 0: txt.setText("Печатает");   break;
-                    case 1: txt.setText("Печатает.");   break;
-                    case 2: txt.setText("Печатает..");   break;
-                    case 3: txt.setText("Печатает...");   break;
-                }
+        String txt1 = context.getString(R.string.prints);
+        String txt2 = context.getString(R.string.prints)+".";
+        String txt3 = context.getString(R.string.prints)+"..";
+        String txt4 = context.getString(R.string.prints)+"...";
+        ((Activity)context).runOnUiThread(() -> {
+            switch (cnt & 3){
+                case 0: txt.setText(txt1);   break;
+                case 1: txt.setText(txt2);   break;
+                case 2: txt.setText(txt3);   break;
+                case 3: txt.setText(txt4);   break;
             }
         });
     }

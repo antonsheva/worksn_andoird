@@ -12,7 +12,7 @@ import com.worksn.objects.C_;
 import com.worksn.objects.MyContext;
 import com.worksn.objects.MyStorageConst;
 import com.worksn.singleton.MyStorage;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 
 public class WsTimer {
     private static final int sek = 1000;
@@ -86,7 +86,7 @@ public class WsTimer {
         mTimerRefreshSession.schedule(new TimerTask() {
             @Override
             public void run() {
-                Post.sendRequest(context,C_.ACT_REFRESH_SESSION, null, new NetCallback() {
+                MyNet.sendRequest(context,C_.ACT_REFRESH_SESSION, null, new NetCallback() {
                     @Override
                     public void callback(MyContext data, Integer result, String stringData) {
                         Log.i("MySession","REFRESH_SESSION");

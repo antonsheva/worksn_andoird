@@ -35,8 +35,6 @@ import com.worksn.objects.TmpImg;
 import com.worksn.singleton.NetworkService;
 import com.worksn.singleton.PUWindow;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.GetPermission;
-import com.worksn.static_class.Post;
 import com.worksn.view.FrameProgressbar;
 import static com.worksn.objects.G_.stopActivityType;
 import static android.app.Activity.RESULT_CANCELED;
@@ -138,9 +136,9 @@ public class MyFile{
                     @Override
                     public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                         tm.cancel();
-                        G_.respData = response.body();
-                        if (G_.respData != null){
-                            if (G_.respData.getError() == 0){
+                        MyNet.respData = response.body();
+                        if (MyNet.respData != null){
+                            if (MyNet.respData.getError() == 0){
                                 File deleteFile = TmpImg.img;
                                 if(deleteFile != null && deleteFile.exists()){
                                     if(deleteFile.delete()){
@@ -153,10 +151,10 @@ public class MyFile{
                                         Log.d("Deleted",  TmpImg.icon.getAbsolutePath()+" -> ok");
                                     }
                                 }
-                                comCallback.callback(G_.respData.getContext(), RESULT_OK);
+                                comCallback.callback(MyNet.respData.getContext(), RESULT_OK);
                             }
                         } else {
-                            PUWindow.i().show(G_.respData.getData());
+                            PUWindow.i().show(MyNet.respData.getData());
                             comCallback.callback(null, RESULT_CANCELED);
                         }
                         progressbar.hide();
@@ -173,7 +171,7 @@ public class MyFile{
             data = new PostSubData();
             data.setFileName(imgPath);
         }
-        Post.sendRequest(context, C_.ACT_REMOVE_TMP_FILE, data, new NetCallback() {
+        MyNet.sendRequest(context, C_.ACT_REMOVE_TMP_FILE, data, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 TmpImg.clear();

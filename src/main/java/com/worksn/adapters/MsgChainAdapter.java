@@ -4,7 +4,6 @@ package com.worksn.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -62,11 +61,12 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
         int pos = holder.getAdapterPosition();
         StructMsg msg = msgList.get(pos);
         renderMsgField(msg, holder);
+        Render vw = new Render((Activity)context);
         if ((lastPosition < 12)&&(pos >= 12)){
-            new Render((Activity)context).showBtScrollDown(true);
+            vw.buttonScrollDown(true);
         }
         if ((lastPosition >= 12)&&(pos < 12)){
-            new Render((Activity)context).showBtScrollDown(false);
+            vw.buttonScrollDown(false);
         }
         lastPosition = pos;
     }

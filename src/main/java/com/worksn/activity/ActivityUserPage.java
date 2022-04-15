@@ -12,7 +12,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -44,7 +43,7 @@ import com.worksn.objects.PostSubData;
 import com.worksn.objects.User;
 import com.worksn.objects.UserReview;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 import com.worksn.view.RatingStars;
 
 public class ActivityUserPage extends AppCompatActivity implements View.OnClickListener {
@@ -242,7 +241,7 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
         PostSubData subData = new PostSubData();
         subData.setStatus(status);
         subData.setSubjectId(userId);
-        Post.sendRequest(this, C_.ACT_SET_BW_STATUS, subData, new NetCallback() {
+        MyNet.sendRequest(this, C_.ACT_SET_BW_STATUS, subData, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 if (data.getBanList() != null)
@@ -297,7 +296,7 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
         PostSubData subData = new PostSubData();
         subData.setOwnerId(userId);
         Usr.i().requestUserStatus(this, userId);
-        Post.sendRequest(this,C_.ACT_GET_USER_REVIEWS, subData, new NetCallback() {
+        MyNet.sendRequest(this,C_.ACT_GET_USER_REVIEWS, subData, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 if (result != -1){
@@ -454,7 +453,7 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
         data.setOwnerId(userId);
         data.setSenderId(Usr.i().getUser().getId());
         data.setTxtReview(userPageReview.getText().toString());
-        Post.sendRequest(this,C_.ACT_ADD_USER_REVIEW, data, (data1, result, stringData) -> {
+        MyNet.sendRequest(this,C_.ACT_ADD_USER_REVIEW, data, (data1, result, stringData) -> {
             if (result == -1)return;
             UserReview tmp = null;
             for (UserReview review : userReviews){
@@ -476,7 +475,7 @@ public class ActivityUserPage extends AppCompatActivity implements View.OnClickL
         data.setOwnerId(userId);
         data.setSenderId(Usr.i().getUser().getId());
         data.setStarQt(num);
-        Post.sendRequest(this,C_.ACT_ADD_USER_REVIEW, data, (data1, result, stringData) -> {
+        MyNet.sendRequest(this,C_.ACT_ADD_USER_REVIEW, data, (data1, result, stringData) -> {
             if (result == -1)return;
             if ((data1.getIntegerData()) == null || (data1.getFloatData() == null))return;
             String voteQt = data1.getIntegerData().toString();

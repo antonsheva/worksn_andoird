@@ -1,4 +1,4 @@
-package com.worksn.static_class;
+package com.worksn.classes;
 
 import android.content.Context;
 
@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import com.worksn.R;
 import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.G_;
 import com.worksn.objects.JsonResponse;
@@ -13,10 +15,8 @@ import com.worksn.objects.PostData;
 import com.worksn.singleton.NetworkService;
 import com.worksn.singleton.PUWindow;
 
-import static com.worksn.objects.G_.respData;
-
-
-public class Post {
+public class MyNet {
+    public static JsonResponse respData = null;
     public static void sendRequest(Context context, String act, Object sendData, NetCallback cb) {//PostUserData
         PostData postData = new PostData(act, sendData);
         sendData(context, new MyCallBack() {
@@ -32,7 +32,7 @@ public class Post {
                     }
                 }
                 if (code == -1){
-                    cb.callback(null, -1, "Проверьте подключение к сети");
+                    cb.callback(null, -1, context.getString(R.string.checkNetConnection));
                 }
             }
             @Override

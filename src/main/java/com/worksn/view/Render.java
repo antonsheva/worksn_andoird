@@ -1,7 +1,6 @@
 package com.worksn.view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -15,12 +14,13 @@ import android.widget.TextView;
 import com.worksn.R;
 import com.worksn.classes.Kbrd;
 import com.worksn.classes.MyImg;
-import com.worksn.classes.SubMenu;
 import com.worksn.objects.C_;
 import com.worksn.objects.G_;
 import com.worksn.objects.MyScreen;
+import com.worksn.objects.MyStorageConst;
 import com.worksn.objects.TmpImg;
 import com.worksn.singleton.MsgManager;
+import com.worksn.singleton.MyStorage;
 import com.worksn.singleton.PUWindow;
 import com.worksn.singleton.Usr;
 
@@ -60,12 +60,12 @@ public class Render {
 
     public Render(Activity activity){
         this.activity = activity;
-        new SubMenu().hide(activity);
+
         initViewElements();
         initOnClickListener();
     }
-    public void showBtScrollDown(boolean state){
-        if (state)rcVwMsgChainBtDown.setVisibility(View.VISIBLE);
+    public void buttonScrollDown(boolean show){
+        if (show)rcVwMsgChainBtDown.setVisibility(View.VISIBLE);
         else      rcVwMsgChainBtDown.setVisibility(View.GONE);
     }
     public void screen(Integer screen_mode, Integer active_mode){
@@ -88,7 +88,7 @@ public class Render {
                         frmAdsParam.setVisibility(View.VISIBLE);
                         frmActive.setVisibility(View.VISIBLE);
                         frmSearch.setVisibility(View.VISIBLE);
-                        MyView.setHeightLl(activity, frmAdsCard, 90);
+                        setHeightLl(frmAdsCard, 90);
 
                         break;
                     case C_.SCREEN_MODE_MSG_CHAIN:
@@ -99,7 +99,7 @@ public class Render {
                     case C_.SCREEN_MODE_ADS_DETAIL:
                         frmActive.setVisibility(View.VISIBLE);
                         G_.expandAdsCard = true;
-                        MyView.setHeightLl(activity, frmAdsCard, ViewGroup.LayoutParams.MATCH_PARENT);
+                        setHeightLl(frmAdsCard, ViewGroup.LayoutParams.MATCH_PARENT);
                         frmAdsCard.setVisibility(View.VISIBLE);
 
                         break;
@@ -113,43 +113,37 @@ public class Render {
 
                         break;
                 }
-                if(active_mode != null)renderActive(active_mode);//, "Здесь нет объявлений с данными критериями :-("
+                if(active_mode != null) activeFrame(active_mode);//, "Здесь нет объявлений с данными критериями :-("
             }
         });
     }
     public void header(){
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(Usr.i().auth()){
-                        frmUserMenu.setVisibility(View.VISIBLE);
-                        frmAuthForm.setVisibility(View.GONE);
-                        MyView.setBell(activity);
-                    }else{
-                        frmUserMenu.setVisibility(View.GONE);
-                        frmAuthForm.setVisibility(View.VISIBLE);
-                    }
-                    new Kbrd().hide(activity);
+            activity.runOnUiThread(() -> {
+                if(Usr.i().auth()){
+                    frmUserMenu.setVisibility(View.VISIBLE);
+                    frmAuthForm.setVisibility(View.GONE);
+                    setBell();
+                }else{
+                    frmUserMenu.setVisibility(View.GONE);
+                    frmAuthForm.setVisibility(View.VISIBLE);
                 }
+                new Kbrd().hide(activity);
             });
-
     }
-    public void hideBigImagesList(){
-        ekran.setVisibility(View.GONE);
-        frmLoadImgs.setVisibility(View.GONE);
-        if (MyScreen.activeMode == C_.ACTIVE_SCREEN_MSG_CHAIN){
-            frmSendMsg.setVisibility(View.VISIBLE);
+    public void bigImagesList(boolean show){
+        if (show){
+            ekran.setVisibility(View.GONE);
+            frmLoadImgs.setVisibility(View.GONE);
+            if (MyScreen.activeMode == C_.ACTIVE_SCREEN_MSG_CHAIN){
+                frmSendMsg.setVisibility(View.VISIBLE);
+            }
+        }else {
+            ekran.setVisibility(View.VISIBLE);
+            frmLoadImgs.setVisibility(View.VISIBLE);
+            frmSendMsg.setVisibility(View.GONE);
         }
     }
-    public void hideFrmSendMsg(){
-        frmSendMsg.setVisibility(View.GONE);
-    }
-    public void showBigImagesList(){
-        ekran.setVisibility(View.VISIBLE);
-        frmLoadImgs.setVisibility(View.VISIBLE);
-        frmSendMsg.setVisibility(View.GONE);
-    }
-    private void renderActive(Integer mode){
+    private void activeFrame(Integer mode){
         hideActiveTabs();
         frmActiveTitle.setVisibility(View.VISIBLE);
         switch (mode){
@@ -190,7 +184,7 @@ public class Render {
         frmAdsType.setVisibility(View.VISIBLE);
 
         new MyImg(activity).setWebView(null);
-        showBtScrollDown(false);
+        buttonScrollDown(false);
     }
     private void hideActiveTabs(){
         activeMsgGroup.setVisibility(View.GONE);
@@ -240,8 +234,45 @@ public class Render {
             @Override
             public void onClick(View v) {
                 MsgManager.i().scrollRcView(0);
-                new Render(activity).showBtScrollDown(false);
+                buttonScrollDown(false);
             }
         });
     }
+    public void setHeightLl(View ll, int val){
+        final int height = val;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int ht = height;
+                if(height>0)ht = MyScreen.dpToPx(height);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ht);
+                ll.setLayoutParams(params);
+            }
+        });
+    }
+    public void setBell() {
+        MyImg myImg = new MyImg(activity);
+        activity.runOnUiThread(() -> {
+            ImageView uMenuBell;
+            boolean newMsgSign = MyStorage.i().getBoolen(MyStorageConst.NEW_MSG_SIGN);
+            uMenuBell = (ImageView) activity.findViewById(R.id.uMenuBell);
+            if (newMsgSign) {
+                myImg.setImgSrc(uMenuBell, R.drawable.bell_act);
+                MyStorage.i().putData(MyStorageConst.NEW_MSG_SIGN, true);
+            }
+            else {
+                myImg.setImgSrc(uMenuBell, R.drawable.no_bell);
+            }
+        });
+    }
+    public void notifySign(boolean show){
+        activity.runOnUiThread(() -> {
+            ImageView img = (ImageView) activity.findViewById(R.id.btSettingImg);
+            if (show)
+                img.setImageResource(R.drawable.setting_notify);
+            else
+                img.setImageResource(R.drawable.setting);
+        });
+    }
+
 }

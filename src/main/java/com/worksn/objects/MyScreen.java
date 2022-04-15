@@ -15,14 +15,17 @@ public class MyScreen {
 
     public static int prevActive;
     public static int prevMode;
+
+    private static float sDensity;
     public static void init(Activity activity){
         Display display = activity.getWindowManager().getDefaultDisplay();
         android.graphics.Point size = new android.graphics.Point();
         display.getSize(size);
+        sDensity = activity.getResources().getDisplayMetrics().density;
         sizePxX = size.x;
         sizePxY = size.y;
-        sizeDpX = (int)(sizePxX / activity.getResources().getDisplayMetrics().density);
-        sizeDpY = (int)(sizePxY / activity.getResources().getDisplayMetrics().density);
+        sizeDpX = (int)(sizePxX / sDensity);
+        sizeDpY = (int)(sizePxY / sDensity);
 
 
 
@@ -31,5 +34,8 @@ public class MyScreen {
 
          prevActive = -1;
          prevMode = -1;
+    }
+    public static int dpToPx(float dp) {
+        return (int)(dp * sDensity);
     }
 }

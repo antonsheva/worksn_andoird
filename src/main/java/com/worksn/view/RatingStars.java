@@ -27,15 +27,12 @@ public class RatingStars {
                 setRating((Activity)context, rating);
     }
     public void setRating(Activity activity, Float rating){
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (rating == null) return;
-                lpStarsLeft .weight = rating;
-                lpStarsRight.weight = 5-rating;
-                lSt.setLayoutParams(lpStarsLeft);
-                rSt.setLayoutParams(lpStarsRight);
-            }
+        activity.runOnUiThread(() -> {
+            if (rating == null) return;
+            lpStarsLeft .weight = rating;
+            lpStarsRight.weight = 5-rating;
+            lSt.setLayoutParams(lpStarsLeft);
+            rSt.setLayoutParams(lpStarsRight);
         });
     }
 }

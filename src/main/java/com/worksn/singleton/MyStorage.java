@@ -3,6 +3,8 @@ package com.worksn.singleton;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.worksn.objects.C_;
+import com.worksn.objects.MyStorageConst;
+
 import java.util.Date;
 
 public class MyStorage {
@@ -16,20 +18,20 @@ public class MyStorage {
     SharedPreferences preferences = null;
     SharedPreferences.Editor editor;
     public String getApplicationId(){
-        Long time;
-        Double rand;
+        long time;
+        double rand;
         String applicationId = preferences.getString(C_.STR_APP_ID,null);
         if (applicationId == null){
             time = new Date().getTime();
             rand = Math.random();
-            applicationId = time.toString().substring(10)+rand.toString().substring(10);
+            applicationId = Long.toString(time).substring(10)+ Double.toString(rand).substring(10);
             put(C_.STR_APP_ID, applicationId);
             editor.apply();
         }
         return applicationId;
     }
     public void init(Context context){
-        preferences = context.getSharedPreferences("worksn.preference", Context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences(MyStorageConst.LOCATION_NAME, Context.MODE_PRIVATE);
         editor = preferences.edit();
         editor.apply();
     }

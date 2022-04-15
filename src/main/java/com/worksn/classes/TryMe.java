@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.worksn.objects.PostSubData;
-import com.worksn.static_class.Post;
 
 public class TryMe implements Thread.UncaughtExceptionHandler{
     Thread.UncaughtExceptionHandler oldHandler;
@@ -27,7 +26,7 @@ public class TryMe implements Thread.UncaughtExceptionHandler{
             Log.d("MyException", exceptionData);
             PostSubData subData = new PostSubData();
             subData.setContent(exceptionData);
-            Post.sendRequest(context,"send_exception", subData, (data, result, stringData)->{
+            MyNet.sendRequest(context,"send_exception", subData, (data, result, stringData)->{
                 if (result == 1){
                     Log.d("MyException", "exception was send to server");
                 }

@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,7 @@ import com.worksn.singleton.AppMode;
 import com.worksn.singleton.PUWindow;
 import com.worksn.singleton.MyStorage;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 import com.worksn.view.FrameNotify;
 import com.worksn.websocket.Ws;
 import com.worksn.websocket.WsBroadcastReceiver;
@@ -87,7 +86,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void getNotify(String act){
-        Post.sendRequest(this,act, null, (data, result, stringData) ->{
+        MyNet.sendRequest(this,act, null, (data, result, stringData) ->{
             if (result != -1){
                 ArrayList<SysNotify>notifies = data.getNotifies();
                 runOnUiThread(() -> {
@@ -270,7 +269,7 @@ public class SettingActivity extends AppCompatActivity {
             msg.setConsumerId(1);
             msg.setAds_id(1L);
             msg.setContent(msgContent);
-            Post.sendRequest(this,C_.ACT_ADD_MSG, msg, (data, result, stringData)->{
+            MyNet.sendRequest(this,C_.ACT_ADD_MSG, msg, (data, result, stringData)->{
                 if (result == 0)
                     PUWindow.i().show(stringData);
                 if (result == 1){

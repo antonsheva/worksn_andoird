@@ -1,7 +1,6 @@
  package com.worksn.classes;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -26,12 +25,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.worksn.R;
 import com.worksn.interfaces.ComCallback;
+import com.worksn.objects.C_;
 import com.worksn.objects.MyScreen;
 import com.worksn.objects.TmpImg;
 import com.worksn.singleton.MyAds;
 import com.worksn.singleton.NetworkService;
 import com.worksn.view.FrameProgressbar;
-import com.worksn.view.MyView;
 import com.worksn.view.Render;
 
  public class MyImg implements View.OnClickListener {
@@ -47,12 +46,14 @@ import com.worksn.view.Render;
     ImageView    regFormImg;
     ImageView    regFormTmpImg;
     CB cb;
+    Render mVw;
 
     static int sShiftLoadImg;
 
     public MyImg(Activity activity){
         this.activity = activity;
         initViewElements();
+        mVw = new Render(activity);
     }
 
     public void loadImgNecessarily(ImageView imageView, String src, int radius){
@@ -94,8 +95,9 @@ import com.worksn.view.Render;
         ImageView tmpImg = v.findViewById(R.id.shellImg);
         FrameLayout.LayoutParams lpV = (FrameLayout.LayoutParams)v.getLayoutParams();
 
-        lpV.height = MyView.dpToPx(activity, height);
-        lpV.width  = MyView.dpToPx(activity, width);
+
+        lpV.height = MyScreen.dpToPx(height);
+        lpV.width  = MyScreen.dpToPx(width);
         lpV.leftMargin = sShiftLoadImg *2;
         v.setLayoutParams(lpV);
         loadImg(tmpImg, img, 5, null);
@@ -158,7 +160,7 @@ import com.worksn.view.Render;
         btHideLoadImgs.setOnClickListener(v -> {
             sShiftLoadImg = 0;
             loadImgsScroll.removeAllViews();
-            new Render(activity).hideBigImagesList();
+            mVw.bigImagesList(C_.VAL_HIDE);
         });
     }
     @Override

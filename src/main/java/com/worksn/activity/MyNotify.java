@@ -151,8 +151,6 @@ public class MyNotify {
                 }
             });
         }else notificationManager.notify(1, builder.build());
-
-
         new ConfirmDeliverMsg(context, senderId, discusId, C_.CODE_CONFIRM_DELIVER);
     }
     public void removeNotify(Context context){

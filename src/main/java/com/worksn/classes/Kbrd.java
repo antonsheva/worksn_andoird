@@ -11,7 +11,7 @@ import com.worksn.activity.MyApp;
 public class Kbrd {
     public void hide(Activity context){
         InputMethodManager inputManager =
-                (InputMethodManager) MyApp.context.
+                (InputMethodManager) context.
                         getSystemService(Context.INPUT_METHOD_SERVICE);
         try{
             inputManager.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);

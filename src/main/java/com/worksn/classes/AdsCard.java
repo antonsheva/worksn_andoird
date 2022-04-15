@@ -25,9 +25,8 @@ import com.worksn.objects.G_;
 import com.worksn.singleton.MsgManager;
 import com.worksn.singleton.UiClick;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.MyLog;
 import com.worksn.view.RatingStars;
-import com.worksn.view.MyView;
+
 import com.worksn.view.Render;
 
 public class AdsCard{
@@ -61,9 +60,11 @@ public class AdsCard{
     String userImgIcon;
     Float rating = 0f;
     static Integer userId;
+    Render mVw;
     public AdsCard(Activity activity) {
         this.activity = activity;
         initViewElements();
+        mVw = new Render(activity);
     }
     public void init(Ads d, boolean descriptionClickable, boolean descriptionState, CB cb){
         this.cb = cb;
@@ -229,7 +230,7 @@ public class AdsCard{
         adsCardLoadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Render(activity).showBigImagesList();
+                mVw.bigImagesList(C_.VAL_SHOW);
                 new MyImg(activity).showImgsArray(imgs, false);
             }
         });
@@ -278,10 +279,10 @@ public class AdsCard{
     }
     private void showAdsDescription(){
         if(!G_.expandAdsCard){
-            MyView.setHeightLl(activity, frmAdsCard, ViewGroup.LayoutParams.MATCH_PARENT);
+            mVw.setHeightLl(frmAdsCard, ViewGroup.LayoutParams.MATCH_PARENT);
             G_.expandAdsCard = true;
         }else {
-            MyView.setHeightLl(activity, frmAdsCard, 90);
+            mVw.setHeightLl(frmAdsCard, 90);
             G_.expandAdsCard = false;
         }
     }

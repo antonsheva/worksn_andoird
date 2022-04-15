@@ -16,9 +16,9 @@ import com.worksn.objects.MyScreen;
 import com.worksn.objects.PostSubData;
 import com.worksn.objects.StructMsg;
 import com.worksn.objects.User;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 import com.worksn.view.FrameUserProfile;
-import com.worksn.view.MyView;
+import com.worksn.view.Render;
 import com.worksn.websocket.WsBroadcastReceiver;
 
 
@@ -97,7 +97,7 @@ public class Usr {
 
     }
     public void initUser(Context context, CB cb){
-        Post.sendRequest(context, C_.ACT_GET_USER_DATA, null, (data, result, stringData) -> {
+        MyNet.sendRequest(context, C_.ACT_GET_USER_DATA, null, (data, result, stringData) -> {
             if (result == -1)  {
                 setUser(null);
                 cb.callback(0, null);
@@ -217,8 +217,8 @@ public class Usr {
         return mAuth;
     }
     public void checkNewNotify(Context context){
-        Post.sendRequest(context,C_.ACT_CHECK_NEW_NOTIFY, null,(data, result, stringData)->{
-            MyView.setNotifySign((Activity)context,  result == 1);
+        MyNet.sendRequest(context,C_.ACT_CHECK_NEW_NOTIFY, null,(data, result, stringData)->{
+            new Render((Activity) context).notifySign(result == 1);
         });
     }
 
@@ -244,7 +244,7 @@ public class Usr {
         PostSubData data = new PostSubData();
         data.setLogin(login);
         data.setPassword(password);
-        Post.sendRequest(context, C_.ACT_LOGIN, data, new NetCallback() {
+        MyNet.sendRequest(context, C_.ACT_LOGIN, data, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 if(result == 0)
@@ -260,7 +260,7 @@ public class Usr {
     }
     public void anonymousLogin(Context context, CB cb){
         PostSubData userData = new PostSubData();
-        Post.sendRequest(context,C_.ACT_ANONYMOUS_LOGIN, userData, new NetCallback() {
+        MyNet.sendRequest(context,C_.ACT_ANONYMOUS_LOGIN, userData, new NetCallback() {
             @Override
             public void callback(MyContext data, Integer result, String stringData) {
                 if(result == 0)
@@ -275,7 +275,7 @@ public class Usr {
         });
     }
     public void exit(Context context, CB cb){
-        Post.sendRequest(context,C_.ACT_EXIT, null, (data, result, stringData) -> {
+        MyNet.sendRequest(context,C_.ACT_EXIT, null, (data, result, stringData) -> {
             setUser(null);
             if (cb != null)
                 cb.callback(0, null);

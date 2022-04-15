@@ -1,4 +1,4 @@
-package com.worksn.static_class;
+package com.worksn.classes;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,15 +7,10 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 import com.worksn.activity.MyApp;
-import com.worksn.objects.Ads;
-import com.worksn.objects.JsonResponse;
-import com.worksn.objects.MyContext;
+import com.worksn.objects.C_;
 import com.worksn.objects.PostSubData;
-import com.worksn.objects.StructMsg;
-import com.worksn.objects.User;
 import com.worksn.singleton.Usr;
 
 public class MyLog {
@@ -33,15 +28,12 @@ public class MyLog {
             }
             PostSubData subData = new PostSubData();
             subData.setContent(log.toString());
-            Post.sendRequest(context,"send_log_service", subData, (data, result, stringData)->{
+            MyNet.sendRequest(context, C_.ACT_SEND_LOG_SERVICE, subData, (data, result, stringData)->{
                 if (result == 1){
                     Log.d("MyLog", "Log was send to server");
                 }
             });
-//            TextView tv = (TextView) findViewById(R.id.textView1);
-//            tv.setText(log.toString());
         } catch (IOException e) {
-            Log.e("MyEx", " ---------------------- -----------------------------");
             e.printStackTrace();
         }
     }
@@ -52,7 +44,7 @@ public class MyLog {
             subData.setLogin(Usr.i().getUser().getLogin());
         }
         subData.setContent(strData);
-        Post.sendRequest(context,"send_log_service", subData, (data, result, stringData)->{
+        MyNet.sendRequest(context,C_.ACT_SEND_LOG_SERVICE, subData, (data, result, stringData)->{
             if (result == 1){
                 Log.d("MyLog", "Log was send to server");
             }
@@ -67,7 +59,7 @@ public class MyLog {
         }
         PostSubData subData = new PostSubData();
         subData.setContent(sendString.toString());
-        Post.sendRequest(MyApp.context,"send_log_service", subData, (data, result, stringData)->{
+        MyNet.sendRequest(MyApp.context,C_.ACT_SEND_LOG_SERVICE, subData, (data, result, stringData)->{
             if (result == 1){
                 Log.d("MyLog", "Log was send to server");
             }

@@ -14,6 +14,7 @@
     <string name="errorSendMsg">Не удалось отправить сообщение :-(</string>
     <string name="errorSendFile">Не удалось отправить файл :-(</string>
     <string name="speaker">Собеседник</string>
+    <string name="you">Вы</string>
     <string name="someThrowable">Что-то пошло не так :-(</string>
     <string name="someUseful">Что-то очень полезное</string>
     <string name="notifyReply">Ответить</string>
@@ -87,7 +88,8 @@
     <string name="setPointOnMap">Укажите точку на карте</string>
     <string name="setAdsType">Укажите тип объявления</string>
     <string name="chooseCategory">Выберите категорию</string>
-
+    <string name="checkNetConnection">Проверьте подключение к сети</string>
+    <string name="prints">Печатает</string>
 
     <string-array name="hourList">
         <item>00</item>

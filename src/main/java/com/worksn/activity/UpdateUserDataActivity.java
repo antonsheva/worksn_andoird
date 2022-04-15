@@ -34,7 +34,7 @@ import com.worksn.singleton.MyStorage;
 import com.worksn.singleton.PUWindow;
 import com.worksn.objects.C_;
 import com.worksn.singleton.Usr;
-import com.worksn.static_class.Post;
+import com.worksn.classes.MyNet;
 import com.worksn.view.FrameProgressbar;
 
 
@@ -193,7 +193,7 @@ public class UpdateUserDataActivity extends AppCompatActivity implements View.On
         startActivity(intent);
     }
     private void sendData(PostSubData userData){
-        Post.sendRequest(this,C_.ACT_UPDATE_USER_DATA, userData, (data, result, stringData) -> {
+        MyNet.sendRequest(this,C_.ACT_UPDATE_USER_DATA, userData, (data, result, stringData) -> {
             PUWindow.i().show(stringData);
             if (result == 1) {
                 Usr.i().setUser(data.getUser());
