@@ -12,15 +12,15 @@ public class WsSendData {
     }
     public WsSendData(String act, Object dataGroup){
         addServiceData(act);
-        if(dataGroup != null)data_group = dataGroup;
+        if(dataGroup != null) this.dataGroup = dataGroup;
     }
     private void addServiceData(String act){
         this.act = act;
         try {
             if (Ws.getUser() == null)return;
-            ws_token = Ws.getUser().getWsToken();
-            user_id  = Ws.getUser().getId();
-            user_login = Ws.getUser().getLogin();
+            wsToken = Ws.getUser().getWsToken();
+            userId = Ws.getUser().getId();
+            userLogin = Ws.getUser().getLogin();
             applicationId = MyStorage.i().getApplicationId();
         }catch (NullPointerException e){
             e.printStackTrace();
@@ -33,40 +33,40 @@ public class WsSendData {
     @Expose
     private Integer showStatus = null;
 
-    @SerializedName("app_id")
+    @SerializedName(C_.STR_APP_ID)
     @Expose
     private String applicationId;
-    @SerializedName("id_list")
+    @SerializedName(C_.STR_ID_LIST)
     @Expose
     private String idList;
 
-    @SerializedName("owner_id")
+    @SerializedName(C_.STR_OWNER_ID)
     @Expose
     private Integer ownerId;
 
-    @SerializedName("act")
+    @SerializedName(C_.STR_ACT)
     @Expose
     String act = null;
 
-    @SerializedName("user_id")
+    @SerializedName(C_.STR_USER_ID)
     @Expose
-    Integer user_id = null;
+    Integer userId = null;
 
-    @SerializedName("user_login")
+    @SerializedName(C_.STR_USER_LOGIN)
     @Expose
-    String user_login = null;
+    String userLogin = null;
 
-    @SerializedName("user_img")
+    @SerializedName(C_.STR_USER_IMG)
     @Expose
-    String user_img = null;
+    String userImg = null;
 
-    @SerializedName("ws_token")
+    @SerializedName(C_.STR_WS_TOKEN)
     @Expose
-    String ws_token = null;
+    String wsToken = null;
 
-    @SerializedName("data_group")
+    @SerializedName(C_.STR_DATA_GROUP)
     @Expose
-    private Object data_group = null;
+    private Object dataGroup = null;
 
 
     public Integer getShowStatus() {
@@ -85,12 +85,12 @@ public class WsSendData {
         this.idList = idList;
     }
 
-    public Object getData_group() {
-        return data_group;
+    public Object getDataGroup() {
+        return dataGroup;
     }
 
-    public void setData_group(Object data_group) {
-        this.data_group = data_group;
+    public void setDataGroup(Object dataGroup) {
+        this.dataGroup = dataGroup;
     }
 
     public Integer getOwnerId() {
@@ -109,35 +109,35 @@ public class WsSendData {
         this.act = act;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getUser_login() {
-        return user_login;
+    public String getUserLogin() {
+        return userLogin;
     }
 
-    public void setUser_login(String user_login) {
-        this.user_login = user_login;
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
-    public String getUser_img() {
-        return user_img;
+    public String getUserImg() {
+        return userImg;
     }
 
-    public void setUser_img(String user_img) {
-        this.user_img = user_img;
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
     }
 
-    public String getWs_token() {
-        return ws_token;
+    public String getWsToken() {
+        return wsToken;
     }
 
-    public void setWs_token(String ws_token) {
-        this.ws_token = ws_token;
+    public void setWsToken(String wsToken) {
+        this.wsToken = wsToken;
     }
 }

@@ -2,21 +2,17 @@ package com.worksn.websocket;
 
 import android.content.Context;
 import android.util.Log;
-
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.C_;
-import com.worksn.objects.MyContext;
 import com.worksn.objects.MyStorageConst;
 import com.worksn.singleton.MyStorage;
 import com.worksn.classes.MyNet;
 
 public class WsTimer {
-    private static final int sek = 1000;
-    private static final int min = 60000;
+    private static final int sek  = 1000;
+    private static final int min  = 60000;
     private static final int hour = 3600000;
     private static final int day  = 3600000*24;
 
@@ -86,12 +82,7 @@ public class WsTimer {
         mTimerRefreshSession.schedule(new TimerTask() {
             @Override
             public void run() {
-                MyNet.sendRequest(context,C_.ACT_REFRESH_SESSION, null, new NetCallback() {
-                    @Override
-                    public void callback(MyContext data, Integer result, String stringData) {
-                        Log.i("MySession","REFRESH_SESSION");
-                    }
-                });
+                MyNet.sendRequest(context,C_.ACT_REFRESH_SESSION, null, (data, result, stringData) -> Log.i("MySession","REFRESH_SESSION"));
             }
         }, 30*min, 80*min);
     }

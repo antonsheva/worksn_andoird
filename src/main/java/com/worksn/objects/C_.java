@@ -160,7 +160,7 @@ public class C_ {
     public final static String ACT_REMOVE_DISCUS         = "rmv_discus" ;
 
     public final static String ACT_SEND_LOG_SERVICE      = "send_log_service" ;
-
+    public final static String ACT_GET_TOKEN             = "get_token" ;
 
 //---------------------------------------------------------------------------
 
@@ -267,6 +267,7 @@ public class C_ {
     public static final String STR_DISCUS_ID                = "discus_id"             ;
     public static final String STR_NOTIFY_DISCUS_ID         = "notify_discus_id"      ;
     public static final String STR_TARGET_MSG               = "target_msg"            ;
+    public static final String STR_UNREAD_MSG               = "unread_msg"            ;
 
     public static final String STR_SENDER_ID                = "sender_id"             ;
     public static final String STR_SENDER_LOGIN             = "sender_login"          ;
@@ -355,6 +356,7 @@ public class C_ {
 
     public static final String STR_WAS_SEND_POST_DATA       = "was_send_post_data";
 
+    public static final String STR_MAX_FILE_SIZE            = "MAX_FILE_SIZE";
 //--------------------------------------------------------------------------------------------------
 
 
@@ -382,6 +384,7 @@ public class C_ {
     public final static String URL_TMP_IMG_ICON  = "https://worksn.ru/wksn_users_img/tmp_img/icon/";
     public final static String URL_SERVICE_IMG   = "https://worksn.ru/service_img/";
     public final static String URL_NO_AVATAR     = "https://worksn.ru/service_img/avatars/no-avatar.jpg";
+    public final static String URL_WS            = "wss://worksn.ru:8000";
 
 //------------- File name --------------------------------------------------
     public final static String FILE_NAME_TMP_PHOTO = "tmp_photo.jpg";

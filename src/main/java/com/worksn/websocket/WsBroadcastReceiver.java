@@ -59,17 +59,16 @@ public class WsBroadcastReceiver extends BroadcastReceiver{
     }
 
     private void connectionStateChange(boolean state){
-        Log.i("MyConnect", "-> "+state);
         if (state)
             Ws.initSocket();
+
     }
     private void wsSendBindImgToMsg(Intent intent){
-        Log.i("MyBroadcast", " -> start");
-        String createId   = intent.getStringExtra("create_id");
-        String img        = intent.getStringExtra("img");
-        String imgIcon    = intent.getStringExtra("img_icon");
-        long   msgId      = intent.getLongExtra  ("msg_id", 0);
-        int    consumerId = intent.getIntExtra   ("consumer_id", 0);
+        String createId   = intent.getStringExtra(C_.STR_CREATE_ID);
+        String img        = intent.getStringExtra(C_.STR_IMG);
+        String imgIcon    = intent.getStringExtra(C_.STR_IMG_ICON);
+        long   msgId      = intent.getLongExtra  (C_.STR_MSG_ID, 0);
+        int    consumerId = intent.getIntExtra   (C_.STR_CONSUMER_ID, 0);
 
         SaveImgData saveImgData = new SaveImgData();
         saveImgData.setCreateId(createId);
@@ -83,12 +82,11 @@ public class WsBroadcastReceiver extends BroadcastReceiver{
     private void wsSendPrintMsgProcess(Intent intent){
         if (!MyStorage.i().getBoolen(C_.STR_SWITCH_SEND_PRINT_TEXT))return;
 
-        long discusId  = intent.getLongExtra("discus_id", 0);
-        int consumerId = intent.getIntExtra("consumer_id", 0);
+        long discusId  = intent.getLongExtra(C_.STR_DISCUS_ID, 0);
+        int consumerId = intent.getIntExtra(C_.STR_CONSUMER_ID, 0);
         Ws.sendPrintMsgProcess(discusId, consumerId);
     }
     private void actWakeup(){
-        Log.i("MyWakeup", "enable Notify");
         cb.cb(C_.CODE_WAKEUP, null);
     }
 

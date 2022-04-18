@@ -1,7 +1,6 @@
 package com.worksn.interfaces;
 
-
-
+import com.worksn.objects.C_;
 import com.worksn.objects.JsonResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -14,11 +13,11 @@ public interface UploadFile {
     @Multipart
     @POST("/")
     Call<JsonResponse> uploadFile(
-            @Part("act") RequestBody act,
-            @Part("create_id") RequestBody create_id,
-            @Part("s_token") RequestBody s_token,
-            @Part("MAX_FILE_SIZE") RequestBody MAX_FILE_SIZE,
-            @Part("filename") RequestBody name,
+            @Part(C_.STR_ACT) RequestBody act,
+            @Part(C_.STR_CREATE_ID) RequestBody create_id,
+            @Part(C_.STR_WS_TOKEN) RequestBody s_token,
+            @Part(C_.STR_MAX_FILE_SIZE) RequestBody MAX_FILE_SIZE,
+            @Part(C_.STR_FILE_NAME) RequestBody name,
             @Part MultipartBody.Part file
     );
 }

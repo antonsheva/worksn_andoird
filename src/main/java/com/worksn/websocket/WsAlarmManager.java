@@ -15,7 +15,7 @@ public class WsAlarmManager {
     {
         AlarmManager alarmManager=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, WsAlarmReceiver.class);
-        intent.putExtra("act", C_.ACT_WAKEUP);
+        intent.putExtra(C_.STR_ACT, C_.ACT_WAKEUP);
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
 
         if (alarmManager != null)

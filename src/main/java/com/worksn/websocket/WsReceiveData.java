@@ -2,163 +2,140 @@ package com.worksn.websocket;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import com.worksn.objects.C_;
 import com.worksn.objects.StructMsg;
 
 public class WsReceiveData {
-    @SerializedName("id_list")
+    @SerializedName(C_.STR_ID_LIST)
     @Expose
     private String idList = null;
-    @SerializedName("unread_msg")
+    @SerializedName(C_.STR_UNREAD_MSG)
     @Expose
     private Integer unreadMsg = null;
-    @SerializedName("msg")
+    @SerializedName(C_.STR_MSG)
     @Expose
     private StructMsg msg;
-    @SerializedName("data")
+    @SerializedName(C_.STR_DATA)
     @Expose
     private Object data = null;
-    @SerializedName("result")
+    @SerializedName(C_.STR_RESULT)
     @Expose
     private Integer result = null;
-    @SerializedName("error")
+    @SerializedName(C_.STR_ERROR)
     @Expose
     private String error = null;
-    @SerializedName("type")
+    @SerializedName(C_.STR_TYPE)
     @Expose
     private String type = null;
-    @SerializedName("date_time")
-    @Expose
-    private String date_time = null;
-    @SerializedName("id")
+    @SerializedName(C_.STR_ID)
     @Expose
     private Long id;
-    @SerializedName("discus_id")
+    @SerializedName(C_.STR_DISCUS_ID)
     @Expose
     private Long discusId = null;
-    @SerializedName("ads_id")
+    @SerializedName(C_.STR_ADS_ID)
     @Expose
     private Long adsId;
-    @SerializedName("sender_id")
+    @SerializedName(C_.STR_SENDER_ID)
     @Expose
     private Integer senderId;
-    @SerializedName("sender_login")
+    @SerializedName(C_.STR_SENDER_LOGIN)
     @Expose
     private String senderLogin;
     @SerializedName(C_.STR_SENDER_IMG)
     @Expose
     private String senderImg;
-    @SerializedName("status_msg")
+    @SerializedName(C_.STR_STATUS_MSG)
     @Expose
     private Integer statusMsg = 0;
-    @SerializedName("consumer_id")
+    @SerializedName(C_.STR_CONSUMER_ID)
     @Expose
     private Integer consumerId;
-    @SerializedName("content")
+    @SerializedName(C_.STR_CONTENT)
     @Expose
     private String content;
-    @SerializedName("img")
+    @SerializedName(C_.STR_IMG)
     @Expose
     private String img;
-    @SerializedName("img_icon")
+    @SerializedName(C_.STR_IMG_ICON)
     @Expose
     private String imgIcon;
-    @SerializedName("user_id")
+    @SerializedName(C_.STR_USER_ID)
     @Expose
     private Integer userId;
-    @SerializedName("user_login")
+    @SerializedName(C_.STR_USER_LOGIN)
     @Expose
     private String userLogin;
-    @SerializedName("status")
+    @SerializedName(C_.STR_STATUS)
     @Expose
     private Integer status;
-    @SerializedName("create_date")
+    @SerializedName(C_.STR_CREATE_DATE)
     @Expose
     private String createDate;
-    @SerializedName("msg_id")
+    @SerializedName(C_.STR_MSG_ID)
     @Expose
     private Long msgId;
-    @SerializedName("create_id")
+    @SerializedName(C_.STR_CREATE_ID)
     @Expose
     private String createId;
-
     @SerializedName(C_.STR_NEW_TOKEN)
     @Expose
     private String newToken = null;
-
-    public String getNewToken() {
-        return newToken;
-    }
-
-    public void setNewToken(String newToken) {
-        this.newToken = newToken;
-    }
-
     @SerializedName(C_.STR_REPLY_MSG_ID)
     @Expose
     private Long replyMsgId = null;
-
     @SerializedName(C_.STR_REPLY_CONTENT)
     @Expose
     private String replyContent = null;
-
     @SerializedName(C_.STR_REPLY_SENDER_ID)
     @Expose
     private Integer replySenderId = null;
-
     @SerializedName(C_.STR_REPLY_SENDER_LOGIN)
     @Expose
     private String replySenderLogin = null;
-
     @SerializedName(C_.STR_REPLY_IMG)
     @Expose
     private String replyImg = null;
 
+    public String getNewToken() {
+        return newToken;
+    }
+    public void setNewToken(String newToken) {
+        this.newToken = newToken;
+    }
     public Long getReplyMsgId() {
         return replyMsgId;
     }
-
     public void setReplyMsgId(Long replyMsgId) {
         this.replyMsgId = replyMsgId;
     }
-
     public String getReplyContent() {
         return replyContent;
     }
-
     public void setReplyContent(String replyContent) {
         this.replyContent = replyContent;
     }
-
     public Integer getReplySenderId() {
         return replySenderId;
     }
-
     public void setReplySenderId(Integer replySenderId) {
         this.replySenderId = replySenderId;
     }
-
     public String getReplySenderLogin() {
         return replySenderLogin;
     }
-
     public void setReplySenderLogin(String replySenderLogin) {
         this.replySenderLogin = replySenderLogin;
     }
-
     public String getReplyImg() {
         return replyImg;
     }
-
     public void setReplyImg(String replyImg) {
         this.replyImg = replyImg;
     }
-
     public String getUserLogin() {
         return userLogin;
     }
-
     public void setUserLogin(String userLogin) {
         this.userLogin = userLogin;
     }
@@ -275,12 +252,6 @@ public class WsReceiveData {
     }
     public void setMsg(StructMsg msg) {
         this.msg = msg;
-    }
-    public String getDate_time() {
-        return date_time;
-    }
-    public void setDate_time(String date_time) {
-        this.date_time = date_time;
     }
     public Object getData() {
         return data;

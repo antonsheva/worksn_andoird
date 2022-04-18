@@ -2,24 +2,25 @@ package com.worksn.websocket.init_ssl;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.worksn.objects.C_;
 
 
 public class RequestData {
-    @SerializedName("act")
+    @SerializedName(C_.STR_ACT)
     @Expose
     private String act;
 
-    @SerializedName("user_id")
+    @SerializedName(C_.STR_USER_ID)
     @Expose
-    private Integer user_id;
+    private Integer userId;
 
-    @SerializedName("s_token")
+    @SerializedName(C_.STR_WS_TOKEN)
     @Expose
-    private String s_token;
+    private String wsToken;
 
-    @SerializedName("data_group")
+    @SerializedName(C_.STR_DATA_GROUP)
     @Expose
-    private Object data_group = null;
+    private Object dataGroup = null;
 
     public String getAct() {
         return act;
@@ -29,28 +30,28 @@ public class RequestData {
         this.act = act;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getS_token() {
-        return s_token;
+    public String getWsToken() {
+        return wsToken;
     }
 
-    public void setS_token(String s_token) {
-        this.s_token = s_token;
+    public void setWsToken(String wsToken) {
+        this.wsToken = wsToken;
     }
 
-    public Object getData_group() {
-        return data_group;
+    public Object getDataGroup() {
+        return dataGroup;
     }
 
-    public void setData_group(Object data_group) {
-        this.data_group = data_group;
+    public void setDataGroup(Object dataGroup) {
+        this.dataGroup = dataGroup;
     }
 
     public RequestData(String act){

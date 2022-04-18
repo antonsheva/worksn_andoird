@@ -23,5 +23,4 @@ public class SelectButton {
     public interface CB{
         void callback(String name, Object val);
     }
-
 }

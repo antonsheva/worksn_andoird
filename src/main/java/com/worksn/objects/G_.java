@@ -9,7 +9,6 @@ public class G_ {
     public static MyContext context = null;
 
     public static Map<String, ?> cookie;
-    public static String dateTime = null;
     public static boolean adsCardDeploy = false;
     public static boolean expandAdsCard = false;
     public static boolean noClick = false;

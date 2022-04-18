@@ -8,34 +8,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-
 import com.worksn.R;
 import com.worksn.classes.BroadCastMsg;
 import com.worksn.objects.StructMsg;
 import com.worksn.websocket.init_ssl.NetResponse;
 import com.worksn.websocket.init_ssl.NetService;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import com.worksn.activity.MainActivity;
-
 import com.worksn.activity.ActivityBroadcastReceiver;
-
 import com.worksn.classes.WsServiceControl;
 import com.worksn.singleton.MyStorage;
 import com.worksn.objects.C_;
-
 import com.worksn.singleton.Usr;
-
 import com.worksn.websocket.init_ssl.RequestData;
 
 public class WsService extends Service {
@@ -48,14 +39,11 @@ public class WsService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i("MyService", "------------- onBind ---------------");
-
         return null;
     }
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i("MyService", "------------- onCreate ---------------");
         MyStorage.i().init(this);
         WsTimer.i().refreshLastPingTime();
         init();
@@ -63,16 +51,13 @@ public class WsService extends Service {
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("MyService", "------------- onStartCommand ---------------");
         long mTime = new Date().getTime();
         long mDelta = (mTime - WsTimer.i().lastPingTime)/1000;
-//        Log.i("MyTime", "mTime = "+mTime+"; lastTime = "+WsTimer.i().lastPingTime+"; delta = "+mDelta);
         if (!sServiceRun){
             WsTimer.i().refreshLastPingTime();
             init();
         } else {
             if (mDelta < 200){
-                Log.i("MyService", "service is run");
                 sSendPingServerRequest = false;
             }else {
                 if (!sSendPingServerRequest){
@@ -89,7 +74,6 @@ public class WsService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("MyService", "destroy service");
         sServiceRun = false;
         WsBroadcastReceiver.i().clear(getApplicationContext());
         WsTimer.i().initRefreshSessionTimer(this, false);
@@ -97,10 +81,9 @@ public class WsService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        Log.i("MyService", "onTaskRemoved");
     }
-    private static void initNet(Context context, Ws.MyCallBack myCallBack){
-        NetService.getInstance(context)
+    private static void initNet(Ws.MyCallBack myCallBack){
+        NetService.getInstance()
                 .getWsnApi()
                 .getData(myCallBack.getObject())
                 .enqueue(new Callback<NetResponse>() {
@@ -117,7 +100,6 @@ public class WsService extends Service {
 
     private void init(){
         sServiceRun = true;
-        Log.i("MyService", "start service");
         createNotifyLabel();
         new BroadCastMsg(this,C_.ACT_WS_IS_START,ActivityBroadcastReceiver.BROADCAST_FILTER);
         wsEvents = new WsEvents();
@@ -129,13 +111,11 @@ public class WsService extends Service {
         initSsl();
     }
     private void initSsl(){
-        Context context = getApplicationContext();
-        RequestData postData = new RequestData("get_token");
-        initNet(context, new Ws.MyCallBack() {
+        RequestData postData = new RequestData(C_.ACT_GET_TOKEN);
+        initNet(new Ws.MyCallBack() {
             @Override
             public void callback(int code) {
                 if (code == 1){
-                    Log.i("MyNet", "ok -> start socket");
                     Ws.initSocket();
                 }else {
                     Log.i("MyNet", "error net request");
@@ -156,14 +136,12 @@ public class WsService extends Service {
         });
     }
     private void setBroadcastCb(int code, Object o){
-        Log.i("MyWsService", "exit");
         switch (code){
             case C_.CODE_EXIT: exit();      break;
             case C_.CODE_WAKEUP: wakeup();  break;
         }
     }
     private void wakeup(){
-        Log.i("MyAlarm", "broadcast wakeup ok");
         init();
     }
     private void exit(){
@@ -207,20 +185,20 @@ public class WsService extends Service {
             @Override
             public void callback(int code, Object object) {
                 switch (code){
-                    case C_.CODE_NEW_MSG            : wsEvents.receivedNewMsg(context, (StructMsg) object);          break;
-                    case C_.CODE_ON_CONNECT         : wsEvents.wsEventOnConnect();                                          break;
-                    case C_.CODE_ON_CLOSE           : wsEvents.wsEventOnClose();                                            break;
-                    case C_.CODE_ON_FAILURE         : wsEventOnFailure();                                          break;
-                    case C_.CODE_WS_AUTH_USER       : wsEvents.wsRcvAuthUser((String)object);                                         break;
+                    case C_.CODE_NEW_MSG            : wsEvents.receivedNewMsg(context, (StructMsg) object);               break;
+                    case C_.CODE_ON_CONNECT         : wsEvents.wsEventOnConnect();                                        break;
+                    case C_.CODE_ON_CLOSE           : wsEvents.wsEventOnClose();                                          break;
+                    case C_.CODE_ON_FAILURE         : wsEventOnFailure();                                                 break;
+                    case C_.CODE_WS_AUTH_USER       : wsEvents.wsRcvAuthUser((String)object);                             break;
                     case C_.CODE_CONFIRM_DELIVER    : wsEvents.wsRcvConfirmDeliverMsg(context, (WsReceiveData) object);   break;
-                    case C_.CODE_WS_ONLINE_LIST     : wsEvents.wsRvcOnlineList(context,(String)object);                    break;
-                    case C_.CODE_WS_PRINT_TXT       : wsEvents.wsRcvPrintTxt(context, (Long) object);                               break;
-                    case C_.CODE_WS_BAD_AUTH_DATA   : wsEvents.wsRvcBadAuthData(context);                                               break;
-                    case C_.CODE_WS_NEW_AUTH_DATA   : receiveNewAuthData();                                          break;
-                    case C_.CODE_WS_SEND_ERROR      : errorConnection();                                           break;
-                    case C_.CODE_WS_BIND_IMG_TO_MSG : wsEvents.bindImageToMessage(context, (WsReceiveData) object);           break;
-                    case C_.CODE_WS_PING            : wsEvents.wsRcvPing();                                          break;
-                    case C_.CODE_WS_PONG_SERVER     : wsEvents.wsRcvPongServer();                                       break;
+                    case C_.CODE_WS_ONLINE_LIST     : wsEvents.wsRvcOnlineList(context,(String)object);                   break;
+                    case C_.CODE_WS_PRINT_TXT       : wsEvents.wsRcvPrintTxt(context, (Long) object);                     break;
+                    case C_.CODE_WS_BAD_AUTH_DATA   : wsEvents.wsRvcBadAuthData(context);                                 break;
+                    case C_.CODE_WS_NEW_AUTH_DATA   : receiveNewAuthData();                                               break;
+                    case C_.CODE_WS_SEND_ERROR      : errorConnection();                                                  break;
+                    case C_.CODE_WS_BIND_IMG_TO_MSG : wsEvents.bindImageToMessage(context, (WsReceiveData) object);       break;
+                    case C_.CODE_WS_PING            : wsEvents.wsRcvPing();                                               break;
+                    case C_.CODE_WS_PONG_SERVER     : wsEvents.wsRcvPongServer();                                         break;
                     case C_.CODE_WS_NEW_TOKEN       : receiveNewToken((String)object);
                 }
             }
@@ -241,8 +219,6 @@ public class WsService extends Service {
         Ws.setNewToken(token);
     }
     private void receiveNewAuthData(){
-        Log.i("MyService", "exit -> receiveNewAuthData");
-        // send msg to activity " NewAuthData "
         new BroadCastMsg(this, C_.ACT_NEW_AUTH_DATA, ActivityBroadcastReceiver.BROADCAST_FILTER);
         new WsServiceControl(this).stop();
         new Timer().schedule(new TimerTask() {
@@ -255,30 +231,32 @@ public class WsService extends Service {
         stopSelf();
     }
     private void badAuthData(){
-        Log.i("MyService", "exit -> badAuthData");
         Ws.initSocket();
     }
     private void createNotifyLabel(){
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Context context = this;
+        String title  = context.getString(R.string.notifyTitle);
+        String text   = context.getString(R.string.notifyText);
+        String ticker = context.getString(R.string.notifyTicker);
+        Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, 0);
         Notification notification =
                 new NotificationCompat.Builder(this, C_.NOTIFY_CHANNEL_FOREGROUND)
-                        .setContentTitle("worksn")
-                        .setContentText("Служба сообщений активна")
+                        .setContentTitle(title)
+                        .setContentText(text)
                         .setSmallIcon(R.drawable.notification)
                         .setContentIntent(pendingIntent)
-                        .setTicker("Уведомления worksn будут доставлены")
+                        .setTicker(ticker)
                         .build();
         startForeground(11, notification);
     }
 
     public static class AlarmReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
-            Log.i("MyAlarm", "ok");
             MyStorage.i().init(context);
             Intent intent1 = new Intent(context, WsBroadcastReceiver.class);
-            intent.putExtra("act", C_.ACT_WAKEUP);
+            intent.putExtra(C_.STR_ACT, C_.ACT_WAKEUP);
             context.sendBroadcast(intent1);
         }
     }

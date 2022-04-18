@@ -11,6 +11,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="noNameUser">Кто-то</string>
     <string name="msgTxt">Текст сообщения</string>
+    <string name="msgFrom_">Сообщение от </string>
     <string name="errorSendMsg">Не удалось отправить сообщение :-(</string>
     <string name="errorSendFile">Не удалось отправить файл :-(</string>
     <string name="speaker">Собеседник</string>
@@ -90,6 +91,10 @@
     <string name="chooseCategory">Выберите категорию</string>
     <string name="checkNetConnection">Проверьте подключение к сети</string>
     <string name="prints">Печатает</string>
+
+    <string name="notifyTitle">worksn</string>
+    <string name="notifyText">Служба сообщений активна</string>
+    <string name="notifyTicker">Уведомления worksn будут доставлены</string>
 
     <string-array name="hourList">
         <item>00</item>

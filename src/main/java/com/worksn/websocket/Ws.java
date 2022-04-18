@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-import com.worksn.objects.G_;
 import com.worksn.objects.SaveImgData;
 import com.worksn.objects.StructMsg;
 import okhttp3.CacheControl;
@@ -80,7 +79,7 @@ public class Ws {
         sClient = sBuilder.build();
         sRequest = new Request.Builder()
                 .cacheControl(new CacheControl.Builder().noCache().build())
-                .url("wss://worksn.ru:8000")
+                .url(C_.URL_WS)
                 .build();
 
 
@@ -122,7 +121,6 @@ public class Ws {
         Log.i("MyWsReceive", "  data -> "+msg);
         WsReceiveData wsData = new WsReceiveData();
         wsData = new Gson().fromJson(msg,wsData.getClass());
-        G_.dateTime = wsData.getDate_time();
         switch (wsData.getType()){
             case C_.ACT_AUTH_USER           : rcvAuthUser(wsData);                 break;
             case C_.ACT_ONLINE_LIST         : rcvOnlineList(wsData);         break;
@@ -137,7 +135,6 @@ public class Ws {
             case C_.ACT_NEW_TOKEN           : rcvNewToken(wsData);break;
         }
     }
-
     public static User getUser() {
         return user;
     }
@@ -188,14 +185,14 @@ public class Ws {
         StructMsg msg = new StructMsg();
         msg.setDiscus_id(discusId);
         msg.setConsumerId(consumerId);
-        d.setData_group(msg);
+        d.setDataGroup(msg);
         send(d);
     }
     public static void sendConfirmDeliverMsg(int consumerId, long discusId, int statusMsg){
         ArrayMap<String, Object> sendData = new ArrayMap<>();
-        sendData.put("consumer_id",consumerId);
-        sendData.put("discus_id", discusId);
-        sendData.put("status_msg", statusMsg);
+        sendData.put(C_.STR_CONSUMER_ID,consumerId);
+        sendData.put(C_.STR_DISCUS_ID, discusId);
+        sendData.put(C_.STR_STATUS_MSG, statusMsg);
         WsSendData d = new WsSendData(C_.ACT_CONFIRM_DELIVER_MSG, sendData);
         Ws.send(d);
     }
@@ -203,7 +200,7 @@ public class Ws {
         if (user != null){
             int showStatus = MyStorage.i().getBoolen(C_.STR_SWITCH_SHOW_STATUS) ? 1 : 0;
             WsSendData d = new WsSendData(C_.ACT_AUTH_USER);
-            d.setUser_login(user.getLogin());
+            d.setUserLogin(user.getLogin());
             d.setShowStatus(showStatus);
             Ws.send(d);
         }
@@ -223,7 +220,6 @@ public class Ws {
     }
     public static void send(WsSendData data){
         String jsonStr = new Gson().toJson(data);
-
         Log.i("MyWsSend", "-> "+jsonStr);
         if(!connectionState){
             cb.callback(C_.CODE_ON_FAILURE, null);
@@ -302,9 +298,7 @@ public class Ws {
             clearSocketData();
             cb.callback(C_.CODE_WS_SEND_ERROR, null);
             badConnectionQt++;
-            Log.i("MyWs", "badConnectionQt -> "+badConnectionQt);
         }else {
-            Log.i("MyWs", "CODE_WS_BAD_AUTH_DATA 1");
             badConnectionQt = 0;
             cb.callback(C_.CODE_WS_BAD_AUTH_DATA, null);
         }

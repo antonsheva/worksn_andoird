@@ -12,12 +12,10 @@ public class WsAlarmReceiver extends BroadcastReceiver {
     public static final String BROADCAST_FILTER = "ws_alarm_receiver_filter";
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("MyAlarm", "WsAlarmReceiver");
         startWsService(context);
     }
 
     private void startWsService(Context context){
-        Log.i("MyAlarm", "startWsService");
         Intent intent = new Intent(new Intent(context, WsService.class));
         ActivityCompat.startForegroundService(context, intent);
     }
