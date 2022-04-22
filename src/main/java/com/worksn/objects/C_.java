@@ -83,8 +83,6 @@ public class C_ {
     public final static int ADS_VISIBLE_HIDDEN_MANUAL    = 3;
     public final static int ADS_VISIBLE_HIDDEN_REMOVE    = 4;
 
-
-
     //------------- ACT WS -------------------------------------------------------
     public final static String ACT_CONFIRM_DELIVER_MSG   = "deliver_msg";
     public final static String ACT_CHECK_NEW_MSG         = "check_new_msg";
@@ -149,6 +147,7 @@ public class C_ {
 
     public final static String ACT_ADD_IMG               = "add_img";
     public final static String ACT_REMOVE_TMP_FILE       = "rm_tmp_file";
+    public final static String ACT_REMOVE_TMP_FILE_LIST  = "rm_tmp_file_list";
 
     public final static String ACT_CHECK_NEW_NOTIFY      = "check_new_notify";
     public final static String ACT_GET_NEW_NOTIFY        = "get_new_notify"  ;

@@ -62,11 +62,17 @@ public class Render {
         this.activity = activity;
 
         initViewElements();
-        initOnClickListener();
+//        initOnClickListener();
     }
     public void buttonScrollDown(boolean show){
         if (show)rcVwMsgChainBtDown.setVisibility(View.VISIBLE);
         else      rcVwMsgChainBtDown.setVisibility(View.GONE);
+    }
+    public void viewElement(View v, boolean show){
+        if (v != null){
+            if (show)v.setVisibility(View.VISIBLE);
+            else     v.setVisibility(View.GONE);
+        }
     }
     public void screen(Integer screen_mode, Integer active_mode){
         new Kbrd().hide(activity);

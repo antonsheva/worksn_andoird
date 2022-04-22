@@ -95,10 +95,9 @@ public class MsgManager {
         List<StructMsg> tmp = new ArrayList<>();
         createMsgChainRecyclerView(context, tmp,0);
     }
-
     public void createMsgChainRecyclerView(Context context, @NotNull List<StructMsg> msgs, Integer pos){
         ((Activity)context).runOnUiThread(() -> {
-            mRcVwMsgChain = (RecyclerView)((Activity)context).findViewById(R.id.rcVwMsgChain);
+            mRcVwMsgChain = ((Activity)context).findViewById(R.id.rcVwMsgChain);
             sMessages = msgs;
             mMsgChainAdapter = null;
             mLayoutManagerMsgChain = new LinearLayoutManager(context);
@@ -124,10 +123,6 @@ public class MsgManager {
             mRcVwMsgChain.setLayoutManager(mLayoutManagerMsgChain);
             mRcVwMsgChain.setHasFixedSize(true);
             mRcVwMsgChain.setAdapter(mMsgChainAdapter);
-            if(pos!=null) {
-                mRcVwMsgChain.scrollToPosition(pos);
-                if (pos < 5)new Render((Activity)context).buttonScrollDown(false);
-            }
         });
     }
     public void removeMsg(Context context, StructMsg rmvMsg){

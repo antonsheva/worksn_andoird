@@ -27,26 +27,32 @@ import com.worksn.objects.C_;
 import com.worksn.objects.G_;
 import com.worksn.objects.StructMsg;
 import com.worksn.objects.TmpImg;
+import com.worksn.singleton.MsgManager;
 import com.worksn.singleton.Usr;
 import com.worksn.view.Render;
 
 public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwHldr>{
-    public Context context;
+    private Context context;
+    private Activity activity;
     private final List<StructMsg> msgList;
 
     public  final int vhId;
     private final Cb cb;
     private static int lastPosition = 0;
-
+    private ImageView rcVwMsgChainBtDown;
     MyImg myImg;
-
+    Render vw;
     public MsgChainAdapter(Context context, List<StructMsg> msgList, int vhId, Cb callback){
-        this.context = context;
+        this.context  = context;
+        this.activity = (Activity)context;
         lastPosition = 0;
         cb = callback;
         this.vhId    = vhId;
         this.msgList = msgList;
         myImg = new MyImg((Activity) context);
+        rcVwMsgChainBtDown  = activity.findViewById(R.id.rcVwMsgChainBtDown);
+        vw = new Render((Activity)context);
+        initOnClickListener();
     }
     @NonNull
     @Override
@@ -61,12 +67,12 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
         int pos = holder.getAdapterPosition();
         StructMsg msg = msgList.get(pos);
         renderMsgField(msg, holder);
-        Render vw = new Render((Activity)context);
+
         if ((lastPosition < 12)&&(pos >= 12)){
-            vw.buttonScrollDown(true);
+            vw.viewElement(rcVwMsgChainBtDown, true);
         }
         if ((lastPosition >= 12)&&(pos < 12)){
-            vw.buttonScrollDown(false);
+            vw.viewElement(rcVwMsgChainBtDown, false);
         }
         lastPosition = pos;
     }
@@ -75,7 +81,15 @@ public class MsgChainAdapter extends RecyclerView.Adapter<MsgChainAdapter.MsgVwH
     public int getItemCount() {
         return msgList.size();
     }
-
+    private void initOnClickListener(){
+        rcVwMsgChainBtDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MsgManager.i().scrollRcView(0);
+                vw.viewElement(rcVwMsgChainBtDown, false);
+            }
+        });
+    }
     private void renderMsgField(StructMsg msg, MsgVwHldr holder){
         if(msg.getCreateDate() == null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD hh:mm:ss");
