@@ -52,6 +52,8 @@ import com.worksn.classes.MyLocation;
 import com.worksn.classes.NotifyChannel;
 import com.worksn.classes.WsServiceControl;
 import com.worksn.objects.AssocData;
+import com.worksn.objects.C_;
+import com.worksn.objects.G_;
 import com.worksn.objects.SaveImgData;
 import com.worksn.objects.StructTxtData;
 import com.worksn.objects.MyStorageConst;
@@ -65,8 +67,7 @@ import com.worksn.interfaces.AdapterListener;
 import com.worksn.interfaces.ComCallback;
 import com.worksn.interfaces.NetCallback;
 import com.worksn.objects.Ads;
-import com.worksn.objects.C_;
-import com.worksn.objects.G_;
+
 import com.worksn.classes.MyLog;
 import com.worksn.classes.MyNet;
 import com.worksn.view.FrameProgressbar;
@@ -94,6 +95,7 @@ import com.worksn.view.FrameUserProfile;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 
+import static com.worksn.objects.G_.context;
 import static com.worksn.objects.G_.stopActivityType;
 
 

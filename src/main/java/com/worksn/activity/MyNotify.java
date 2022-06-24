@@ -1,5 +1,7 @@
 package com.worksn.activity;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.PendingIntent;
 
 import android.content.Context;
@@ -8,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -16,6 +19,7 @@ import com.bumptech.glide.request.transition.Transition;
 import org.jetbrains.annotations.Nullable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
@@ -33,8 +37,22 @@ import com.worksn.singleton.MyStorage;
 public class MyNotify {
     Timer mLoadImgTimer = null;
     boolean notifyIsWorked = false;
+
+    PendingIntent resultPendingIntent;
+    PendingIntent pendingIntentQuickReply;
+    PendingIntent pendingIntentSetAsViewed;
+
+    private void initPending(Context context, Intent intent, Intent intentQuickReply, Intent intentSetAsViewed){
+        int pFlag;
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.S) pFlag = PendingIntent.FLAG_UPDATE_CURRENT;
+        else                                              pFlag = PendingIntent.FLAG_MUTABLE;
+
+        resultPendingIntent      = PendingIntent.getActivity(context, 0, intent,pFlag);
+        pendingIntentQuickReply  = PendingIntent.getActivity(context, 0, intentQuickReply,pFlag);
+        pendingIntentSetAsViewed = PendingIntent.getBroadcast(context, 0, intentSetAsViewed,pFlag);
+    }
+
     public void newNotify(Context context, StructMsg msg, String prepTxt, boolean enSound){
-        Bitmap img = null;
         Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         long discusId = 0;
@@ -47,9 +65,9 @@ public class MyNotify {
         long msgId    = 0;
         String createDate = null;
 
-        if (msg.getDiscus_id()  != null)  discusId    = msg.getDiscus_id();
-        if (msg.getSender_id()  != null)  senderId    = msg.getSender_id();
-        if (msg.getSenderImg() != null)senderImg  = msg.getSenderImg();
+        if (msg.getDiscus_id()  != null) discusId   = msg.getDiscus_id();
+        if (msg.getSender_id()  != null) senderId   = msg.getSender_id();
+        if (msg.getSenderImg()  != null) senderImg  = msg.getSenderImg();
         if (msg.getAds_id()     != null) adsId      = msg.getAds_id();
         if (msg.getId()         != null) msgId      = msg.getId();
         if (msg.getCreateDate() != null) createDate = msg.getCreateDate();
@@ -71,7 +89,6 @@ public class MyNotify {
             msgContent = msg.getContent();
         }
 
-
         G_.notifyDiscusId = discusId;
         MyStorage.i().putData(C_.STR_NOTIFY_DISCUS_ID, discusId);
         Intent intent = new Intent(context, MainActivity.class);
@@ -88,17 +105,11 @@ public class MyNotify {
         intentSetAsViewed.putExtra(C_.STR_DISCUS_ID, discusId);
         intentSetAsViewed.putExtra(C_.STR_CONSUMER_ID, senderId);
 
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(context, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        PendingIntent pendingIntentQuickReply =
-                PendingIntent.getActivity(context, 0, intentQuickReply,PendingIntent.FLAG_UPDATE_CURRENT);
-        PendingIntent pendingIntentSetAsViewed =
-                PendingIntent.getBroadcast(context, 0, intentSetAsViewed,PendingIntent.FLAG_UPDATE_CURRENT);
+        initPending(context, intent, intentQuickReply, intentSetAsViewed);
 
         RemoteInput remoteInput = new RemoteInput.Builder(C_.STR_NOTIFY_FIELD)
                 .setLabel(context.getString(R.string.msgTxt))
                 .build();
-
 
         NotificationCompat.Action action = new NotificationCompat.Action.Builder(android.R.drawable.ic_menu_send,
                 context.getString(R.string.notifyReply), pendingIntentQuickReply)
@@ -154,13 +165,11 @@ public class MyNotify {
         new ConfirmDeliverMsg(context, senderId, discusId, C_.CODE_CONFIRM_DELIVER);
     }
     public void removeNotify(Context context){
-        NotificationManagerCompat notificationManager =
-                NotificationManagerCompat.from(context);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.cancel(1);
     }
     private void getBitmap(Context context, String url, CB cb) {
         final Bitmap[] bitmap = {null};
-        final Bitmap[] res = {null};
         Glide.with(context)
                 .asBitmap()
                 .load(url)

@@ -30,7 +30,9 @@ public class WsBroadcastReceiver extends BroadcastReceiver{
         IntentFilter intentFilter = new IntentFilter(BROADCAST_FILTER);
         try{
             context.registerReceiver(this, intentFilter);
-        }catch(Exception ignored){}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     public void clear(Context context){
         try{

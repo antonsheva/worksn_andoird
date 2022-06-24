@@ -342,14 +342,12 @@ public class MsgManager {
         if (msg.getDiscus_id() == null)return;
         if(MyScreen.screenMode == C_.SCREEN_MODE_MSG_CHAIN) {
             if (mMyContext.getDiscus().getId().equals(msg.getDiscus_id())) {
-                try{
-                    if (msg.getImgIcon().equals(C_.STR_WAS_SEND_POST_DATA)){
-                        msg.setImg(C_.FILE_GALLERY);
-                        msg.setImgIcon(C_.FILE_GALLERY);
-                    }
-                }catch (NullPointerException e){
-                    e.printStackTrace();
+
+                if ((msg.getImgIcon() != null) && msg.getImgIcon().equals(C_.STR_WAS_SEND_POST_DATA)){
+                    msg.setImg(C_.FILE_GALLERY);
+                    msg.setImgIcon(C_.FILE_GALLERY);
                 }
+
                 sMessages.add(0, msg);
                 createMsgChainRecyclerView(context, sMessages, 0);
                 ConfirmDeliverMsg c =  new ConfirmDeliverMsg(context, msg.getSender_id(), msg.getDiscus_id(), C_.CODE_CONFIRM_VIEWED);

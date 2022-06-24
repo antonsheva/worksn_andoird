@@ -281,8 +281,6 @@ public class Ws {
             msg.setReplySenderLogin (data.getReplySenderLogin());
             msg.setReplyContent     (data.getReplyContent());
             msg.setReplyImg         (data.getReplyImg());
-
-
         }else
             msg = data.getMsg();
         cb.callback(C_.CODE_NEW_MSG, msg);

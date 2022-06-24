@@ -30,7 +30,6 @@ import com.worksn.singleton.Usr;
 import com.worksn.websocket.init_ssl.RequestData;
 
 public class WsService extends Service {
-//    private  WsBroadcastReceiver broadcast;
     private  WsEvents wsEvents;
     private static boolean sServiceRun = false;
     private static boolean sSendInitWs = false;
@@ -150,7 +149,7 @@ public class WsService extends Service {
         Usr.i().setUser(null);
         WsTimer.i().initCheckConnectionTimer(false);
         Ws.clearSocketData();
-        stopSelf();
+//        stopSelf();
     }
     private void initTimerListener(){
         WsTimer.i().initCbListener(new WsTimer.CB() {
@@ -240,7 +239,7 @@ public class WsService extends Service {
         String ticker = context.getString(R.string.notifyTicker);
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, 0);
+                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         Notification notification =
                 new NotificationCompat.Builder(this, C_.NOTIFY_CHANNEL_FOREGROUND)
                         .setContentTitle(title)
